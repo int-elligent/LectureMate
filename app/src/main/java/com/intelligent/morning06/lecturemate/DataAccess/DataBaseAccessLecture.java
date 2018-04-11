@@ -13,10 +13,6 @@ import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureDoesNo
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Marco on 21.03.2018.
- */
-
 public class DataBaseAccessLecture extends SQLiteOpenHelper  {
 
     public static class LectureTable implements BaseColumns {
