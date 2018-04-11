@@ -1,8 +1,5 @@
 package com.intelligent.morning06.lecturemate.DataAccess;
 
-/**
- * Created by Marco on 21.03.2018.
- */
 
 public class Lecture {
 
@@ -24,5 +21,10 @@ public class Lecture {
 
     public int getId(){
         return _id;
+    }
+
+    @Override
+    public String toString() {
+        return _lectureName;
     }
 }
