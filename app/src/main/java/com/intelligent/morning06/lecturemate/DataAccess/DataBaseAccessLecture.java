@@ -8,6 +8,7 @@ import android.provider.BaseColumns;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureAlreadyExistsException;
+import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureDoesNotExistException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,14 +48,33 @@ public class DataBaseAccessLecture extends SQLiteOpenHelper  {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    public void deleteAllLectures()
+    public void DeleteAllLectures()
     {
         SQLiteDatabase dataBase = this.getWritableDatabase();
 
         dataBase.delete(LectureTable.TABLE_NAME, null, null);
     }
 
-    public Lecture AddLecture(String lectureName) throws LectureAlreadyExistsException {
+    public void DeleteLecture(String lectureName) throws LectureDoesNotExistException, IllegalArgumentException {
+
+        if(lectureName == null || lectureName.isEmpty()) {
+            throw new IllegalArgumentException("lectureName");
+        }
+
+        SQLiteDatabase dataBase = this.getWritableDatabase();
+
+        int numberDeletedRows = dataBase.delete(LectureTable.TABLE_NAME, LectureTable.COLUMN_NAME_TITLE + "='" + lectureName + "'" ,null);
+        if(numberDeletedRows == 0) {
+            throw new LectureDoesNotExistException(lectureName, "Lecture with name '" + lectureName + "' cannot be deleted because it does not exist.");
+        }
+    }
+
+    public Lecture AddLecture(String lectureName) throws LectureAlreadyExistsException, IllegalArgumentException {
+
+        if(lectureName == null || lectureName.isEmpty()) {
+            throw new IllegalArgumentException("lectureName");
+        }
+
         SQLiteDatabase dataBase = this.getReadableDatabase();
 
         String[] projection = {
