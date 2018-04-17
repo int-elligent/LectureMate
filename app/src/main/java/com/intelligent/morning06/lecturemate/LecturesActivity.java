@@ -52,12 +52,12 @@ public class LecturesActivity extends AppCompatActivity {
         lectureListView = (ListView) findViewById(R.id.lectureList);
 
         RefreshLectures();
-        lectureListView.setOnClickListener(new View.OnClickListener(){
+        /*lectureListView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 addCategoriesList();
             }
-        });
+        });*/
     }
 
     @Override
@@ -134,16 +134,16 @@ public class LecturesActivity extends AppCompatActivity {
         listAdapter.notifyDataSetChanged();
     }
 
-    void addCategoriesList(){
+    /*void addCategoriesList(){
         List<String> categoriesList = new ArrayList<String>();
 
         categoriesList.add("Categorie1");
 
-        ListView categoriesListView = (ListView) findViewById(R.id.categoriesList);
+            ListView categoriesListView = (ListView) findViewById(R.id.categoriesList);
 
         ArrayAdapter<String> clistAdapter = new ArrayAdapter<String>
                 (this, android.R.layout.simple_list_item_1, categoriesList);
 
         categoriesListView.setAdapter(clistAdapter);
-    }
+    }*/
 }
