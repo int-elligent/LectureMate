@@ -49,7 +49,7 @@ public class LecturesActivity extends AppCompatActivity {
             }
         });
 
-        lectureListView = (ListView) findViewById(R.id.lectureList);
+        ListView lectureListView = (ListView) findViewById(R.id.lectureList);
 
         RefreshLectures();
         /*lectureListView.setOnClickListener(new View.OnClickListener(){
@@ -57,7 +57,46 @@ public class LecturesActivity extends AppCompatActivity {
             public void onClick(View view) {
                 addCategoriesList();
             }
+
+
         });*/
+
+        List<String> lectureList = new ArrayList<String>();
+
+        //lectureList.remove(2);
+
+        lectureList.add("Lecture 1");
+        lectureList.add("Lecture 2");
+        lectureList.add("Lecture 3");
+        lectureList.add("Lecture 4");
+        lectureList.add("Lecture 1");
+        lectureList.add("Lecture 2");
+        lectureList.add("Lecture 3");
+        lectureList.add("Lecture 4");
+        lectureList.add("Lecture 1");
+        lectureList.add("Lecture 2");
+        lectureList.add("Lecture 3");
+        lectureList.add("Lecture 4");
+        lectureList.add("Lecture 1");
+        lectureList.add("Lecture 2");
+        lectureList.add("Lecture 3");
+        lectureList.add("Lecture 4");
+        lectureList.add("Lecture 1");
+        lectureList.add("Lecture 2");
+        lectureList.add("Lecture 3");
+        lectureList.add("Lecture 4");
+        lectureList.add("Lecture 1");
+        lectureList.add("Lecture 2");
+        lectureList.add("Lecture 3");
+        lectureList.add("Lecture 4");
+
+        ArrayAdapter<String> listAdapter = new ArrayAdapter<String>
+                (this, android.R.layout.simple_list_item_1, lectureList);
+
+        lectureListView.setAdapter(listAdapter);
+
+
+
     }
 
     @Override
@@ -94,8 +133,7 @@ public class LecturesActivity extends AppCompatActivity {
         addLectureDialogBuilder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
-                //save the string from inputLecture
-                //
+
                 try {
                     DataModel.GetInstance().getDataBase().AddLecture(inputLecture.getText().toString());
                     RefreshLectures();
