@@ -1,9 +1,5 @@
 package com.intelligent.morning06.lecturemate;
 
-/**
- * Created by MitaF on 21. 03. 2018.
- */
-
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
