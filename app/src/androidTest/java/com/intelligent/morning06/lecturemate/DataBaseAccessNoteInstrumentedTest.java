@@ -35,7 +35,7 @@ public class DataBaseAccessNoteInstrumentedTest {
             dataAccessLecture = new DataBaseAccessLecture(InstrumentationRegistry.getTargetContext());
 
         dataAccessNote.DeleteAllNotes();
-        dataAccessLecture.deleteAllLectures();
+        dataAccessLecture.DeleteAllLectures();
     }
 
     @Test

@@ -33,7 +33,7 @@ public class DataBaseAccessDateInstrumentedTest {
             dataAccessLecture = new DataBaseAccessLecture(InstrumentationRegistry.getTargetContext());
 
         dataAccessDate.DeleteAllDates();
-        dataAccessLecture.deleteAllLectures();
+        dataAccessLecture.DeleteAllLectures();
     }
 
     @Test

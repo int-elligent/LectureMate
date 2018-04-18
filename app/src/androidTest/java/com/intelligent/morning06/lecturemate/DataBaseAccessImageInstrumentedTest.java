@@ -33,7 +33,7 @@ public class DataBaseAccessImageInstrumentedTest {
             dataAccessLecture = new DataBaseAccessLecture(InstrumentationRegistry.getTargetContext());
 
         dataAccessImage.DeleteAllImages();
-        dataAccessLecture.deleteAllLectures();
+        dataAccessLecture.DeleteAllLectures();
     }
 
     @Test

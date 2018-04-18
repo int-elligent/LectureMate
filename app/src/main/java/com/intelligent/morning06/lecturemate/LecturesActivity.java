@@ -49,53 +49,9 @@ public class LecturesActivity extends AppCompatActivity {
             }
         });
 
-        ListView lectureListView = (ListView) findViewById(R.id.lectureList);
+        lectureListView = (ListView) findViewById(R.id.lectureList);
 
         RefreshLectures();
-        /*lectureListView.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                addCategoriesList();
-            }
-
-
-        });*/
-
-        List<String> lectureList = new ArrayList<String>();
-
-        //lectureList.remove(2);
-
-        lectureList.add("Lecture 1");
-        lectureList.add("Lecture 2");
-        lectureList.add("Lecture 3");
-        lectureList.add("Lecture 4");
-        lectureList.add("Lecture 1");
-        lectureList.add("Lecture 2");
-        lectureList.add("Lecture 3");
-        lectureList.add("Lecture 4");
-        lectureList.add("Lecture 1");
-        lectureList.add("Lecture 2");
-        lectureList.add("Lecture 3");
-        lectureList.add("Lecture 4");
-        lectureList.add("Lecture 1");
-        lectureList.add("Lecture 2");
-        lectureList.add("Lecture 3");
-        lectureList.add("Lecture 4");
-        lectureList.add("Lecture 1");
-        lectureList.add("Lecture 2");
-        lectureList.add("Lecture 3");
-        lectureList.add("Lecture 4");
-        lectureList.add("Lecture 1");
-        lectureList.add("Lecture 2");
-        lectureList.add("Lecture 3");
-        lectureList.add("Lecture 4");
-
-        ArrayAdapter<String> listAdapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_list_item_1, lectureList);
-
-        lectureListView.setAdapter(listAdapter);
-
-
 
     }
 
@@ -165,23 +121,10 @@ public class LecturesActivity extends AppCompatActivity {
 
     private void RefreshLectures() {
         lectures = DataModel.GetInstance().getDataBase().GetAllLectures();
-        lectureListView.invalidateViews();
         listAdapter = new ArrayAdapter<Lecture>
                 (this, android.R.layout.simple_list_item_1, lectures);
         lectureListView.setAdapter(listAdapter);
+        lectureListView.invalidateViews();
         listAdapter.notifyDataSetChanged();
     }
-
-    /*void addCategoriesList(){
-        List<String> categoriesList = new ArrayList<String>();
-
-        categoriesList.add("Categorie1");
-
-            ListView categoriesListView = (ListView) findViewById(R.id.categoriesList);
-
-        ArrayAdapter<String> clistAdapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_list_item_1, categoriesList);
-
-        categoriesListView.setAdapter(clistAdapter);
-    }*/
 }

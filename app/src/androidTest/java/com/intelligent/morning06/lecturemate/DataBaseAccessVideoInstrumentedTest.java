@@ -33,7 +33,7 @@ public class DataBaseAccessVideoInstrumentedTest {
             dataAccessLecture = new DataBaseAccessLecture(InstrumentationRegistry.getTargetContext());
 
         dataAccessVideo.DeleteAllVideos();
-        dataAccessLecture.deleteAllLectures();
+        dataAccessLecture.DeleteAllLectures();
     }
 
     @Test

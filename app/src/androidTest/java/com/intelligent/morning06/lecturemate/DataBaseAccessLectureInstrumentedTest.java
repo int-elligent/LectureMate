@@ -18,10 +18,6 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 
-/**
- * Created by Marco on 21.03.2018.
- */
-
 public class DataBaseAccessLectureInstrumentedTest {
 
     DataBaseAccessLecture dataBase = null;
