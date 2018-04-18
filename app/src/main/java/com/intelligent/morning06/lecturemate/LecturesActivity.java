@@ -2,27 +2,28 @@ package com.intelligent.morning06.lecturemate;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessLecture;
+import com.intelligent.morning06.lecturemate.DataAccess.CategoriesActivity;
 import com.intelligent.morning06.lecturemate.DataAccess.DataModel;
 import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureAlreadyExistsException;
 import com.intelligent.morning06.lecturemate.DataAccess.Lecture;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LecturesActivity extends AppCompatActivity {
@@ -52,12 +53,13 @@ public class LecturesActivity extends AppCompatActivity {
         lectureListView = (ListView) findViewById(R.id.lectureList);
 
         RefreshLectures();
-        /*lectureListView.setOnClickListener(new View.OnClickListener(){
+        lectureListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                addCategoriesList();
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String lectureNameToShowCategories = lectures.get(i).getLectureName();
+                openCategoriesActivity(lectureNameToShowCategories); //TODO pass Lecture
             }
-        });*/
+        });
     }
 
     @Override
@@ -134,16 +136,10 @@ public class LecturesActivity extends AppCompatActivity {
         listAdapter.notifyDataSetChanged();
     }
 
-    /*void addCategoriesList(){
-        List<String> categoriesList = new ArrayList<String>();
-
-        categoriesList.add("Categorie1");
-
-            ListView categoriesListView = (ListView) findViewById(R.id.categoriesList);
-
-        ArrayAdapter<String> clistAdapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_list_item_1, categoriesList);
-
-        categoriesListView.setAdapter(clistAdapter);
-    }*/
+    void openCategoriesActivity(String lectureName){
+        Log.d("DEBUG", "Open Cetegories Activity " + lectureName); //TODO remove this line
+        Intent categoryIntent = new Intent(LecturesActivity.this, CategoriesActivity.class);
+        categoryIntent.putExtra("LectureName", lectureName);
+        LecturesActivity.this.startActivity(categoryIntent);
+    }
 }
