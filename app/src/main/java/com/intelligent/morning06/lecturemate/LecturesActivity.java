@@ -53,6 +53,7 @@ public class LecturesActivity extends AppCompatActivity {
         lectureListView = (ListView) findViewById(R.id.lectureList);
 
         RefreshLectures();
+
         lectureListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -96,8 +97,7 @@ public class LecturesActivity extends AppCompatActivity {
         addLectureDialogBuilder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
-                //save the string from inputLecture
-                //
+
                 try {
                     DataModel.GetInstance().getDataBase().AddLecture(inputLecture.getText().toString());
                     RefreshLectures();
@@ -129,13 +129,12 @@ public class LecturesActivity extends AppCompatActivity {
 
     private void RefreshLectures() {
         lectures = DataModel.GetInstance().getDataBase().GetAllLectures();
-        lectureListView.invalidateViews();
         listAdapter = new ArrayAdapter<Lecture>
                 (this, android.R.layout.simple_list_item_1, lectures);
         lectureListView.setAdapter(listAdapter);
+        lectureListView.invalidateViews();
         listAdapter.notifyDataSetChanged();
     }
-
     void openCategoriesActivity(String lectureName){
         Log.d("DEBUG", "Open Cetegories Activity " + lectureName); //TODO remove this line
         Intent categoryIntent = new Intent(LecturesActivity.this, CategoriesActivity.class);
