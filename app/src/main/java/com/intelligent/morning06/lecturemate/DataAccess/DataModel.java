@@ -9,11 +9,13 @@ public class DataModel {
 
     private static DataModel _instance = null;
     private DataBaseAccessLecture _lectureDataBase = null;
+    private DataBaseAccessNote _noteDataBase = null;
 
     private List<Lecture> _allLectures;
 
     private DataModel() {
         _lectureDataBase = new DataBaseAccessLecture(MyApplication.getContext());
+        _noteDataBase = new DataBaseAccessNote(MyApplication.getContext());
     }
 
     public static DataModel GetInstance() {
@@ -23,8 +25,10 @@ public class DataModel {
         return _instance;
     }
 
-    public DataBaseAccessLecture getDataBase() {
+    public DataBaseAccessLecture getLectureDataBase() {
         return _lectureDataBase;
     }
+
+    public DataBaseAccessNote getNoteDataBase() { return _noteDataBase; }
 
 }

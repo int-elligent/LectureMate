@@ -8,10 +8,12 @@ import android.util.Log;
 
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessDate;
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessLecture;
+import com.intelligent.morning06.lecturemate.DataAccess.DataBaseConstants;
 import com.intelligent.morning06.lecturemate.DataAccess.Lecture;
 
 import junit.framework.Assert;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,10 +29,10 @@ public class DataBaseAccessDateInstrumentedTest {
 
     @Before
     public void deleteTableIfExists() throws Exception {
-        if(dataAccessDate == null)
-            dataAccessDate = new DataBaseAccessDate(InstrumentationRegistry.getTargetContext());
         if(dataAccessLecture == null)
             dataAccessLecture = new DataBaseAccessLecture(InstrumentationRegistry.getTargetContext());
+        if(dataAccessDate == null)
+            dataAccessDate = new DataBaseAccessDate(InstrumentationRegistry.getTargetContext());
 
         dataAccessDate.DeleteAllDates();
         dataAccessLecture.DeleteAllLectures();

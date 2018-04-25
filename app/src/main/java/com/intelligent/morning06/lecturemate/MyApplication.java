@@ -5,6 +5,7 @@ import android.app.Application;
 public class MyApplication extends Application {
 
     private static MyApplication mContext;
+    private static int _currentlySelectedLecture;
 
     @Override
     public void onCreate() {
@@ -15,4 +16,6 @@ public class MyApplication extends Application {
     public static MyApplication getContext() {
         return mContext;
     }
+    public static int getCurrentLecture() { return _currentlySelectedLecture; }
+    public static void setCurrentLecture(int lectureId) { _currentlySelectedLecture = lectureId; }
 }

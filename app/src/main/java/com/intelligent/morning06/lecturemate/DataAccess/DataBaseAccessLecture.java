@@ -22,7 +22,7 @@ public class DataBaseAccessLecture extends SQLiteOpenHelper  {
     }
 
     private static final String SQL_CREATE_TABLE =
-            "CREATE TABLE " + LectureTable.TABLE_NAME + " (" +
+            "CREATE TABLE IF NOT EXISTS " + LectureTable.TABLE_NAME + " (" +
                     LectureTable.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     LectureTable.COLUMN_NAME_TITLE + " TEXT)";
 
@@ -31,6 +31,11 @@ public class DataBaseAccessLecture extends SQLiteOpenHelper  {
 
     public DataBaseAccessLecture(Context context) {
         super(context, DataBaseConstants.DATABASE_NAME, null, DataBaseConstants.DATABASE_VERSION);
+    }
+
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        onCreate(db);
     }
 
     public void onCreate(SQLiteDatabase db) {

@@ -20,7 +20,7 @@ public class DataBaseAccessNote extends SQLiteOpenHelper  {
     }
 
     private static final String SQL_CREATE_TABLE =
-            "CREATE TABLE " + NoteTable.TABLE_NAME + " (" +
+            "CREATE TABLE IF NOT EXISTS " + NoteTable.TABLE_NAME + " (" +
                     NoteTable.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     NoteTable.COLUMN_NAME_TITLE + " TEXT, " +
                     NoteTable.COLUMN_NAME_TEXT + " TEXT, " +
@@ -51,6 +51,7 @@ public class DataBaseAccessNote extends SQLiteOpenHelper  {
 
     @Override
     public void onOpen(SQLiteDatabase db) {
+        onCreate(db);
         super.onOpen(db);
         if (!db.isReadOnly()) {
             db.execSQL("PRAGMA foreign_keys=ON;");

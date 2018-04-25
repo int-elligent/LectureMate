@@ -20,7 +20,7 @@ public class DataBaseAccessVideo extends SQLiteOpenHelper  {
     }
 
     private static final String SQL_CREATE_TABLE =
-            "CREATE TABLE " + VideoTable.TABLE_NAME + " (" +
+            "CREATE TABLE IF NOT EXISTS " + VideoTable.TABLE_NAME + " (" +
                     VideoTable.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     VideoTable.COLUMN_NAME_TITLE + " TEXT, " +
                     VideoTable.COLUMN_NAME_CREATIONDATE + " INTEGER, " +
@@ -51,6 +51,7 @@ public class DataBaseAccessVideo extends SQLiteOpenHelper  {
 
     @Override
     public void onOpen(SQLiteDatabase db) {
+        onCreate(db);
         super.onOpen(db);
         if (!db.isReadOnly()) {
             db.execSQL("PRAGMA foreign_keys=ON;");

@@ -99,7 +99,7 @@ public class LecturesActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int which) {
 
                 try {
-                    DataModel.GetInstance().getDataBase().AddLecture(inputLecture.getText().toString());
+                    DataModel.GetInstance().getLectureDataBase().AddLecture(inputLecture.getText().toString());
                     RefreshLectures();
                 } catch (LectureAlreadyExistsException exception) {
                     ShowToast("Lecture cannot be added, it already exists");
@@ -128,7 +128,7 @@ public class LecturesActivity extends AppCompatActivity {
     }
 
     private void RefreshLectures() {
-        lectures = DataModel.GetInstance().getDataBase().GetAllLectures();
+        lectures = DataModel.GetInstance().getLectureDataBase().GetAllLectures();
         listAdapter = new ArrayAdapter<Lecture>
                 (this, android.R.layout.simple_list_item_1, lectures);
         lectureListView.setAdapter(listAdapter);

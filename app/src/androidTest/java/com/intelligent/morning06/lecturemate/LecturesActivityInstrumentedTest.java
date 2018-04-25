@@ -14,9 +14,11 @@ import android.text.InputType;
 import android.widget.ListView;
 
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessLecture;
+import com.intelligent.morning06.lecturemate.DataAccess.DataBaseConstants;
 
 import junit.framework.Assert;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -45,7 +47,7 @@ import static org.junit.Assert.assertFalse;
  * @see​ ​<a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class LectureAddingInstrumentedTest {
+public class LecturesActivityInstrumentedTest {
     DataBaseAccessLecture dataBase = null;
 
     @Before

@@ -21,7 +21,7 @@ public class DataBaseAccessDate extends SQLiteOpenHelper  {
     }
 
     private static final String SQL_CREATE_TABLE =
-            "CREATE TABLE " + DateTable.TABLE_NAME + " (" +
+            "CREATE TABLE IF NOT EXISTS " + DateTable.TABLE_NAME + " (" +
                     DateTable.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     DateTable.COLUMN_NAME_TITLE + " TEXT, " +
                     DateTable.COLUMN_NAME_TEXT + " TEXT, " +
@@ -53,6 +53,7 @@ public class DataBaseAccessDate extends SQLiteOpenHelper  {
 
     @Override
     public void onOpen(SQLiteDatabase db) {
+        onCreate(db);
         super.onOpen(db);
         if (!db.isReadOnly()) {
             db.execSQL("PRAGMA foreign_keys=ON;");

@@ -20,7 +20,7 @@ public class DataBaseAccessImage extends SQLiteOpenHelper  {
     }
 
     private static final String SQL_CREATE_TABLE =
-            "CREATE TABLE " + ImageTable.TABLE_NAME + " (" +
+            "CREATE TABLE IF NOT EXISTS " + ImageTable.TABLE_NAME + " (" +
                     ImageTable.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     ImageTable.COLUMN_NAME_TITLE + " TEXT, " +
                     ImageTable.COLUMN_NAME_CREATIONDATE + " INTEGER, " +
@@ -51,6 +51,7 @@ public class DataBaseAccessImage extends SQLiteOpenHelper  {
 
     @Override
     public void onOpen(SQLiteDatabase db) {
+        onCreate(db);
         super.onOpen(db);
         if (!db.isReadOnly()) {
             db.execSQL("PRAGMA foreign_keys=ON;");
