@@ -28,7 +28,7 @@ public class DataBaseAccessNoteInstrumentedTest {
 
     @Before
     public void deleteTableIfExists() throws Exception {
-        //DataBaseAccessLecture dataBase = new DataBaseAccessLecture(InstrumentationRegistry.getTargetContext());
+        //DataBaseAccessLecture dataBaseLecture = new DataBaseAccessLecture(InstrumentationRegistry.getTargetContext());
         if(dataAccessNote == null)
             dataAccessNote = new DataBaseAccessNote(InstrumentationRegistry.getTargetContext());
         if(dataAccessLecture == null)

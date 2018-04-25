@@ -58,7 +58,7 @@ public class LecturesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String lectureNameToShowCategories = lectures.get(i).getLectureName();
-                openCategoriesActivity(lectureNameToShowCategories); //TODO pass Lecture
+                openCategoriesActivity(lectureNameToShowCategories, lectures.get(i).getId());
             }
         });
     }
@@ -135,10 +135,12 @@ public class LecturesActivity extends AppCompatActivity {
         lectureListView.invalidateViews();
         listAdapter.notifyDataSetChanged();
     }
-    void openCategoriesActivity(String lectureName){
-        Log.d("DEBUG", "Open Cetegories Activity " + lectureName); //TODO remove this line
+
+    void openCategoriesActivity(String lectureName, int lectureId){
+    //void openCategoriesActivity(String lectureName){
         Intent categoryIntent = new Intent(LecturesActivity.this, CategoriesActivity.class);
         categoryIntent.putExtra("LectureName", lectureName);
+        categoryIntent.putExtra("LectureId", lectureId);
         LecturesActivity.this.startActivity(categoryIntent);
     }
 }

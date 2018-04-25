@@ -21,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".DataAccess.CategoriesActivity"></activity>
+        <activity android:name=".DataAccess.NotesListActivity"></activity>
     </application>
 
 </manifest>
