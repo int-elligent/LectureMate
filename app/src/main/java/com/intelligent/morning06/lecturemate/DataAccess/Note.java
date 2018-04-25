@@ -47,4 +47,9 @@ public class Note implements Serializable {
     public int getLectureId() {
         return _lectureId;
     }
+
+    @Override
+    public String toString() {
+        return _title;
+    }
 }

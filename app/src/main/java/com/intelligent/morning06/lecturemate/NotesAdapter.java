@@ -1,4 +1,4 @@
-package com.intelligent.morning06.lecturemate.DataAccess;
+package com.intelligent.morning06.lecturemate;
 
 import android.content.Context;
 import android.view.LayoutInflater;

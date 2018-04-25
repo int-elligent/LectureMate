@@ -9,7 +9,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.intelligent.morning06.lecturemate.DataAccess.CategoriesActivity;
 import com.intelligent.morning06.lecturemate.DataAccess.DataModel;
 import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureAlreadyExistsException;
 import com.intelligent.morning06.lecturemate.DataAccess.Lecture;
@@ -141,6 +139,7 @@ public class LecturesActivity extends AppCompatActivity {
         Intent categoryIntent = new Intent(LecturesActivity.this, CategoriesActivity.class);
         categoryIntent.putExtra("LectureName", lectureName);
         categoryIntent.putExtra("LectureId", lectureId);
+        MyApplication.setCurrentLecture(lectureId);
         LecturesActivity.this.startActivity(categoryIntent);
     }
 }

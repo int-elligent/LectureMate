@@ -7,15 +7,12 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 
-import com.intelligent.morning06.lecturemate.DataAccess.CategoriesActivity;
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessLecture;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.List;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
@@ -29,10 +26,6 @@ import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNotSame;
 import static junit.framework.Assert.assertTrue;
-
-/**
- * Created by MitaF on 18. 04. 2018.
- */
 
 @RunWith(AndroidJUnit4.class)
 public class LectureCategoriesInstrumentedTest {
@@ -73,15 +66,6 @@ public class LectureCategoriesInstrumentedTest {
 
         assertNotNull(categoriesActivity);
         categoriesActivity.finish();
-
-    }
-
-    @Test
-    public void testCategoriesListStandardCategories() {
-
-        onView(withText("TestLecture")).perform(click());
-        onView(withText("Notes")).perform(click());
-        onView(withText("Dates")).perform(click());
 
     }
 }

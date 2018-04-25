@@ -1,15 +1,13 @@
-package com.intelligent.morning06.lecturemate.DataAccess;
+package com.intelligent.morning06.lecturemate;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.intelligent.morning06.lecturemate.LecturesActivity;
 import com.intelligent.morning06.lecturemate.R;
 
 import java.util.ArrayList;
@@ -63,7 +61,6 @@ public class CategoriesActivity extends AppCompatActivity {
         });
     }
     void openNotesListActivity(String lectureName, int lectureId){
-    //void openNotesListActivity(String lectureName){
         Intent singleCategoryIntent = new Intent(CategoriesActivity.this, NotesListActivity.class);
         singleCategoryIntent.putExtra("LectureName", lectureName);
         singleCategoryIntent.putExtra("LectureId", lectureId);

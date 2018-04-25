@@ -59,7 +59,7 @@ public class NotesCreateActivity extends AppCompatActivity {
         }
 
         try {
-            DataModel.GetInstance().getNoteDataBase().AddNote(title, text, Instant.now().getEpochSecond(), MyApplication.getCurrentLecture());
+            DataModel.GetInstance().getNoteDataBase().AddNote(title, text, Instant.now().toEpochMilli(), MyApplication.getCurrentLecture());
         } catch(SQLException exception) {
             ShowToast("Could not add note to database: " + exception.getMessage());
             return;
