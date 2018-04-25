@@ -2,6 +2,7 @@ package com.intelligent.morning06.lecturemate;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,6 +13,8 @@ import android.text.InputType;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -20,6 +23,7 @@ import android.widget.Toast;
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessLecture;
 import com.intelligent.morning06.lecturemate.DataAccess.DataModel;
 import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureAlreadyExistsException;
+import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureDoesNotExistException;
 import com.intelligent.morning06.lecturemate.DataAccess.Lecture;
 
 import java.util.ArrayList;
@@ -27,6 +31,8 @@ import java.util.List;
 
 public class LecturesActivity extends AppCompatActivity {
 
+    private MenuItem edit, delete;
+    private int selected;
     private ListView lectureListView;
     private ArrayAdapter<Lecture> listAdapter;
     private List<Lecture> lectures;
@@ -51,6 +57,28 @@ public class LecturesActivity extends AppCompatActivity {
 
         lectureListView = (ListView) findViewById(R.id.lectureList);
 
+        lectures = new ArrayList<Lecture>();
+
+        lectureListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                ShowContextMenu(true);
+                selected = position;
+
+                lectureListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+                lectureListView.setSelection(selected);
+                lectureListView.setSelector(R.color.colorPrimaryDark);
+                return true;
+            }
+        });
+
+        lectureListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ShowContextMenu(false);
+            }
+        });
+
         RefreshLectures();
         /*lectureListView.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -64,6 +92,33 @@ public class LecturesActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_lectures, menu);
+        delete = menu.findItem(R.id.Delete);
+        delete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if(selected >= 0) {
+                    //lectures.remove(selected);
+                    try {
+                        DataModel.GetInstance().getDataBase().DeleteLecture(lectures.get(selected).getLectureName());
+                        RefreshLectures();
+                    } catch (LectureDoesNotExistException exception) {
+                        ShowToast("Lecture cannot be deleted, it doesn't exists");
+                    }
+                }
+                ShowContextMenu(false);
+                selected = -1;
+                return true;
+            }
+        });
+        edit = menu.findItem(R.id.Edit);
+        edit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                ShowEditView();
+                return true;
+            }
+        });
+        ShowContextMenu(false);
         return true;
     }
 
@@ -114,7 +169,6 @@ public class LecturesActivity extends AppCompatActivity {
             }
         });
         lastDialog = addLectureDialogBuilder.show();
-
     }
 
     public AlertDialog getLastDialog() {
@@ -123,6 +177,63 @@ public class LecturesActivity extends AppCompatActivity {
 
     private void ShowToast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+    }
+
+
+    void ShowEditView(){
+        AlertDialog.Builder addLectureDialogBuilder = new AlertDialog.Builder(this);
+        addLectureDialogBuilder.setTitle("Edit Lecture");
+
+
+        final EditText inputLecture = new EditText(this);
+        inputLecture.setInputType(InputType.TYPE_CLASS_TEXT);
+        inputLecture.setText(lectures.get(selected).getLectureName());
+        addLectureDialogBuilder.setView(inputLecture);
+
+        addLectureDialogBuilder.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                //save the string from inputLecture
+                //
+                try {
+                    DataModel.GetInstance().getDataBase().EditLecture(lectures.get(selected).getLectureName(), inputLecture.getText().toString());
+                    RefreshLectures();
+
+                } catch (LectureAlreadyExistsException exception) {
+                    ShowToast("Lecture cannot be edited, such a lecture already exists");
+                } catch (IllegalArgumentException exception) {
+                    ShowToast("Lecture name must not be empty.");
+                }
+
+                ShowContextMenu(false);
+            }
+        });
+
+        addLectureDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+                ShowContextMenu(false);
+            }
+        });
+        addLectureDialogBuilder.show();
+
+    }
+
+    @Override
+    public void onBackPressed(){
+        lectureListView.setSelection(0);
+
+        ShowContextMenu(false);
+    }
+
+    void ShowContextMenu(boolean show){
+        edit.setVisible(show);
+        delete.setVisible(show);
+        if(show == false) {
+            selected = -1;
+            lectureListView.setSelector(R.color.colorWhite);
+        }
     }
 
     private void RefreshLectures() {
@@ -134,16 +245,7 @@ public class LecturesActivity extends AppCompatActivity {
         listAdapter.notifyDataSetChanged();
     }
 
-    /*void addCategoriesList(){
-        List<String> categoriesList = new ArrayList<String>();
 
-        categoriesList.add("Categorie1");
 
-            ListView categoriesListView = (ListView) findViewById(R.id.categoriesList);
 
-        ArrayAdapter<String> clistAdapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_list_item_1, categoriesList);
-
-        categoriesListView.setAdapter(clistAdapter);
-    }*/
 }

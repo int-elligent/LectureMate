@@ -113,6 +113,51 @@ public class DataBaseAccessLecture extends SQLiteOpenHelper  {
         return lecture;
     }
 
+    public void EditLecture(String lectureName, String newLectureName) throws LectureAlreadyExistsException, IllegalArgumentException{
+        if(newLectureName == null || newLectureName.isEmpty()) {
+            throw new IllegalArgumentException("lectureName");
+        }
+
+        SQLiteDatabase dataBase = this.getReadableDatabase();
+
+        String[] projection = {
+                LectureTable.COLUMN_NAME_TITLE
+        };
+
+        String selection = LectureTable.COLUMN_NAME_TITLE + " = ?";
+        String[] selectionArgs = { newLectureName };
+
+        Cursor cursor = dataBase.query(
+                LectureTable.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        List<String> storedLectureNames = new ArrayList<String>();
+        while(cursor.moveToNext()) {
+            String title = cursor.getString(cursor.getColumnIndexOrThrow(LectureTable.COLUMN_NAME_TITLE));
+            if(title != null)
+                storedLectureNames.add(title);
+        }
+
+        if(storedLectureNames.size() >= 1) {
+            dataBase.close();
+            throw new LectureAlreadyExistsException(lectureName, "Lecture with name " + newLectureName + " can't be added to database because it already exists.");
+        }
+
+        dataBase.close();
+        dataBase = this.getWritableDatabase();
+
+        dataBase.execSQL("UPDATE lectures SET title='" + newLectureName + "' WHERE title ='" + lectureName + "'");
+        //int numberEditRows = dataBase.update(LectureTable.TABLE_NAME, values, LectureTable.COLUMN_NAME_TITLE + "='" + lectureName + "'", new String [] {newLectureName});
+
+        dataBase.close();
+    }
+
     public List<Lecture> GetAllLectures() {
 
         SQLiteDatabase dataBase = this.getReadableDatabase();
