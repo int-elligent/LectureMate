@@ -10,12 +10,14 @@ public class DataModel {
     private static DataModel _instance = null;
     private DataBaseAccessLecture _lectureDataBase = null;
     private DataBaseAccessNote _noteDataBase = null;
+    private DataBaseAccessImage _imageDataBase = null;
 
     private List<Lecture> _allLectures;
 
     private DataModel() {
         _lectureDataBase = new DataBaseAccessLecture(MyApplication.getContext());
         _noteDataBase = new DataBaseAccessNote(MyApplication.getContext());
+        _imageDataBase = new DataBaseAccessImage(MyApplication.getContext());
     }
 
     public static DataModel GetInstance() {
@@ -30,5 +32,7 @@ public class DataModel {
     }
 
     public DataBaseAccessNote getNoteDataBase() { return _noteDataBase; }
+
+    public DataBaseAccessImage getImageDataBase() { return _imageDataBase; }
 
 }

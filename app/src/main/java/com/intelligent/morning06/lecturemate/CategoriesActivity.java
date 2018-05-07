@@ -15,8 +15,6 @@ import java.util.List;
 
 public class CategoriesActivity extends AppCompatActivity {
 
-    //TODO write tests
-
     private ListView categoriesListView;
     private List<String> categoriesList;
     public ArrayAdapter<String> categoryListAdapter;
@@ -53,18 +51,24 @@ public class CategoriesActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String categoryName = categoriesList.get(i);
                 if (categoryName.equals("Notes")){
-
-
                     openNotesListActivity(lectureNameToShow, lectureId);
+                } else if (categoryName.equals("Images")) {
+                    openImagesListActivity();
                 }
             }
         });
+
     }
     void openNotesListActivity(String lectureName, int lectureId){
         Intent singleCategoryIntent = new Intent(CategoriesActivity.this, NotesListActivity.class);
         singleCategoryIntent.putExtra("LectureName", lectureName);
         singleCategoryIntent.putExtra("LectureId", lectureId);
         CategoriesActivity.this.startActivity(singleCategoryIntent);
+    }
+
+    void openImagesListActivity() {
+        Intent activityIntent = new Intent(CategoriesActivity.this, ImagesListActivity.class);
+        CategoriesActivity.this.startActivity(activityIntent);
     }
 
     public List<String> getCategoriesList(){
