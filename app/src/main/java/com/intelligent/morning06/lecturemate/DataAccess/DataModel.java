@@ -10,6 +10,7 @@ public class DataModel {
     private static DataModel _instance = null;
     private DataBaseAccessLecture _lectureDataBase = null;
     private DataBaseAccessNote _noteDataBase = null;
+    private DataBaseAccessImage _imageDataBase = null;
 
     private List<Lecture> _allLectures;
 
@@ -30,5 +31,7 @@ public class DataModel {
     }
 
     public DataBaseAccessNote getNoteDataBase() { return _noteDataBase; }
+
+    public DataBaseAccessImage getImageDataBase() { return _imageDataBase; }
 
 }

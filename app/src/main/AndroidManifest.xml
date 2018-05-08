@@ -30,7 +30,7 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".CategoriesActivity" />
         <activity android:name=".NotesListActivity" />
-        <activity android:name=".ImagesActivity">
+        <activity android:name=".ImagesCreateActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
