@@ -28,10 +28,10 @@ public class CategoriesActivity extends AppCompatActivity {
 
         categoriesList = new ArrayList<>();
 
-        categoriesList.add("Dates");
-        categoriesList.add("Images");
-        categoriesList.add("Notes");
-        categoriesList.add("Videos");
+        categoriesList.add(getResources().getString(R.string.title_activity_DatesList));
+        categoriesList.add(getResources().getString(R.string.title_activity_ImagesList));
+        categoriesList.add(getResources().getString(R.string.title_activity_NotesList));
+        categoriesList.add(getResources().getString(R.string.title_activity_VideosList));
 
 
         categoryListAdapter = new ArrayAdapter<String>
@@ -40,17 +40,17 @@ public class CategoriesActivity extends AppCompatActivity {
         categoriesListView.setAdapter(categoryListAdapter);
 
         Intent intent = getIntent();
-        lectureNameToShow = intent.getStringExtra("LectureName");
-        lectureId = intent.getIntExtra("LectureId", 0);
+        lectureNameToShow = intent.getStringExtra(getResources().getString(R.string.intent_extra_lectureName));
+        lectureId = intent.getIntExtra(getResources().getString(R.string.intent_extra_lectureId), 0);
         setTitle(lectureNameToShow);
 
         categoriesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String categoryName = categoriesList.get(i);
-                if (categoryName.equals("Notes")){
+                if (categoryName.equals(getResources().getString(R.string.title_activity_NotesList))){
                     openNotesListActivity(lectureNameToShow, lectureId);
-                } else if (categoryName.equals("Images")) {
+                } else if (categoryName.equals(getResources().getString(R.string.title_activity_ImagesList))) {
                     openImagesListActivity();
                 }
             }
@@ -59,8 +59,8 @@ public class CategoriesActivity extends AppCompatActivity {
     }
     void openNotesListActivity(String lectureName, int lectureId){
         Intent singleCategoryIntent = new Intent(CategoriesActivity.this, NotesListActivity.class);
-        singleCategoryIntent.putExtra("LectureName", lectureName);
-        singleCategoryIntent.putExtra("LectureId", lectureId);
+        singleCategoryIntent.putExtra(getResources().getString(R.string.intent_extra_lectureName), lectureName);
+        singleCategoryIntent.putExtra(getResources().getString(R.string.intent_extra_lectureId), lectureId);
         CategoriesActivity.this.startActivity(singleCategoryIntent);
     }
 

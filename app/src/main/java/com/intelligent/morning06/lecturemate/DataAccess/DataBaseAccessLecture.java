@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureAlreadyExistsException;
 import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureDoesNotExistException;
+import com.intelligent.morning06.lecturemate.MyApplication;
+import com.intelligent.morning06.lecturemate.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,7 +106,7 @@ public class DataBaseAccessLecture extends SQLiteOpenHelper  {
 
         if(storedLectureNames.size() >= 1) {
             dataBase.close();
-            throw new LectureAlreadyExistsException(lectureName, "Lecture with name " + lectureName + " can't be added to database because it already exists.");
+            throw new LectureAlreadyExistsException(lectureName, MyApplication.getContext().getResources().getString(R.string.error_databaseAccessLecture_alreadyExists));
         }
 
         dataBase.close();

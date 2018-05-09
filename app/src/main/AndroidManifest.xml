@@ -22,17 +22,17 @@
         </activity>
         <activity
             android:name=".NotesActivity"
-            android:label="@string/title_activity_notes"
+            android:label="@string/title_activity_NoteView"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".NotesCreateActivity"
-            android:label="@string/title_activity_notes_create"
+            android:label="@string/title_activity_NotesCreate"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".CategoriesActivity" />
         <activity android:name=".NotesListActivity" />
         <activity
             android:name=".ImagesListActivity"
-            android:label="@string/title_activity_images_list"
+            android:label="@string/title_activity_ImagesList"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>

@@ -43,19 +43,19 @@ public class NotesCreateActivity extends AppCompatActivity {
         String text = ((EditText)findViewById(R.id.editTextNote)).getText().toString();
 
         if(title.isEmpty()) {
-            ShowToast("Title cannot be empty");
+            ShowToast(getResources().getString(R.string.error_activity_notes_create_titleEmpty));
             return;
         }
 
         if (text.isEmpty()) {
-            ShowToast("Note text cannot be empty");
+            ShowToast(getResources().getString(R.string.error_activity_notes_create_textEmpty));
             return;
         }
 
         try {
             DataModel.GetInstance().getNoteDataBase().AddNote(title, text, Instant.now().toEpochMilli(), MyApplication.getCurrentLecture());
         } catch(SQLException exception) {
-            ShowToast("Could not add note to database: " + exception.getMessage());
+            ShowToast(getResources().getString(R.string.error_activity_notes_create_dataBaseError) + exception.getMessage());
             return;
         }
 

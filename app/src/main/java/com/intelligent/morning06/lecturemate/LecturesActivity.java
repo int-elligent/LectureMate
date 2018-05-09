@@ -79,7 +79,7 @@ public class LecturesActivity extends AppCompatActivity {
     }
     void addLectureAction(){
         AlertDialog.Builder addLectureDialogBuilder = new AlertDialog.Builder(this);
-        addLectureDialogBuilder.setTitle("Add Lecture");
+        addLectureDialogBuilder.setTitle(getResources().getString(R.string.title_activity_Lectures_ButtonAddLecture));
 
         final EditText inputLecture = new EditText(this);
         inputLecture.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -87,7 +87,7 @@ public class LecturesActivity extends AppCompatActivity {
 
         final Context appContext = getApplicationContext();
 
-        addLectureDialogBuilder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
+        addLectureDialogBuilder.setPositiveButton(getResources().getString(R.string.title_activity_Lectures_ButtonAdd), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
 
@@ -95,14 +95,14 @@ public class LecturesActivity extends AppCompatActivity {
                     DataModel.GetInstance().getLectureDataBase().AddLecture(inputLecture.getText().toString());
                     RefreshLectures();
                 } catch (LectureAlreadyExistsException exception) {
-                    ShowToast("Lecture cannot be added, it already exists");
+                    ShowToast(getResources().getString(R.string.error_activity_lectures_lectureExists));
                 } catch (IllegalArgumentException exception) {
-                    ShowToast("Lecture name must not be empty.");
+                    ShowToast(getResources().getString(R.string.error_activity_lectures_lectureNameEmpty));
                 }
             }
         });
 
-        addLectureDialogBuilder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+        addLectureDialogBuilder.setNegativeButton(getResources().getString(R.string.title_activity_Lectures_ButtonCancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();
@@ -131,8 +131,8 @@ public class LecturesActivity extends AppCompatActivity {
 
     void openCategoriesActivity(String lectureName, int lectureId){
         Intent categoryIntent = new Intent(LecturesActivity.this, CategoriesActivity.class);
-        categoryIntent.putExtra("LectureName", lectureName);
-        categoryIntent.putExtra("LectureId", lectureId);
+        categoryIntent.putExtra(getResources().getString(R.string.intent_extra_lectureName), lectureName);
+        categoryIntent.putExtra(getResources().getString(R.string.intent_extra_lectureId), lectureId);
         MyApplication.setCurrentLecture(lectureId);
         LecturesActivity.this.startActivity(categoryIntent);
     }

@@ -36,9 +36,9 @@ public class NotesActivity extends AppCompatActivity {
             }
         });
 
-        Bundle allNotes = getIntent().getBundleExtra("SERIALIZED_DATA");
-        _notes = (ArrayList<Note>) allNotes.getSerializable("ALL_NOTES");
-        _selectedIndex = getIntent().getIntExtra("SELECTED_INDEX", 0);
+        Bundle allNotes = getIntent().getBundleExtra(getResources().getString(R.string.intent_extra_serializedData));
+        _notes = (ArrayList<Note>) allNotes.getSerializable(getResources().getString(R.string.intent_extra_allNotes));
+        _selectedIndex = getIntent().getIntExtra(getResources().getString(R.string.intent_extra_selectedIndex), 0);
 
         UpdateContent();
     }

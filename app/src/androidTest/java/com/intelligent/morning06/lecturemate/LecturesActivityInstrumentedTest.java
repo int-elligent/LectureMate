@@ -97,8 +97,8 @@ public class LecturesActivityInstrumentedTest {
 
         AlertDialog addLectureDialog = lecturesActivity.getLastDialog();
         if(addLectureDialog.isShowing()) {
-            onView(withText("ADD")).perform(click());
-            onView(withText("Lecture name must not be empty.")).
+            onView(withText(MyApplication.getContext().getResources().getString(R.string.title_activity_Lectures_ButtonAdd))).perform(click());
+            onView(withText(MyApplication.getContext().getResources().getString(R.string.error_activity_lectures_lectureNameEmpty))).
                     inRoot(withDecorView(not(is(lecturesActivity.getWindow().getDecorView())))).
                     check(matches(isDisplayed()));
         }

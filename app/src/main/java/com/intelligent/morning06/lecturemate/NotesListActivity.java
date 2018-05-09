@@ -37,7 +37,7 @@ public class NotesListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notes_list);
 
         Intent intent = getIntent();
-        lectureNameToShow = intent.getStringExtra("LectureName");
+        lectureNameToShow = intent.getStringExtra(getResources().getString(R.string.intent_extra_lectureName));
         setTitle(lectureNameToShow + " - Notes");
 
         notesListView = (ListView)findViewById(R.id.notesListView);
@@ -79,9 +79,9 @@ public class NotesListActivity extends AppCompatActivity {
     public void openNote(int selectedIndex) {
         Intent intent = new Intent(NotesListActivity.this, NotesActivity.class);
         Bundle notesBundle = new Bundle();
-        notesBundle.putSerializable("ALL_NOTES", _notes);
-        intent.putExtra("SERIALIZED_DATA", notesBundle);
-        intent.putExtra("SELECTED_INDEX", selectedIndex);
+        notesBundle.putSerializable(getResources().getString(R.string.intent_extra_allNotes), _notes);
+        intent.putExtra(getResources().getString(R.string.intent_extra_serializedData), notesBundle);
+        intent.putExtra(getResources().getString(R.string.intent_extra_selectedIndex), selectedIndex);
         startActivity(intent);
     }
 
