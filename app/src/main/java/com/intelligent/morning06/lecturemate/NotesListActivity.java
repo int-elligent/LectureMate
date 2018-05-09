@@ -12,9 +12,7 @@ import android.widget.ListView;
 
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessNote;
 import com.intelligent.morning06.lecturemate.DataAccess.DataModel;
-import com.intelligent.morning06.lecturemate.DataAccess.Lecture;
 import com.intelligent.morning06.lecturemate.DataAccess.Note;
-import com.intelligent.morning06.lecturemate.R;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -57,7 +55,6 @@ public class NotesListActivity extends AppCompatActivity {
         notesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //String lectureNameToShowCategories = lectures.get(i).getLectureName();
                 openNote(i);
             }
         });

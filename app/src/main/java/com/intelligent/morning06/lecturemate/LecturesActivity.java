@@ -130,7 +130,6 @@ public class LecturesActivity extends AppCompatActivity {
     }
 
     void openCategoriesActivity(String lectureName, int lectureId){
-    //void openCategoriesActivity(String lectureName){
         Intent categoryIntent = new Intent(LecturesActivity.this, CategoriesActivity.class);
         categoryIntent.putExtra("LectureName", lectureName);
         categoryIntent.putExtra("LectureId", lectureId);

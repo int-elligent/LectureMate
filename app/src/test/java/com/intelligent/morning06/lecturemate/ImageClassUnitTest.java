@@ -12,7 +12,6 @@ public class ImageClassUnitTest {
     @Test
     public void TestConstructorLarge() throws Exception {
         LocalDateTime now = LocalDateTime.now();
-        //Note note = new Note(1, "testTitle", "testText", now, 23);
         Image image = new Image(1, "TestImage", "TestPath", now, 23);
 
         assertEquals(1, image.getId());
@@ -25,7 +24,6 @@ public class ImageClassUnitTest {
     @Test
     public void TestConstructorSmall() throws Exception {
         LocalDateTime now = LocalDateTime.now();
-        //Note note = new Note("testTitle", "testText", now ,24);
         Image image = new Image("TestImage", "TestPath", now, 12);
 
         assertEquals(-1, image.getId());

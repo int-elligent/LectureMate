@@ -2,7 +2,6 @@ package com.intelligent.morning06.lecturemate.DataAccess;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class Note implements Serializable {
     private int _id;

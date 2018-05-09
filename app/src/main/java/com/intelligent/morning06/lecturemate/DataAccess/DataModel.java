@@ -1,6 +1,5 @@
 package com.intelligent.morning06.lecturemate.DataAccess;
 
-import com.intelligent.morning06.lecturemate.LecturesActivity;
 import com.intelligent.morning06.lecturemate.MyApplication;
 
 import java.util.List;

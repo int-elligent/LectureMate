@@ -8,20 +8,14 @@ import android.util.Log;
 
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessImage;
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessLecture;
-import com.intelligent.morning06.lecturemate.DataAccess.DataBaseConstants;
 import com.intelligent.morning06.lecturemate.DataAccess.Lecture;
 
 import junit.framework.Assert;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
-
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
 
 public class DataBaseAccessImageInstrumentedTest {
     DataBaseAccessImage dataAccessImage = null;

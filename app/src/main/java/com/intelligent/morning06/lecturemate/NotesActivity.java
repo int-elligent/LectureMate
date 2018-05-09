@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.intelligent.morning06.lecturemate.DataAccess.Note;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 

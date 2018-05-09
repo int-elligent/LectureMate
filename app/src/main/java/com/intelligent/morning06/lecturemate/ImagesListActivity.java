@@ -1,6 +1,5 @@
 package com.intelligent.morning06.lecturemate;
 
-import android.app.ListActivity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
