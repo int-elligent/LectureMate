@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessImage;
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessNote;
 import com.intelligent.morning06.lecturemate.DataAccess.DataModel;
 
@@ -50,7 +51,7 @@ public class ImagesCreateActivity extends AppCompatActivity {
 
         try {
             DataModel.GetInstance().getImageDataBase().AddImage(text, Instant.now().toEpochMilli(), "@android:drawable/btn_dialog", MyApplication.getCurrentLecture());
-        } catch(SQLException exception) {
+        } catch(Exception exception) {
             ShowToast("Could not add image to database: " + exception.getMessage());
             return;
         }

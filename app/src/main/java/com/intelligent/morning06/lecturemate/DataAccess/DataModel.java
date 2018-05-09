@@ -17,6 +17,7 @@ public class DataModel {
     private DataModel() {
         _lectureDataBase = new DataBaseAccessLecture(MyApplication.getContext());
         _noteDataBase = new DataBaseAccessNote(MyApplication.getContext());
+        _imageDataBase = new DataBaseAccessImage(MyApplication.getContext());
     }
 
     public static DataModel GetInstance() {

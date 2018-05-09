@@ -24,4 +24,3 @@
     <include layout="@layout/content_images_create" />
 
 </android.support.design.widget.CoordinatorLayout>
-

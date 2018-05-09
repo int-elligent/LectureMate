@@ -1,11 +1,13 @@
 package com.intelligent.morning06.lecturemate;
 
+import android.database.Cursor;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessImage;
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessLecture;
+import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessNote;
 import com.intelligent.morning06.lecturemate.DataAccess.DataModel;
 import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureAlreadyExistsException;
 import com.intelligent.morning06.lecturemate.DataAccess.Lecture;
@@ -88,5 +90,19 @@ public class ImagesCreateActivityInstrumentedTest {
         onView(withText(containsString("Could not add image to database"))).
                 inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView())))).
                 check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void addNote_CorrectlyAdded() throws Exception {
+        onView(withId(R.id.editTextImage)).perform(typeText("TestImage TestText"));
+
+        onView(withId(R.id.images_create_activity_action_save)).perform(click());
+
+        Cursor cursor = imageDataBase.GetImageCursorForLecture(MyApplication.getCurrentLecture());
+
+        Assert.assertEquals(true, cursor.moveToFirst());
+        String imageTitle = cursor.getString(cursor.getColumnIndex(DataBaseAccessImage.ImageTable.COLUMN_NAME_TITLE));
+        Assert.assertEquals("TestImage TestText", imageTitle);
+        Assert.assertEquals(true, mActivityRule.getActivity().isFinishing());
     }
 }
