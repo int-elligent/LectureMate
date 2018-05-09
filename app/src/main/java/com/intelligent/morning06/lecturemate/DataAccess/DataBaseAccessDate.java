@@ -81,8 +81,8 @@ public class DataBaseAccessDate extends SQLiteOpenHelper  {
                 DateTable.COLUMN_NAME_TITLE,
                 DateTable.COLUMN_NAME_TEXT,
                 DateTable.COLUMN_NAME_CREATIONDATE,
-                DateTable.COLUMN_NAME_LECTUREID,
-                DateTable.COLUMN_NAME_DATE
+                DateTable.COLUMN_NAME_DATE,
+                DateTable.COLUMN_NAME_LECTUREID
         };
 
         Cursor cursor = dataBase.query(DateTable.TABLE_NAME,
