@@ -2,7 +2,10 @@ package com.intelligent.morning06.lecturemate.DataAccess;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class Dates implements Serializable {
     private int _id;
@@ -43,15 +46,25 @@ public class Dates implements Serializable {
         return _date;
     }
 
+    public long getDateLong() {
+        return _date.atZone(TimeZone.getDefault().toZoneId()).toInstant().toEpochMilli();
+    }
+
     public LocalDateTime getCreationDate() {
         return _creationDate;
+    }
+
+    public long getCreationDateLong() {
+        return _creationDate.atZone(TimeZone.getDefault().toZoneId()).toInstant().toEpochMilli();
     }
 
     public int getLectureId() {
         return _lectureId;
     }
 
-    public String getTet() { return _text; }
+    public String getText() { return _text; }
+
+    public void setText(String text){ _text = text; }
 
     @Override
     public String toString() {

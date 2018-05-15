@@ -12,9 +12,7 @@ import android.widget.ListView;
 
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessDate;
 import com.intelligent.morning06.lecturemate.DataAccess.DataModel;
-import com.intelligent.morning06.lecturemate.DataAccess.Lecture;
 import com.intelligent.morning06.lecturemate.DataAccess.Dates;
-import com.intelligent.morning06.lecturemate.R;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -24,9 +22,6 @@ import java.util.TimeZone;
 public class DatesListActivity extends AppCompatActivity {
 
     private ListView datesListView;
-    public String[] names;
-    public String[] previews;
-    public String[] creation_dates;
     private String lectureNameToShow;
     private ArrayList<Dates> _dates = null;
     private ArrayAdapter<Dates> _listAdapter;
@@ -64,10 +59,6 @@ public class DatesListActivity extends AppCompatActivity {
 
     }
 
-    public int getNumberOfNames(){
-        return names.length;
-    }
-
     public void openCreateDateActivity()
     {
         //TODO
@@ -81,13 +72,12 @@ public class DatesListActivity extends AppCompatActivity {
     }
 
     public void openDate(int selectedIndex) {
-        //TODO
-        /*Intent intent = new Intent(DatesListActivity.this, DatesActivity.class);
+        Intent intent = new Intent(DatesListActivity.this, DatesActivity.class);
         Bundle datesBundle = new Bundle();
-        datesBundle.putSerializable("ALL_NOTES", _dates);
+        datesBundle.putSerializable("ALL_DATES", _dates);
         intent.putExtra("SERIALIZED_DATA", datesBundle);
         intent.putExtra("SELECTED_INDEX", selectedIndex);
-        startActivity(intent);*/
+        startActivity(intent);
     }
 
     public void updateDates() {

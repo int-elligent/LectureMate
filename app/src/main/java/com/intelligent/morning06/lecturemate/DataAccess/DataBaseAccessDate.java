@@ -73,6 +73,19 @@ public class DataBaseAccessDate extends SQLiteOpenHelper  {
         dataBase.close();
     }
 
+    public void AddDate(Dates dateObj) throws SQLException{
+        SQLiteDatabase dataBase = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(DateTable.COLUMN_NAME_TITLE, dateObj.getTitle());
+        values.put(DateTable.COLUMN_NAME_TEXT, dateObj.getText());
+        values.put(DateTable.COLUMN_NAME_CREATIONDATE, dateObj.getCreationDateLong());
+        values.put(DateTable.COLUMN_NAME_LECTUREID, dateObj.getLectureId());
+        values.put(DateTable.COLUMN_NAME_DATE, dateObj.getDateLong());
+        dataBase.insertOrThrow(DateTable.TABLE_NAME, null, values);
+        dataBase.close();
+    }
+
     public Cursor GetDateCursorForLecture(int lectureId) {
         SQLiteDatabase dataBase = this.getReadableDatabase();
 
