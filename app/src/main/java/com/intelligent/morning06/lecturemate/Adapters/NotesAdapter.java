@@ -1,4 +1,4 @@
-package com.intelligent.morning06.lecturemate;
+package com.intelligent.morning06.lecturemate.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

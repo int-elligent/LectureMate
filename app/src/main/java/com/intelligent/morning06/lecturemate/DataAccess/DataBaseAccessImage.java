@@ -93,9 +93,16 @@ public class DataBaseAccessImage extends SQLiteOpenHelper  {
     }
 
     public void DeleteAllImages() {
-        SQLiteDatabase dataBase = this.getWritableDatabase();
-        dataBase.delete(ImageTable.TABLE_NAME, null, null);
-        dataBase.close();
+        try {
+
+            SQLiteDatabase dataBase = this.getWritableDatabase();
+            dataBase.delete(ImageTable.TABLE_NAME, null, null);
+            dataBase.close();
+
+        }catch(SQLException exception) {
+            //We don't care about "no such table" exception here
+            ;
+        }
     }
 
     public void DeleteImagesForLectureId(int lectureId) {
