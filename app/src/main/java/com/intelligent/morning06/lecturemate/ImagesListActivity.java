@@ -1,13 +1,17 @@
 package com.intelligent.morning06.lecturemate;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.intelligent.morning06.lecturemate.Adapters.ImagesAdapter;
@@ -21,7 +25,8 @@ import java.util.ArrayList;
 import java.util.TimeZone;
 
 public class ImagesListActivity extends AppCompatActivity {
-
+    protected ListView imageListView;
+    ArrayList<Image> allImages = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +35,7 @@ public class ImagesListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-
+        imageListView = (ListView)findViewById(R.id.images_list_listview);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.images_list_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,13 +46,33 @@ public class ImagesListActivity extends AppCompatActivity {
         });
 
         updateImageList();
+        imageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //String lectureNameToShowCategories = lectures.get(i).getLectureName();
+                openImages(i);
+            }
+        });
+    }
+
+    public void openImages(int selectedIndex) {
+        int size = selectedIndex;
+        for( int j = 0; j < size; j++)
+            if(((ListView)findViewById(R.id.images_list_listview)).getAdapter().getItemViewType(j) == 1) selectedIndex--;
+        Intent intent = new Intent(ImagesListActivity.this, ImageViewActivity.class);
+        Bundle ImageBundle = new Bundle();
+        ImageBundle.putSerializable("ALL_IMAGES", allImages);
+        intent.putExtra("SERIALIZED_DATA", ImageBundle);
+        intent.putExtra("SELECTED_INDEX", selectedIndex);
+        //Log.e("ERROR",selectedIndex+"");
+        startActivity(intent);
     }
 
     private void updateImageList() {
         Cursor imageCursor = DataModel.GetInstance().getImageDataBase().
                 GetImageCursorForLecture(MyApplication.getCurrentLecture());
 
-        ArrayList<Image> allImages = new ArrayList<Image>();
+        allImages = new ArrayList<Image>();
 
         while(imageCursor.moveToNext()) {
             String title = imageCursor.

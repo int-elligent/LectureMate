@@ -34,6 +34,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -50,7 +51,7 @@ public class ImagesListActivityInstrumentedTest {
     private LocalDateTime secondDate;
 
     @Rule
-    public ActivityTestRule<ImagesListActivity> mActivityRule =
+    public ActivityTestRule<ImagesListActivity> m1ActivityRule =
             new ActivityTestRule<ImagesListActivity>(ImagesListActivity.class) {
         @Override
         protected Intent getActivityIntent() {
@@ -121,8 +122,10 @@ public class ImagesListActivityInstrumentedTest {
     @Test
     public void sampleImagesAreVisible() throws Exception {
         onView(withText("TestImage2")).perform(click());
+        pressBack();
         onView(withText("TestImage3")).perform(click());
     }
+
 
     @Test
     public void sampleSeparatorsAreVisible() throws Exception {
