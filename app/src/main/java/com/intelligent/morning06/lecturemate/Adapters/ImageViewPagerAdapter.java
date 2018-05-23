@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class ImageViewPagerAdapter extends PagerAdapter{
     File imgFile;
-    Bitmap imgBitmap;
+    public Bitmap imgBitmap;
     Context context;
     ArrayList<Image> images;
     int image_index;
