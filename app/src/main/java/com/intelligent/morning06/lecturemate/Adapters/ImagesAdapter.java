@@ -1,17 +1,20 @@
 package com.intelligent.morning06.lecturemate.Adapters;
 
 
+import android.Manifest;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.intelligent.morning06.lecturemate.DataAccess.Image;
 import com.intelligent.morning06.lecturemate.R;
 
@@ -115,10 +118,16 @@ public class ImagesAdapter extends BaseAdapter {
                         convertView = LayoutInflater.from(_context).
                                 inflate(R.layout.activity_images_list_listview_item, parent, false);
                     }
-                    Bitmap thumbnailBitmap = BitmapFactory.decodeFile(_views.get(position)._image.getFilePath());
-                    TextView title = (TextView) convertView.findViewById(R.id.images_list_item_title);
+
                     ImageView thumbnail = (ImageView) convertView.findViewById(R.id.images_list_item_thumbnail);
-                    thumbnail.setImageBitmap(thumbnailBitmap);
+                    Uri imagePath = Uri.parse(_views.get(position)._image.getFilePath());
+
+                    Glide.with(_context)
+                            .load(imagePath)
+                            .apply(RequestOptions.centerCropTransform())
+                            .into(thumbnail);
+
+                    TextView title = (TextView) convertView.findViewById(R.id.images_list_item_title);
                     title.setText(_views.get(position)._image.getTitle());
                     break;
                 case ViewType.SEPARATOR:

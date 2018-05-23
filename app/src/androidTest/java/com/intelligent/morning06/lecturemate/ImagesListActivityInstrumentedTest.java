@@ -1,10 +1,15 @@
 package com.intelligent.morning06.lecturemate;
 
+import android.app.Activity;
+import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
@@ -37,9 +42,13 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.intent.Intents.intending;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasData;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
 
 @RunWith(AndroidJUnit4.class)
 public class ImagesListActivityInstrumentedTest {
@@ -50,9 +59,11 @@ public class ImagesListActivityInstrumentedTest {
     private LocalDateTime firstDate;
     private LocalDateTime secondDate;
 
+    private Uri _imageUri;
+
     @Rule
-    public ActivityTestRule<ImagesListActivity> m1ActivityRule =
-            new ActivityTestRule<ImagesListActivity>(ImagesListActivity.class) {
+    public IntentsTestRule<ImagesListActivity> mActivityRule =
+            new IntentsTestRule<ImagesListActivity>(ImagesListActivity.class) {
         @Override
         protected Intent getActivityIntent() {
             try {
@@ -80,6 +91,7 @@ public class ImagesListActivityInstrumentedTest {
             Lecture lecture = DataModel.GetInstance().getLectureDataBase().AddLecture("TestLecture");
             lectureId = lecture.getId();
             MyApplication.setCurrentLecture(lectureId);
+            MyApplication.setCurrentLectureName(lecture.getLectureName());
         } catch (LectureAlreadyExistsException exception) {
             Assert.fail("Lecture already exists. Should not happen");
         }
@@ -93,9 +105,10 @@ public class ImagesListActivityInstrumentedTest {
         String temporaryFilePath;
 
         Bitmap testImage = BitmapFactory.decodeResource(InstrumentationRegistry.getTargetContext().getResources(), R.mipmap.app_icon);
+        File temporaryFile;
         try {
-            File temporaryFile = File.createTempFile("testImage", "tmp", InstrumentationRegistry.getTargetContext().getCacheDir());
-
+            temporaryFile = File.createTempFile("testImage", "tmp", InstrumentationRegistry.getTargetContext().getCacheDir());
+            _imageUri = Uri.fromFile(temporaryFile);
             OutputStream fileStream = new FileOutputStream(temporaryFile);
             testImage.compress(Bitmap.CompressFormat.PNG, 10, fileStream);
             temporaryFilePath = temporaryFile.getAbsolutePath();
@@ -115,17 +128,33 @@ public class ImagesListActivityInstrumentedTest {
             }
 
             int lectureId = MyApplication.getCurrentLecture();
-            imageDataBase.AddImage("TestImage" + i, creationDate.toInstant(ZoneOffset.UTC).toEpochMilli(), temporaryFilePath, MyApplication.getCurrentLecture());
+            imageDataBase.AddImage("TestImage" + i, creationDate.toInstant(ZoneOffset.UTC).toEpochMilli(),
+                    _imageUri.toString(), MyApplication.getCurrentLecture());
         }
+    }
+
+    @Before
+    public void mockIntents() {
+        Intent galleryIntent = new Intent();
+        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+        galleryIntent.setData(_imageUri);
+
+        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, galleryIntent);
+
+        intending(allOf(hasAction(Intent.ACTION_GET_CONTENT)))
+                .respondWith(result);
     }
 
     @Test
     public void sampleImagesAreVisible() throws Exception {
         onView(withText("TestImage2")).perform(click());
-        pressBack();
         onView(withText("TestImage3")).perform(click());
     }
 
+    @Test
+    public void isTitleCorrect() throws Exception {
+        onView(withText(MyApplication.getCurrentLectureName() + " - Images")).check(matches(isDisplayed()));
+    }
 
     @Test
     public void sampleSeparatorsAreVisible() throws Exception {
