@@ -135,6 +135,7 @@ public class LecturesActivity extends AppCompatActivity {
         categoryIntent.putExtra("LectureName", lectureName);
         categoryIntent.putExtra("LectureId", lectureId);
         MyApplication.setCurrentLecture(lectureId);
+        MyApplication.setCurrentLectureName(lectureName);
         LecturesActivity.this.startActivity(categoryIntent);
     }
 }
