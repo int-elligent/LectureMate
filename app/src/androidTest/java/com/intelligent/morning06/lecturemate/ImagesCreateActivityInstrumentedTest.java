@@ -76,6 +76,7 @@ public class ImagesCreateActivityInstrumentedTest {
     public void createImage_AddImage_TextEmpty() throws Exception {
 
         onView(withId(R.id.images_create_activity_action_save)).perform(click());
+        Thread.sleep(500);
         onView(withText(containsString("Image text cannot be empty"))).
                 inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView())))).
                 check(matches(isDisplayed()));

@@ -103,8 +103,8 @@ import static junit.framework.Assert.assertNotNull;
 
         @Test
         public void sampleDatesAreVisible() throws Exception {
-            onView(withText("TestDate2")).perform(click());
-            onView(withText("TestDate3")).perform(click());
+            onView(withText("TestDate2")).check(matches((isDisplayed())));
+            onView(withText("TestDate3")).check(matches((isDisplayed())));
         }
 
 
