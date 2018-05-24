@@ -33,8 +33,6 @@ public class LectureCategoriesInstrumentedTest {
     DataBaseAccessLecture dataBase = null;
 
     @Rule
-    public ActivityTestRule<LecturesActivity> LecturesActivityRule = new
-            ActivityTestRule<>(LecturesActivity.class);
     public ActivityTestRule<CategoriesActivity> CategoriesActivityRule = new
             ActivityTestRule<>(CategoriesActivity.class);
 
@@ -45,27 +43,30 @@ public class LectureCategoriesInstrumentedTest {
         }
 
         dataBase.DeleteAllLectures();
-
-        onView(withId(R.id.fab)).perform(click());
-        LecturesActivity lecturesActivity = LecturesActivityRule.getActivity();
-
-        AlertDialog addLectureDialog = lecturesActivity.getLastDialog();
-        if (addLectureDialog.isShowing()) {
-            onView(withInputType(InputType.TYPE_CLASS_TEXT)).perform(typeText("TestLecture"));
-            onView(withText("ADD")).perform(click());
-        }
+        dataBase.AddLecture("TestLecture");
     }
 
     @Test
-    public void testCategoriesActivityOpening() {
-        Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(CategoriesActivity.class.getName(), null, false);
+    public void testNotesActivityOpening(){
+        Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(NotesListActivity.class.getName(), null, false);
 
-        onView(withText("TestLecture")).perform(click());
+        onView(withText("Notes")).perform(click());
 
-        CategoriesActivity categoriesActivity = (CategoriesActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
+        NotesListActivity notesListActivity = (NotesListActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
 
-        assertNotNull(categoriesActivity);
-        categoriesActivity.finish();
+        assertNotNull(notesListActivity);
+    }
+
+    @Test
+    public void testImagesActivityOpening() {
+        Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ImagesListActivity.class.getName(), null, false);
+
+        onView(withText("Images")).perform(click());
+
+        ImagesListActivity imagesListActivity = (ImagesListActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
+
+        assertNotNull(imagesListActivity);
+        imagesListActivity.finish();
 
     }
 }
