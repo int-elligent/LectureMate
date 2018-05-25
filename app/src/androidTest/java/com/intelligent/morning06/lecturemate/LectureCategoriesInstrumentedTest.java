@@ -1,8 +1,10 @@
 package com.intelligent.morning06.lecturemate;
 
+import android.Manifest;
 import android.app.Instrumentation;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
+import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessLecture;
@@ -26,6 +28,9 @@ public class LectureCategoriesInstrumentedTest {
     @Rule
     public ActivityTestRule<CategoriesActivity> CategoriesActivityRule = new
             ActivityTestRule<>(CategoriesActivity.class);
+
+    @Rule
+    public GrantPermissionRule mRuntimePermissionRule = GrantPermissionRule.grant(Manifest.permission.READ_EXTERNAL_STORAGE);
 
     @Before
     public void deleteLecturesIfExist() throws Exception {

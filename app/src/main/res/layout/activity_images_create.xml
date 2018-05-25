@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.intelligent.morning06.lecturemate.NotesCreateActivity">
+    tools:context="com.intelligent.morning06.lecturemate.ImagesCreateActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -12,8 +12,8 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/create_notes_toolbar"
-            app:title="Create note"
+            android:id="@+id/create_images_toolbar"
+            app:title="Create image"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -21,6 +21,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_notes_create" />
+    <include layout="@layout/content_images_create" />
 
 </android.support.design.widget.CoordinatorLayout>

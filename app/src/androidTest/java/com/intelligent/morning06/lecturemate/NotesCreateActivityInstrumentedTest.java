@@ -96,7 +96,7 @@ public class NotesCreateActivityInstrumentedTest {
         MyApplication.setCurrentLecture(-20);
 
         onView(withId(R.id.notes_create_activity_action_save)).perform(click());
-        onView(withText(containsString("Could not add note to database"))).
+        onView(withText(containsString("Database Error:"))).
                 inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView())))).
                 check(matches(isDisplayed()));
     }
