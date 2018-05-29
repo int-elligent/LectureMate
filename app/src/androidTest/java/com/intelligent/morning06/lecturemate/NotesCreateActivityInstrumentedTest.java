@@ -96,6 +96,7 @@ public class NotesCreateActivityInstrumentedTest {
         onView(withId(R.id.editTextTitle)).perform(typeText("TestNote"));
 
         onView(withId(R.id.notes_create_activity_action_save)).perform(click());
+        Thread.sleep(1000);
         onView(withText(containsString("Note text cannot be empty"))).
                 inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView())))).
                 check(matches(isDisplayed()));
