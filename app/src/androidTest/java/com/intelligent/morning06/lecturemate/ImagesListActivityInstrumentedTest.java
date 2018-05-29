@@ -148,8 +148,8 @@ public class ImagesListActivityInstrumentedTest {
 
     @Test
     public void sampleImagesAreVisible() throws Exception {
-        onView(withText("TestImage2")).perform(click());
-        onView(withText("TestImage3")).perform(click());
+        onView(withText("TestImage2")).check(matches(isDisplayed()));
+        onView(withText("TestImage3")).check(matches(isDisplayed()));
     }
 
     @Test
