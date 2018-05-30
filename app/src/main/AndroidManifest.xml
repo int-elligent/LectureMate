@@ -31,7 +31,7 @@
             android:name=".NotesCreateActivity"
             android:label="@string/title_activity_NotesCreate"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".DatesListActivity"></activity>
+        <activity android:name=".ListFragments.DatesListFragment"></activity>
         <activity android:name=".DatesActivity"></activity>
         <activity
             android:name=".ImagesCreateActivity"

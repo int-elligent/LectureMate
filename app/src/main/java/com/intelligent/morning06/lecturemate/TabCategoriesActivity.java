@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.intelligent.morning06.lecturemate.Interfaces.ICategoryListFragment;
+import com.intelligent.morning06.lecturemate.ListFragments.DatesListFragment;
 import com.intelligent.morning06.lecturemate.ListFragments.ImagesListFragment;
 import com.intelligent.morning06.lecturemate.ListFragments.NotesListFragment;
 
@@ -84,9 +85,9 @@ public class TabCategoriesActivity extends AppCompatActivity {
             } else if (position == 1 && permissions) {
                 return new ImagesListFragment();
             } else if (position == 1 && !permissions) {
-                return new NotesListFragment();
+                return new DatesListFragment();
             } else if (position == 2 && permissions) {
-                return new NotesListFragment();
+                return new DatesListFragment();
             } else {
                 return null;
             }

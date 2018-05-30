@@ -23,7 +23,6 @@ import java.util.ArrayList;
 
 public class ImageViewPagerAdapter extends PagerAdapter{
     File imgFile;
-    public Bitmap imgBitmap;
     Context context;
     ArrayList<Image> images;
     int image_index;
@@ -47,9 +46,6 @@ public class ImageViewPagerAdapter extends PagerAdapter{
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
         View itemView = layoutInflater.inflate(R.layout.activity_screen_slide, container, false);
-
-        //imgFile = new File(images.get(position).getFilePath());
-        //imgBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
 
