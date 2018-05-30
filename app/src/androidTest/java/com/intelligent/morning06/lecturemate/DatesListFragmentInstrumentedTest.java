@@ -1,9 +1,7 @@
 package com.intelligent.morning06.lecturemate;
 
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -12,27 +10,27 @@ import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessDate;
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessLecture;
 import com.intelligent.morning06.lecturemate.DataAccess.MyDate;
 
-import junit.framework.Assert;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.TimeZone;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.StringContains.containsString;
 
 
 @RunWith(AndroidJUnit4.class)
-public class DatesActivityInstrumentedTest {
+public class DatesListFragmentInstrumentedTest {
 
     DataBaseAccessLecture dataBaseLecture = null;
     DataBaseAccessDate dataBaseDate = null;
@@ -43,48 +41,35 @@ public class DatesActivityInstrumentedTest {
             "Assignment 3 deadline",
             "Final exam"};
     private String[] relative_times = {"10 days ago", "Yesterday", "Today", "Tomorrow", "10 days left"};
-    ArrayList<MyDate> _allDates;
 
     @Rule
-    public ActivityTestRule<DatesActivity> mActivityRule =
-            new ActivityTestRule<DatesActivity>(DatesActivity.class) {
-                @Override
-                protected Intent getActivityIntent() {
-                    try {
-                        setUp();
-                    }catch(Exception exception) {
-                        Assert.fail(exception.getMessage());
-                    }
-
-                    int selectedIndex = 0;
-
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("ALL_DATES", _allDates);
-
-                    Context targetContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-                    Intent result = new Intent(targetContext, DatesActivity.class);
-                    result.putExtra("SERIALIZED_DATA", bundle);
-                    result.putExtra("SELECTED_INDEX", selectedIndex);
-                    return result;
-                }
-            };
+    public ActivityTestRule<TabCategoriesActivity> mActivityRule = new
+            ActivityTestRule<TabCategoriesActivity>(TabCategoriesActivity.class, true, false);
 
     @Before
+    public void navigateToDateListFragment() throws Exception {
+        setUp();
+        MyApplication.setStoragePermissionGranted(true);
+        Intent intent = new Intent();
+        mActivityRule.launchActivity(intent);
+        onView(withText("Dates")).perform(click());
+    }
+
+
     public void setUp() throws Exception {
-        if(dataBaseLecture == null)
-            dataBaseLecture = new DataBaseAccessLecture(InstrumentationRegistry.getTargetContext());
-        if(dataBaseDate == null)
+        if (dataBaseDate == null)
             dataBaseDate = new DataBaseAccessDate(InstrumentationRegistry.getTargetContext());
+        if (dataBaseLecture == null)
+            dataBaseLecture = new DataBaseAccessLecture(InstrumentationRegistry.getTargetContext());
 
-        dataBaseLecture.DeleteAllLectures();
         dataBaseDate.DeleteAllDates();
+        dataBaseLecture.DeleteAllLectures();
+
         dataBaseLecture.AddLecture("TestingDatesList1");
-        _allDates = new ArrayList<MyDate>();
-
         int id = dataBaseLecture.GetAllLectures().get(0).getId();
-        MyApplication.setCurrentLecture(id);
-
         LocalDateTime ldt = LocalDateTime.now(TimeZone.getDefault().toZoneId());
+        MyApplication.setCurrentLecture(id);
+        MyApplication.setCurrentLectureName("TestingDatesList1");
 
         MyDate date1 = new MyDate(titles[0], desc[0], ldt, id, ldt.minusDays(10));
         MyDate date2 = new MyDate(titles[1], desc[1], ldt, id, ldt.minusDays(1));
@@ -97,25 +82,13 @@ public class DatesActivityInstrumentedTest {
         dataBaseDate.AddDate(date3);
         dataBaseDate.AddDate(date4);
         dataBaseDate.AddDate(date5);
-
-        _allDates.add(date1);
-        _allDates.add(date2);
-        _allDates.add(date3);
-        _allDates.add(date4);
-        _allDates.add(date5);
-
-    }
-
-
-    @Test
-    public void dateIsDisplayed() throws InterruptedException{
-        onView(withText(titles[0])).check(matches(isDisplayed()));
-        onView(withText(desc[0])).check(matches(isDisplayed()));
     }
 
     @Test
-    public void RelativeTimeDisplayed() throws InterruptedException {
-        onView(withId(R.id.relativeDateTextView)).check(matches(withText(containsString(relative_times[0]))));
+    public void testDatesDisplayed() throws InterruptedException{
+        for(int i = 0; i < 5; i++){
+            onView(withText(titles[i])).check(matches(isDisplayed()));
+        }
     }
 
 }
