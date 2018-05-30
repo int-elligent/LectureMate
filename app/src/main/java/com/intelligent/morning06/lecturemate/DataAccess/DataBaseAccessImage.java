@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.ItemDoesNotExistException;
+
 public class DataBaseAccessImage extends SQLiteOpenHelper  {
 
     public static class ImageTable implements BaseColumns {
@@ -90,6 +92,20 @@ public class DataBaseAccessImage extends SQLiteOpenHelper  {
                 null);
 
         return cursor;
+    }
+
+    public void DeleteImage(String ImageName) throws ItemDoesNotExistException, IllegalArgumentException {
+
+        if(ImageName == null || ImageName.isEmpty()) {
+            throw new IllegalArgumentException("lectureName");
+        }
+
+        SQLiteDatabase dataBase = this.getWritableDatabase();
+
+        int numberDeletedRows = dataBase.delete(DataBaseAccessImage.ImageTable.TABLE_NAME, DataBaseAccessLecture.LectureTable.COLUMN_NAME_TITLE + "='" + ImageName + "'" ,null);
+        if(numberDeletedRows == 0) {
+            throw new ItemDoesNotExistException(ImageName, "Lecture with name '" + ImageName + "' cannot be deleted because it does not exist.");
+        }
     }
 
     public void DeleteAllImages() {

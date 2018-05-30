@@ -183,5 +183,8 @@ public class ImageViewInstrumentedTest {
     onView(withId(R.id.viewPager)).perform(swipeLeft());
     assertEquals(m1ActivityRule.getActivity().viewPager.getCurrentItem(), 3);
     }
+
+
+
 }
 

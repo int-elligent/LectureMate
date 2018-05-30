@@ -42,7 +42,9 @@ import java.time.format.DateTimeFormatter;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
@@ -52,6 +54,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 public class ImagesListFragmentInstrumentedTest {
@@ -151,5 +155,17 @@ public class ImagesListFragmentInstrumentedTest {
 
         onView(withText(firstDateString)).check(matches(isDisplayed()));
         onView(withText(secondDateString)).check(matches(isDisplayed()));
+    }
+    @Test
+    public void imageDeleted() throws Exception {
+        onView(withText("TestImage2")).check(matches(isDisplayed()));
+        onView(withText("TestImage2")).perform(longClick());
+        onView(withText("delete")).perform(longClick());
+        onView(withText("TestImage2")).check(doesNotExist());
+
+        onView(withText("TestImage1")).check(matches(isDisplayed()));
+        onView(withText("TestImage1")).perform(longClick());
+        onView(withText("delete")).perform(longClick());
+        onView(withText("TestImage1")).check(doesNotExist());
     }
 }

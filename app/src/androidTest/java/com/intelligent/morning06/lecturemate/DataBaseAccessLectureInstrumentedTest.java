@@ -1,6 +1,7 @@
 package com.intelligent.morning06.lecturemate;
 
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessLecture;
+import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.ItemDoesNotExistException;
 import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureAlreadyExistsException;
 import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureDoesNotExistException;
 import com.intelligent.morning06.lecturemate.DataAccess.Lecture;
@@ -80,7 +81,7 @@ public class DataBaseAccessLectureInstrumentedTest {
         try {
             dataBase.DeleteLecture("TestLecture");
             Assert.fail("Should have thrown LectureDoesNotExistException");
-        } catch(LectureDoesNotExistException exception) {
+        } catch(ItemDoesNotExistException exception) {
             assertEquals("TestLecture", exception.getLectureName());
         }
     }

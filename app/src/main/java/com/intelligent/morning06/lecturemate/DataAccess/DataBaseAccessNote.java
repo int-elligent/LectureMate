@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.ItemDoesNotExistException;
+
 public class DataBaseAccessNote extends SQLiteOpenHelper  {
 
     public static class NoteTable implements BaseColumns {
@@ -91,6 +93,21 @@ public class DataBaseAccessNote extends SQLiteOpenHelper  {
 
         return cursor;
     }
+
+    public void DeleteNote(String noteName) throws ItemDoesNotExistException, IllegalArgumentException {
+
+        if(noteName == null || noteName.isEmpty()) {
+            throw new IllegalArgumentException("lectureName");
+        }
+
+        SQLiteDatabase dataBase = this.getWritableDatabase();
+
+        int numberDeletedRows = dataBase.delete(DataBaseAccessNote.NoteTable.TABLE_NAME, DataBaseAccessNote.NoteTable.COLUMN_NAME_TITLE + "='" + noteName + "'" ,null);
+        if(numberDeletedRows == 0) {
+            throw new ItemDoesNotExistException(noteName, "Lecture with name '" + noteName + "' cannot be deleted because it does not exist.");
+        }
+    }
+
 
     public void DeleteAllNotes() {
         SQLiteDatabase dataBase = this.getWritableDatabase();

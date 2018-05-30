@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureAlreadyExistsException;
-import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureDoesNotExistException;
+import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.ItemDoesNotExistException;
 import com.intelligent.morning06.lecturemate.MyApplication;
 import com.intelligent.morning06.lecturemate.R;
 
@@ -58,7 +58,7 @@ public class DataBaseAccessLecture extends SQLiteOpenHelper  {
         dataBase.delete(LectureTable.TABLE_NAME, null, null);
     }
 
-    public void DeleteLecture(String lectureName) throws LectureDoesNotExistException, IllegalArgumentException {
+    public void DeleteLecture(String lectureName) throws ItemDoesNotExistException, IllegalArgumentException {
 
         if(lectureName == null || lectureName.isEmpty()) {
             throw new IllegalArgumentException("lectureName");
@@ -68,7 +68,7 @@ public class DataBaseAccessLecture extends SQLiteOpenHelper  {
 
         int numberDeletedRows = dataBase.delete(LectureTable.TABLE_NAME, LectureTable.COLUMN_NAME_TITLE + "='" + lectureName + "'" ,null);
         if(numberDeletedRows == 0) {
-            throw new LectureDoesNotExistException(lectureName, "Lecture with name '" + lectureName + "' cannot be deleted because it does not exist.");
+            throw new ItemDoesNotExistException(lectureName, "Lecture with name '" + lectureName + "' cannot be deleted because it does not exist.");
         }
     }
 

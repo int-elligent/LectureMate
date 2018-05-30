@@ -4,15 +4,20 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.intelligent.morning06.lecturemate.Adapters.DatesAdapter;
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessDate;
 import com.intelligent.morning06.lecturemate.DataAccess.DataModel;
+import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.ItemDoesNotExistException;
 import com.intelligent.morning06.lecturemate.DataAccess.MyDate;
 import com.intelligent.morning06.lecturemate.DatesActivity;
 import com.intelligent.morning06.lecturemate.Interfaces.ICategoryListFragment;
@@ -37,6 +42,33 @@ public class DatesListFragment extends Fragment implements ICategoryListFragment
     }
 
     @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo contextMenuInfo) {
+
+        super.onCreateContextMenu(menu, v, contextMenuInfo);
+        getActivity().getMenuInflater().inflate(R.menu.delete_date, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem menuItem)
+    {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo();
+        if(menuItem.getItemId() == R.id.delete_note)
+        {
+        try
+        {
+            Log.w("ID", "" + info.position);
+            Log.w("allDates Size", "" + _allDates.size());
+            DataModel.GetInstance().getDateDataBase().DeleteDate(_allDates.get(info.position - 1).getTitle());
+            updateDates();
+        }
+        catch(ItemDoesNotExistException e)
+        {
+            Toast.makeText(this.getContext(), "inernal Error", Toast.LENGTH_LONG);
+        }}
+        return super.onContextItemSelected(menuItem);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         _datesListView = getActivity().findViewById(R.id.dates_list_listview);
@@ -47,6 +79,8 @@ public class DatesListFragment extends Fragment implements ICategoryListFragment
                 openDate(i);
             }
         });
+
+        registerForContextMenu((ListView)getActivity().findViewById(R.id.dates_list_listview));
     }
 
     @Override

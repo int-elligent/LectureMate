@@ -4,15 +4,20 @@ import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.intelligent.morning06.lecturemate.Adapters.NotesAdapter;
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessNote;
 import com.intelligent.morning06.lecturemate.DataAccess.DataModel;
+import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.ItemDoesNotExistException;
 import com.intelligent.morning06.lecturemate.DataAccess.Note;
 import com.intelligent.morning06.lecturemate.Interfaces.ICategoryListFragment;
 import com.intelligent.morning06.lecturemate.MyApplication;
@@ -37,6 +42,33 @@ public class NotesListFragment extends Fragment implements ICategoryListFragment
         return inflater.inflate(R.layout.notes_list, container, false);
     }
 
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo contextMenuInfo) {
+
+        super.onCreateContextMenu(menu, v, contextMenuInfo);
+        getActivity().getMenuInflater().inflate(R.menu.delete_note, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem menuItem)
+    {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo();
+
+        if(menuItem.getItemId() == R.id.delete_note)
+        {try
+        {
+            Log.w("ID", "" + info.position);
+            Log.w("allNotes Size", "" + _allNotes.size());
+            DataModel.GetInstance().getNoteDataBase().DeleteNote(_allNotes.get(info.position - 1).getTitle());
+            updateNotes();
+        }
+        catch(ItemDoesNotExistException e)
+        {
+            Toast.makeText(this.getContext(), "inernal Error", Toast.LENGTH_LONG);
+        }}
+        return super.onContextItemSelected(menuItem);
+    }
     @Override
     public void onStart() {
         super.onStart();
@@ -48,6 +80,8 @@ public class NotesListFragment extends Fragment implements ICategoryListFragment
                 openNote(i);
             }
         });
+
+        registerForContextMenu((ListView)getActivity().findViewById(R.id.notes_list_listview));
     }
 
     @Override

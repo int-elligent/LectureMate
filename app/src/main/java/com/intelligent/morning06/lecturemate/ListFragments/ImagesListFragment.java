@@ -3,7 +3,6 @@ package com.intelligent.morning06.lecturemate.ListFragments;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -12,17 +11,20 @@ import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.intelligent.morning06.lecturemate.Adapters.ImagesAdapter;
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessImage;
 import com.intelligent.morning06.lecturemate.DataAccess.DataModel;
+import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.ItemDoesNotExistException;
 import com.intelligent.morning06.lecturemate.DataAccess.Image;
 import com.intelligent.morning06.lecturemate.ImageViewActivity;
 import com.intelligent.morning06.lecturemate.ImagesCreateActivity;
@@ -47,6 +49,7 @@ import static com.theartofdev.edmodo.cropper.CropImage.getGalleryIntents;
 public class ImagesListFragment extends Fragment implements ICategoryListFragment {
     ArrayList<Image> allImages = null;
 
+    private String _currentImageTitle;
     private String _currentCameraFileName;
     public static final int EMPTY_REQUEST_CODE = 24523;
     public static final int REQUEST_PERMISSION_CODE = 6147;
@@ -60,6 +63,36 @@ public class ImagesListFragment extends Fragment implements ICategoryListFragmen
     }
 
     @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo contextMenuInfo) {
+
+        super.onCreateContextMenu(menu, v, contextMenuInfo);
+        getActivity().getMenuInflater().inflate(R.menu.delete_image, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem menuItem)
+    {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo();
+
+        if(menuItem.getItemId() == R.id.delete_image)
+        {try
+        {
+            int size = info.position;
+            for( int j = 0; j < size; j++)
+                if(((ListView)getActivity().findViewById(R.id.images_list_listview)).getAdapter().getItemViewType(j) == 1) info.position--;
+            Log.w("ID", "" + info.position);
+            Log.w("allImages Size", "" + allImages.size());
+            DataModel.GetInstance().getImageDataBase().DeleteImage(allImages.get(info.position).getTitle());
+            updateImageList();
+        }
+        catch(ItemDoesNotExistException e)
+        {
+            Toast.makeText(this.getContext(), "inernal Error", Toast.LENGTH_LONG);
+        }}
+        return super.onContextItemSelected(menuItem);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         updateImageList();
@@ -70,6 +103,8 @@ public class ImagesListFragment extends Fragment implements ICategoryListFragmen
                 openImages(i);
             }
         });
+
+        registerForContextMenu((ListView)getActivity().findViewById(R.id.images_list_listview));
     }
 
     public void openImages(int selectedIndex) {
