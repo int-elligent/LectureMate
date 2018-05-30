@@ -3,6 +3,7 @@ package com.intelligent.morning06.lecturemate.ListFragments;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -12,14 +13,18 @@ import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.intelligent.morning06.lecturemate.Adapters.ImagesAdapter;
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessImage;
 import com.intelligent.morning06.lecturemate.DataAccess.DataModel;
 import com.intelligent.morning06.lecturemate.DataAccess.Image;
+import com.intelligent.morning06.lecturemate.ImageViewActivity;
 import com.intelligent.morning06.lecturemate.ImagesCreateActivity;
 import com.intelligent.morning06.lecturemate.Interfaces.ICategoryListFragment;
 import com.intelligent.morning06.lecturemate.MyApplication;
@@ -40,6 +45,7 @@ import static com.theartofdev.edmodo.cropper.CropImage.getGalleryIntents;
 
 
 public class ImagesListFragment extends Fragment implements ICategoryListFragment {
+    ArrayList<Image> allImages = null;
 
     private String _currentCameraFileName;
     public static final int EMPTY_REQUEST_CODE = 24523;
@@ -57,13 +63,33 @@ public class ImagesListFragment extends Fragment implements ICategoryListFragmen
     public void onStart() {
         super.onStart();
         updateImageList();
+        ((ListView)getActivity().findViewById(R.id.images_list_listview)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //String lectureNameToShowCategories = lectures.get(i).getLectureName();
+                openImages(i);
+            }
+        });
+    }
+
+    public void openImages(int selectedIndex) {
+        int size = selectedIndex;
+        for( int j = 0; j < size; j++)
+            if(((ListView)getActivity().findViewById(R.id.images_list_listview)).getAdapter().getItemViewType(j) == 1) selectedIndex--;
+        Intent intent = new Intent(getActivity(), ImageViewActivity.class);
+        Bundle ImageBundle = new Bundle();
+        ImageBundle.putSerializable("ALL_IMAGES", allImages);
+        intent.putExtra("SERIALIZED_DATA", ImageBundle);
+        intent.putExtra("SELECTED_INDEX", selectedIndex);
+        //Log.e("ERROR",selectedIndex+"");
+        startActivity(intent);
     }
 
     private void updateImageList() {
         Cursor imageCursor = DataModel.GetInstance().getImageDataBase().
                 GetImageCursorForLecture(MyApplication.getCurrentLecture());
 
-        ArrayList<Image> allImages = new ArrayList<Image>();
+        allImages = new ArrayList<Image>();
 
         while(imageCursor.moveToNext()) {
             String title = imageCursor.
