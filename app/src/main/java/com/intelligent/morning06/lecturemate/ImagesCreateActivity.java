@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.intelligent.morning06.lecturemate.DataAccess.DataModel;
+import com.intelligent.morning06.lecturemate.ListFragments.ImagesListFragment;
 
 import java.time.Instant;
 
@@ -32,7 +33,7 @@ public class ImagesCreateActivity extends AppCompatActivity {
                 if(menuItem.getItemId() == R.id.images_create_activity_action_save) {
                    SaveImage();
                 } else if (menuItem.getItemId() == R.id.images_create_activity_action_cancel) {
-                    setResult(ImagesListActivity.EMPTY_REQUEST_CODE);
+                    setResult(ImagesListFragment.EMPTY_REQUEST_CODE);
                     finish();
                 }
                 return true;
@@ -41,8 +42,6 @@ public class ImagesCreateActivity extends AppCompatActivity {
 
         _imageUri = Uri.parse(getIntent().getStringExtra("IMAGE_URI"));
         ImageView imageView = (ImageView) findViewById(R.id.editImage);
-
-        Toast.makeText(this, "uri: " + _imageUri.toString(), Toast.LENGTH_LONG).show();
 
         Glide.with(getApplicationContext())
                 .load(_imageUri)
@@ -66,7 +65,7 @@ public class ImagesCreateActivity extends AppCompatActivity {
             return;
         }
 
-        setResult(ImagesListActivity.EMPTY_REQUEST_CODE);
+        setResult(ImagesListFragment.EMPTY_REQUEST_CODE);
         finish();
     }
 

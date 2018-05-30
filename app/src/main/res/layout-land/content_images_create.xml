@@ -34,7 +34,7 @@
             android:id="@+id/editImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:srcCompat="@android:drawable/btn_dialog"
             android:layout_marginBottom="10dp"/>
     </LinearLayout>

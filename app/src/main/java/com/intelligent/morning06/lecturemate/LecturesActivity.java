@@ -1,8 +1,10 @@
 package com.intelligent.morning06.lecturemate;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -10,8 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -31,6 +31,8 @@ public class LecturesActivity extends AppCompatActivity {
     private List<Lecture> lectures;
 
     private AlertDialog lastDialog;
+    private static final int REQUEST_CODE_PERMISSIONS = 5322;
+    private static boolean _checkedPermissions = false;
 
 
     @Override
@@ -55,28 +57,13 @@ public class LecturesActivity extends AppCompatActivity {
         lectureListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String lectureNameToShowCategories = lectures.get(i).getLectureName();
-                openCategoriesActivity(lectureNameToShowCategories, lectures.get(i).getId());
+                MyApplication.setCurrentLectureName(lectures.get(i).getLectureName());
+                MyApplication.setCurrentLecture(lectures.get(i).getId());
+                checkPermissions();
             }
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_lectures, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
     void addLectureAction(){
         AlertDialog.Builder addLectureDialogBuilder = new AlertDialog.Builder(this);
         addLectureDialogBuilder.setTitle(getResources().getString(R.string.title_activity_Lectures_ButtonAddLecture));
@@ -129,12 +116,45 @@ public class LecturesActivity extends AppCompatActivity {
         listAdapter.notifyDataSetChanged();
     }
 
-    void openCategoriesActivity(String lectureName, int lectureId){
-        Intent categoryIntent = new Intent(LecturesActivity.this, CategoriesActivity.class);
-        categoryIntent.putExtra(getResources().getString(R.string.intent_extra_lectureName), lectureName);
-        categoryIntent.putExtra(getResources().getString(R.string.intent_extra_lectureId), lectureId);
-        MyApplication.setCurrentLecture(lectureId);
-        MyApplication.setCurrentLectureName(lectureName);
+    void checkPermissions() {
+
+        if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            if(_checkedPermissions) {
+                openCategoriesActivity(false);
+            }
+            else {
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        REQUEST_CODE_PERMISSIONS);
+                _checkedPermissions = true;
+            }
+        }
+        else {
+            openCategoriesActivity(true);
+        }
+    }
+
+    private void openCategoriesActivity(boolean hasPermissions) {
+        MyApplication.setStoragePermissionGranted(hasPermissions);
+        Intent categoryIntent = new Intent(LecturesActivity.this, TabCategoriesActivity.class);
         LecturesActivity.this.startActivity(categoryIntent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_PERMISSIONS: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    checkPermissions();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Image feature will be disabled without permissions", Toast.LENGTH_LONG).show();
+                    checkPermissions();
+                }
+                return;
+            }
+        }
     }
 }

@@ -1,31 +1,29 @@
-package com.intelligent.morning06.lecturemate;
+package com.intelligent.morning06.lecturemate.ListFragments;
 
-import android.Manifest;
-import android.app.ListActivity;
+import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.intelligent.morning06.lecturemate.Adapters.ImagesAdapter;
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessImage;
 import com.intelligent.morning06.lecturemate.DataAccess.DataModel;
 import com.intelligent.morning06.lecturemate.DataAccess.Image;
-import com.theartofdev.edmodo.cropper.CropImage;
+import com.intelligent.morning06.lecturemate.ImagesCreateActivity;
+import com.intelligent.morning06.lecturemate.Interfaces.ICategoryListFragment;
+import com.intelligent.morning06.lecturemate.MyApplication;
+import com.intelligent.morning06.lecturemate.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,7 +39,7 @@ import static com.theartofdev.edmodo.cropper.CropImage.getCameraIntent;
 import static com.theartofdev.edmodo.cropper.CropImage.getGalleryIntents;
 
 
-public class ImagesListActivity extends AppCompatActivity {
+public class ImagesListFragment extends Fragment implements ICategoryListFragment {
 
     private String _currentCameraFileName;
     public static final int EMPTY_REQUEST_CODE = 24523;
@@ -49,22 +47,15 @@ public class ImagesListActivity extends AppCompatActivity {
     private Uri _imageUri;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_images_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.images_list_toolbar);
-        setSupportActionBar(toolbar);
-        setTitle(MyApplication.getCurrentLectureName() + " - Images");
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
+        return inflater.inflate(R.layout.images_list, container, false);
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.images_list_fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startImagePicker();
-            }
-        });
-
+    @Override
+    public void onStart() {
+        super.onStart();
         updateImageList();
     }
 
@@ -90,10 +81,9 @@ public class ImagesListActivity extends AppCompatActivity {
             allImages.add(image);
         }
 
-        ImagesAdapter imagesListAdapter = new ImagesAdapter(allImages, getApplicationContext());
+        ImagesAdapter imagesListAdapter = new ImagesAdapter(allImages, getActivity().getApplicationContext());
 
-        ((ListView)findViewById(R.id.images_list_listview)).setAdapter(imagesListAdapter);
-
+        ((ListView)this.getView().findViewById(R.id.images_list_listview)).setAdapter(imagesListAdapter);
     }
 
     private Intent createCameraIntent()
@@ -104,7 +94,7 @@ public class ImagesListActivity extends AppCompatActivity {
 
         _currentCameraFileName = "LectureMate_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss")) + ".png";
 
-        File imagesDirectory = new File(getApplicationContext().getExternalFilesDir(null), "images");
+        File imagesDirectory = new File(getActivity().getApplicationContext().getExternalFilesDir(null), "images");
         imagesDirectory.mkdirs();
         File imageFile = new File(imagesDirectory, _currentCameraFileName);
         try {
@@ -115,20 +105,20 @@ public class ImagesListActivity extends AppCompatActivity {
         Uri imageFileUri;
         try {
             imageFileUri = FileProvider.getUriForFile(
-                    getApplicationContext(),
-                    getPackageName() + ".provider",
+                    getActivity().getApplicationContext(),
+                    getActivity().getPackageName() + ".provider",
                     imageFile);
         } catch(Exception exception) {
             return null;
         }
-        Intent cameraIntent = getCameraIntent(getApplicationContext(), imageFileUri);
+        Intent cameraIntent = getCameraIntent(getActivity().getApplicationContext(), imageFileUri);
         return cameraIntent;
     }
 
     private void startImagePicker()
     {
         List<Intent> intentsToInclude;
-        PackageManager packageManager = this.getPackageManager();
+        PackageManager packageManager = getActivity().getPackageManager();
 
         intentsToInclude = getGalleryIntents(packageManager, Intent.ACTION_GET_CONTENT, false);
         Intent cameraIntent;
@@ -145,8 +135,8 @@ public class ImagesListActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == PICK_IMAGE_CHOOSER_REQUEST_CODE) {
                 boolean fromCamera = true;
                 if (data != null && data.getData() != null) {
@@ -156,18 +146,23 @@ public class ImagesListActivity extends AppCompatActivity {
 
                 Uri imageUri;
                 if(fromCamera || data.getData() == null) {
-                    File imagePath = new File(getApplicationContext().getExternalFilesDir(null), "images/" + _currentCameraFileName);
+                    File imagePath = new File(getActivity().getApplicationContext().getExternalFilesDir(null), "images/" + _currentCameraFileName);
                     imageUri = Uri.fromFile(imagePath);
                 } else {
                     imageUri = data.getData();
                 }
 
-                Intent intent = new Intent(ImagesListActivity.this, ImagesCreateActivity.class);
+                Intent intent = new Intent(getActivity(), ImagesCreateActivity.class);
                 intent.putExtra("IMAGE_URI", imageUri.toString());
                 startActivityForResult(intent, EMPTY_REQUEST_CODE);
             }
         } else {
             updateImageList();
         }
+    }
+
+    @Override
+    public void onFloatingActionButtonClicked() {
+        startImagePicker();
     }
 }

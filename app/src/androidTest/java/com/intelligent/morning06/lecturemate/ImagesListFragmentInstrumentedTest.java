@@ -1,5 +1,6 @@
 package com.intelligent.morning06.lecturemate;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
@@ -7,10 +8,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.ActivityTestRule;
+import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
@@ -19,9 +20,12 @@ import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessLecture;
 import com.intelligent.morning06.lecturemate.DataAccess.DataModel;
 import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureAlreadyExistsException;
 import com.intelligent.morning06.lecturemate.DataAccess.Lecture;
+import com.intelligent.morning06.lecturemate.ListFragments.ImagesListFragment;
+import com.intelligent.morning06.lecturemate.Utils.DateTimeUtils;
 
 import junit.framework.Assert;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,12 +45,14 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasData;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
 @RunWith(AndroidJUnit4.class)
-public class ImagesListActivityInstrumentedTest {
+public class ImagesListFragmentInstrumentedTest {
     private DataBaseAccessImage imageDataBase = null;
     private DataBaseAccessLecture lectureDataBase = null;
     private int lectureId = 0;
@@ -57,21 +63,23 @@ public class ImagesListActivityInstrumentedTest {
     private Uri _imageUri;
 
     @Rule
-    public IntentsTestRule<ImagesListActivity> mActivityRule =
-            new IntentsTestRule<ImagesListActivity>(ImagesListActivity.class) {
-        @Override
-        protected Intent getActivityIntent() {
-            try {
-                setUp();
-            }catch(Exception exception) {
-                Log.d("test", exception.getMessage());
-            }
+    public ActivityTestRule<TabCategoriesActivity> mActivityRule = new
+            ActivityTestRule<TabCategoriesActivity>(TabCategoriesActivity.class, true, false);
 
+    @Rule
+    public GrantPermissionRule mRuntimePermissionRuleReadStorage = GrantPermissionRule.grant(Manifest.permission.READ_EXTERNAL_STORAGE);
+    @Rule
+    public GrantPermissionRule mRuntimePermissionRuleWriteStorage = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
-            Context targetContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-            Intent result = new Intent(targetContext, ImagesListActivity.class);
-            return result;
-        }};
+    @Before
+    public void navigateToImageListFragment() throws Exception {
+        setUp();
+        MyApplication.setStoragePermissionGranted(true);
+        Intent intent = new Intent();
+        mActivityRule.launchActivity(intent);
+        onView(withText("Images")).perform(click());
+    }
+
 
     public void setUp() throws Exception {
         if (imageDataBase == null)
@@ -128,34 +136,16 @@ public class ImagesListActivityInstrumentedTest {
         }
     }
 
-    @Before
-    public void mockIntents() {
-        Intent galleryIntent = new Intent();
-        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-        galleryIntent.setData(_imageUri);
-
-        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, galleryIntent);
-
-        intending(allOf(hasAction(Intent.ACTION_GET_CONTENT)))
-                .respondWith(result);
-    }
-
     @Test
     public void sampleImagesAreVisible() throws Exception {
-        onView(withText("TestImage2")).perform(click());
-        onView(withText("TestImage3")).perform(click());
-    }
-
-    @Test
-    public void isTitleCorrect() throws Exception {
-        onView(withText(MyApplication.getCurrentLectureName() + " - Images")).check(matches(isDisplayed()));
+        onView(withText("TestImage2")).check(matches(isDisplayed()));
+        onView(withText("TestImage3")).check(matches(isDisplayed()));
     }
 
     @Test
     public void sampleSeparatorsAreVisible() throws Exception {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        String firstDateString = firstDate.format(formatter);
-        String secondDateString = secondDate.format(formatter);
+        String firstDateString = DateTimeUtils.FormatDateTimeToMonthAndYear(firstDate);
+        String secondDateString = DateTimeUtils.FormatDateTimeToMonthAndYear(secondDate);
 
         onView(withText(firstDateString)).check(matches(isDisplayed()));
         onView(withText(secondDateString)).check(matches(isDisplayed()));

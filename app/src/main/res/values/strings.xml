@@ -44,5 +44,10 @@
     <string name="intent_extra_serializedData">SERIALIZED_DATA</string>
     <string name="intent_extra_allNotes">ALL_NOTES</string>
     <string name="intent_extra_selectedIndex">SELECTED_INDEX</string>
+    <string name="title_activity_tab_categories">TabCategoriesActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 
 </resources>

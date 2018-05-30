@@ -1,57 +1,39 @@
 package com.intelligent.morning06.lecturemate.Adapters;
 
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.intelligent.morning06.lecturemate.DataAccess.Note;
 import com.intelligent.morning06.lecturemate.R;
+import com.intelligent.morning06.lecturemate.Utils.DateTimeUtils;
 
-public class NotesAdapter extends BaseAdapter {
-    LayoutInflater mInflater;
-    String[] names;
-    String[] previews;
-    String[] creation_dates;
+import java.util.ArrayList;
 
-    public NotesAdapter(Context c, String[] n, String[] p, String[] d){
-        names = n;
-        previews = p;
-        creation_dates = d;
-        mInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+public class NotesAdapter extends DateHeaderListAdapter<Note> {
+
+    public NotesAdapter(ArrayList<Note> notes, Context context) {
+        super(notes, context);
     }
 
     @Override
-    public int getCount() {
-        return names.length;
-    }
+    public View getItemView(int position, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+            convertView = LayoutInflater.from(_context).
+                    inflate(R.layout.notes_list_item, parent, false);
+        }
 
-    @Override
-    public Object getItem(int i) {
-        return names[i];
-    }
+        TextView title = (TextView) convertView.findViewById(R.id.notes_list_itemTitle);
+        TextView preview = (TextView) convertView.findViewById(R.id.notes_list_itemPreviewText);
+        TextView creationDate = (TextView) convertView.findViewById(R.id.notes_list_itemDate);
 
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
+        title.setText(_views.get(position)._item.getTitle());
+        preview.setText(_views.get(position)._item.getText());
+        creationDate.setText(DateTimeUtils.FormatDateTimeAsNormalDate(_views.get(position)._item.getCreationDate()));
 
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        View v = mInflater.inflate(R.layout.notes_listview_detail, null);
-        TextView nameTextView = (TextView) v.findViewById(R.id.nameTextView);
-        TextView previewTextView = (TextView) v.findViewById(R.id.previewTextView);
-        TextView creationDateTextView = (TextView) v.findViewById(R.id.creationDateTextView);
-
-        String name = names[i];
-        String preview = previews[i];
-        String creation_date = creation_dates[i];
-
-        nameTextView.setText(name);
-        previewTextView.setText(preview);
-        creationDateTextView.setText(creation_date);
-
-        return v;
+        return convertView;
     }
 }
