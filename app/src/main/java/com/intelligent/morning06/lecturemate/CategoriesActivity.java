@@ -1,5 +1,6 @@
 package com.intelligent.morning06.lecturemate;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -54,6 +55,9 @@ public class CategoriesActivity extends AppCompatActivity {
                     openNotesListActivity(lectureNameToShow, lectureId);
                 } else if (categoryName.equals("Images")) {
                     openImagesListActivity();
+                    openListActivity(lectureNameToShow, lectureId, NotesListActivity.class);
+                }else if (categoryName.equals("Dates")){
+                    openListActivity(lectureNameToShow, lectureId, DatesListActivity.class);
                 }
             }
         });
@@ -61,6 +65,13 @@ public class CategoriesActivity extends AppCompatActivity {
     }
     void openNotesListActivity(String lectureName, int lectureId){
         Intent singleCategoryIntent = new Intent(CategoriesActivity.this, NotesListActivity.class);
+        singleCategoryIntent.putExtra("LectureName", lectureName);
+        singleCategoryIntent.putExtra("LectureId", lectureId);
+        CategoriesActivity.this.startActivity(singleCategoryIntent);
+    }
+
+    void openListActivity(String lectureName, int lectureId, Class activity){
+        Intent singleCategoryIntent = new Intent(CategoriesActivity.this, activity);
         singleCategoryIntent.putExtra("LectureName", lectureName);
         singleCategoryIntent.putExtra("LectureId", lectureId);
         CategoriesActivity.this.startActivity(singleCategoryIntent);
