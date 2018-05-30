@@ -51,7 +51,7 @@ public class DatesActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_dates, menu);
+        menuInflater.inflate(R.menu.menu_dates_view, menu);
 
         MenuItem m0 =  menu.getItem(0);
         if(_selectedIndex > 0){

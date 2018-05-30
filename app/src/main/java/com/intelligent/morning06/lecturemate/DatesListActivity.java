@@ -62,8 +62,8 @@ public class DatesListActivity extends AppCompatActivity {
     public void openCreateDateActivity()
     {
         //TODO
-        //Intent intent = new Intent(this, DatesCreateActivity.class);
-        //startActivityForResult(intent, 0);
+        Intent intent = new Intent(this, DatesCreateActivity.class);
+        startActivityForResult(intent, 0);
     }
 
     @Override

@@ -28,8 +28,6 @@
             android:name=".NotesCreateActivity"
             android:label="@string/title_activity_notes_create"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".CategoriesActivity" />
-        <activity android:name=".NotesListActivity" />
         <activity
             android:name=".ImagesListActivity"
             android:label="@string/title_activity_images_list"
@@ -42,6 +40,11 @@
         <activity
             android:name=".ImagesCreateActivity"
             android:label="Save Image"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".DatesCreateActivity"
+            android:label="Save Date"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
