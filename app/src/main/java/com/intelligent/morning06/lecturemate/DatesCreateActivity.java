@@ -80,7 +80,19 @@ public class DatesCreateActivity extends AppCompatActivity {
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hour, int minute) {
-                                timeselect.setText(hour + ":" + minute);
+                                String hourtext = "";
+                                String minutetext = "";
+                                if(hour < 10)
+                                    hourtext = "0" + hour;
+                                else
+                                    hourtext = "" + hour;
+
+                                if(minute < 10)
+                                    minutetext = "0" + minute;
+                                else
+                                    minutetext = "" + minute;
+
+                                timeselect.setText(hourtext + ":" + minutetext);
                             }
                         }, mHour, mMinute,true);
                 timePickerDialog.show();

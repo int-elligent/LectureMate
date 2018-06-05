@@ -8,6 +8,7 @@ import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TimePicker;
 
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessDate;
@@ -167,5 +168,28 @@ public class DatesCreateActivityInstrumentedTest {
         String dateTitle = cursor.getString(cursor.getColumnIndex(DataBaseAccessDate.DateTable.COLUMN_NAME_TITLE));
         Assert.assertEquals("TestDate", dateTitle);
         Assert.assertEquals(true, mActivityRule.getActivity().isFinishing());
+    }
+
+    @Test
+    public void testSelectedTimeView() throws Exception {
+        onView(withId(R.id.Time)).perform(click());
+        onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(11,12));
+        onView(withId(android.R.id.button1)).perform(click());
+        Assert.assertEquals("11:12", ((EditText)mActivityRule.getActivity().findViewById(R.id.Time)).getText().toString());
+
+        onView(withId(R.id.Time)).perform(click());
+        onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(1,12));
+        onView(withId(android.R.id.button1)).perform(click());
+        Assert.assertEquals("01:12", ((EditText)mActivityRule.getActivity().findViewById(R.id.Time)).getText().toString());
+
+        onView(withId(R.id.Time)).perform(click());
+        onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(11,2));
+        onView(withId(android.R.id.button1)).perform(click());
+        Assert.assertEquals("11:02", ((EditText)mActivityRule.getActivity().findViewById(R.id.Time)).getText().toString());
+
+        onView(withId(R.id.Time)).perform(click());
+        onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(2,2));
+        onView(withId(android.R.id.button1)).perform(click());
+        Assert.assertEquals("02:02", ((EditText)mActivityRule.getActivity().findViewById(R.id.Time)).getText().toString());
     }
 }
