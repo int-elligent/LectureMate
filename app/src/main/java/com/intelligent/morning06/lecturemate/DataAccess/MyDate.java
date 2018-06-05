@@ -53,7 +53,7 @@ public class MyDate implements Serializable, IDateSortable {
     }
 
     public LocalDateTime getCreationDate() {
-        return _creationDate;
+        return _date;
     }
 
     public long getCreationDateLong() {

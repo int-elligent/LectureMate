@@ -55,18 +55,11 @@ public class DatesActivity extends AppCompatActivity {
         menuInflater.inflate(R.menu.menu_dates_view, menu);
 
         MenuItem m0 =  menu.getItem(0);
-        if(_selectedIndex > 0){
-            m0.setIcon(R.drawable.left_active);
-        }else{
-            m0.setIcon(R.drawable.left_passive);
-        }
+        m0.setIcon(R.drawable.left_active);
 
         MenuItem m1 =  menu.getItem(1);
-        if (_selectedIndex < total_dates - 1){
-            m1.setIcon(R.drawable.right_active);
-        }else{
-            m1.setIcon(R.drawable.right_passive);
-        }
+        m1.setIcon(R.drawable.right_active);
+
         return true;
     }
 

@@ -28,12 +28,12 @@ public class DatesAdapter extends DateHeaderListAdapter<MyDate> {
         }
 
         TextView title = (TextView) convertView.findViewById(R.id.dates_list_itemTitle);
-        TextView preview = (TextView) convertView.findViewById(R.id.dates_list_itemPreviewText);
-        TextView creationDate = (TextView) convertView.findViewById(R.id.dates_list_itemDate);
+        TextView date = (TextView) convertView.findViewById(R.id.dates_list_itemDate);
+        TextView time = (TextView) convertView.findViewById(R.id.dates_list_itemTime);
 
         title.setText(_views.get(position)._item.getTitle());
-        preview.setText(_views.get(position)._item.getText());
-        creationDate.setText(DateTimeUtils.FormatDateTimeAsNormalDate(_views.get(position)._item.getCreationDate()));
+        time.setText(DateTimeUtils.FormatDateTimeAsNormalTime(_views.get(position)._item.getDate()));
+        date.setText(DateTimeUtils.FormatDateTimeAsNormalDate(_views.get(position)._item.getDate()));
 
         return convertView;
     }

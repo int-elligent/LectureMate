@@ -22,7 +22,12 @@ import com.intelligent.morning06.lecturemate.DataAccess.DataModel;
 import java.text.SimpleDateFormat;
 import java.time.Clock;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.util.Calendar;
 import java.util.Locale;
@@ -34,7 +39,7 @@ public class DatesCreateActivity extends AppCompatActivity {
     DatePickerDialog datePickerDialog;
     EditText timeselect;
     TimePickerDialog timePickerDialog;
-    final Calendar c = Calendar.getInstance();
+    final Calendar calendar = Calendar.getInstance();
 
 
     @Override
@@ -49,15 +54,27 @@ public class DatesCreateActivity extends AppCompatActivity {
         dateselect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final int mYear = c.get(Calendar.YEAR);
-                final int mMonth = c.get(Calendar.MONTH);
-                final int mDay = c.get(Calendar.DAY_OF_MONTH);
+                final int mYear = calendar.get(Calendar.YEAR);
+                final int mMonth = calendar.get(Calendar.MONTH);
+                final int mDay = calendar.get(Calendar.DAY_OF_MONTH);
 
                 datePickerDialog = new DatePickerDialog(DatesCreateActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int month, int day) {
-                                dateselect.setText(day + "/" + month + "/" + year);
+                                String dayText = "";
+                                String monthText = "";
+                                if(day < 10)
+                                    dayText = "0" + day;
+                                else
+                                    dayText = "" + day;
+
+                                if(month < 9)
+                                    monthText = "0" + (month+1);
+                                else
+                                    monthText = "" + (month+1);
+
+                                dateselect.setText(dayText + "/" + monthText + "/" + year);
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog.show();
@@ -72,8 +89,8 @@ public class DatesCreateActivity extends AppCompatActivity {
         timeselect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final int mHour = c.get(Calendar.HOUR_OF_DAY);
-                final int mMinute = c.get(Calendar.MINUTE);
+                final int mHour = calendar.get(Calendar.HOUR_OF_DAY);
+                final int mMinute = calendar.get(Calendar.MINUTE);
 
 
                 timePickerDialog = new TimePickerDialog(DatesCreateActivity.this,
@@ -147,9 +164,12 @@ public class DatesCreateActivity extends AppCompatActivity {
             return;
         }
 
+        LocalDate dateObject = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalDateTime dateTimeObject = LocalDateTime.of(dateObject, LocalTime.parse(time, DateTimeFormatter.ofPattern("kk:mm")));
+
 
         try {
-            DataModel.GetInstance().getDateDataBase().AddDate(title, text, c.getTimeInMillis(), Instant.now().toEpochMilli(), MyApplication.getCurrentLecture());
+            DataModel.GetInstance().getDateDataBase().AddDate(title, text, Instant.now().toEpochMilli(), dateTimeObject.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),  MyApplication.getCurrentLecture());
         } catch(SQLException exception) {
             ShowToast("Could not add date to database: " + exception.getMessage());
             return;

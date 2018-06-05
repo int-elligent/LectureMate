@@ -56,12 +56,28 @@ public class DatesListFragment extends Fragment implements ICategoryListFragment
     }
 
     public void openDate(int selectedIndex) {
+        int size = selectedIndex;
+        for(int j=0; j < size; j++)
+            if(((ListView)getActivity().findViewById(R.id.dates_list_listview)).getAdapter().getItemViewType(j) == 1) selectedIndex--;
         Intent intent = new Intent(getActivity(), DatesActivity.class);
         Bundle datesBundle = new Bundle();
         datesBundle.putSerializable("ALL_DATES", _allDates);
         intent.putExtra("SERIALIZED_DATA", datesBundle);
         intent.putExtra("SELECTED_INDEX", selectedIndex);
         startActivity(intent);
+
+        /*
+        int size = selectedIndex;
+        for( int j = 0; j < size; j++)
+            if(((ListView)getActivity().findViewById(R.id.images_list_listview)).getAdapter().getItemViewType(j) == 1) selectedIndex--;
+        Intent intent = new Intent(getActivity(), ImageViewActivity.class);
+        Bundle ImageBundle = new Bundle();
+        ImageBundle.putSerializable("ALL_IMAGES", allImages);
+        intent.putExtra("SERIALIZED_DATA", ImageBundle);
+        intent.putExtra("SELECTED_INDEX", selectedIndex);
+        //Log.e("ERROR",selectedIndex+"");
+        startActivity(intent);
+         */
     }
 
     public void updateDates() {

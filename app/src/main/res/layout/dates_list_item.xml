@@ -36,38 +36,45 @@
                 android:visibility="visible"
                 android:layout_weight="1" />
 
-            <TextView
-                android:id="@+id/dates_list_itemDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="Title"
-                android:gravity="end"
-                android:textAlignment="textEnd"
-                android:textSize="8pt"
-                android:textColor="@color/secondary_text"
-                android:maxLines="1"
-                android:visibility="visible"
-                android:layout_weight="3"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/dates_list_itemDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="Title"
+                    android:gravity="end"
+                    android:textAlignment="textEnd"
+                    android:textSize="7pt"
+                    android:textColor="@color/secondary_text"
+                    android:maxLines="1"
+                    android:visibility="visible"
+                    android:layout_weight="3"/>
+
+                <TextView
+                    android:id="@+id/dates_list_itemTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="Title"
+                    android:gravity="end"
+                    android:textAlignment="textEnd"
+                    android:textSize="7pt"
+                    android:textColor="@color/secondary_text"
+                    android:maxLines="1"
+                    android:visibility="visible"
+                    android:layout_weight="3"/>
+
+
+            </LinearLayout>
+
+
 
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.4dp"
-            android:background="@color/divider" />
-
-        <TextView
-            android:id="@+id/dates_list_itemPreviewText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="Preview"
-            android:textColor="@color/secondary_text"
-            android:textSize="8pt"
-            android:ellipsize="end"
-            android:maxLines="3"
-            android:visibility="visible"/>
 
     </LinearLayout>
 

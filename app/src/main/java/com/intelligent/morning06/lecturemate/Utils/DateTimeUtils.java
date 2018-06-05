@@ -15,12 +15,17 @@ public final class DateTimeUtils {
 
     public static String FormatDateTimeToMonthAndYear(LocalDateTime dateTime) {
         Date date = Date.from(dateTime.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        SimpleDateFormat dateFormat = new SimpleDateFormat( "LLLL yyyy", Locale.getDefault() );
+        SimpleDateFormat dateFormat = new SimpleDateFormat( "LLLL yyyy", Locale.ENGLISH );
         return dateFormat.format(date);
     }
 
     public static String FormatDateTimeAsNormalDate(LocalDateTime dateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return formatter.format(dateTime);
+    }
+
+    public static String FormatDateTimeAsNormalTime(LocalDateTime dateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("kk:mm");
         return formatter.format(dateTime);
     }
 

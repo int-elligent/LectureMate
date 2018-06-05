@@ -77,8 +77,8 @@ public class DatesCreateActivityInstrumentedTest {
 
     @Test
     public void createDate_ToolbarButtonsExist() throws Exception {
-        onView(withId(R.id.dates_create_activity_action_save)).perform(click());
-        onView(withId(R.id.dates_create_activity_action_cancel)).perform(click());
+        onView(withId(R.id.dates_create_activity_action_save)).check(matches(isDisplayed()));
+        onView(withId(R.id.dates_create_activity_action_cancel)).check(matches(isDisplayed()));
     }
 
     @Test
@@ -191,5 +191,28 @@ public class DatesCreateActivityInstrumentedTest {
         onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(2,2));
         onView(withId(android.R.id.button1)).perform(click());
         Assert.assertEquals("02:02", ((EditText)mActivityRule.getActivity().findViewById(R.id.Time)).getText().toString());
+    }
+
+    @Test
+    public void testSelectedDateView() throws Exception {
+        onView(withId(R.id.Date)).perform(click());
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2018,12,31));
+        onView(withId(android.R.id.button1)).perform(click());
+        Assert.assertEquals("31/12/2018", ((EditText)mActivityRule.getActivity().findViewById(R.id.Date)).getText().toString());
+
+        onView(withId(R.id.Date)).perform(click());
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2018,10,10));
+        onView(withId(android.R.id.button1)).perform(click());
+        Assert.assertEquals("10/10/2018", ((EditText)mActivityRule.getActivity().findViewById(R.id.Date)).getText().toString());
+
+        onView(withId(R.id.Date)).perform(click());
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2018,9,9));
+        onView(withId(android.R.id.button1)).perform(click());
+        Assert.assertEquals("09/09/2018", ((EditText)mActivityRule.getActivity().findViewById(R.id.Date)).getText().toString());
+
+        onView(withId(R.id.Date)).perform(click());
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2018,11,11));
+        onView(withId(android.R.id.button1)).perform(click());
+        Assert.assertEquals("11/11/2018", ((EditText)mActivityRule.getActivity().findViewById(R.id.Date)).getText().toString());
     }
 }

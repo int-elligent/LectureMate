@@ -8,9 +8,9 @@
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/app_icon"
+        android:icon="@mipmap/app_icon_new"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/app_icon_new_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -31,12 +31,11 @@
             android:name=".NotesCreateActivity"
             android:label="@string/title_activity_NotesCreate"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ListFragments.DatesListFragment"></activity>
-        <activity android:name=".DatesActivity"></activity>
+        <activity android:name=".DatesActivity" />
         <activity
             android:name=".ImagesCreateActivity"
             android:label="Save Image"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ImageViewActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
@@ -48,14 +47,14 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
 
         <activity
             android:name=".TabCategoriesActivity"
             android:label="@string/title_activity_tab_categories"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DatesCreateActivity"
             android:label="Save Date"

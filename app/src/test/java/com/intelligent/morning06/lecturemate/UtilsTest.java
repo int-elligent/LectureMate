@@ -20,8 +20,8 @@ public class UtilsTest {
         String dateString = DateTimeUtils.FormatDateTimeToMonthAndYear(testDateTime);
         testDateTime = LocalDateTime.parse("2018-01-27T00:00:00");
         String dateStringTwo = DateTimeUtils.FormatDateTimeToMonthAndYear(testDateTime);
-        Assert.assertEquals("Dezember 2007", dateString);
-        Assert.assertEquals("Jänner 2018", dateStringTwo);
+        Assert.assertEquals("December 2007", dateString);
+        Assert.assertEquals("January 2018", dateStringTwo);
     }
 
     @Test
@@ -31,8 +31,19 @@ public class UtilsTest {
         testDateTime = LocalDateTime.parse("2018-01-27T00:00:00");
         String dateStringTwo = DateTimeUtils.FormatDateTimeAsNormalDate(testDateTime);
 
-        Assert.assertEquals("03.12.2007", dateString);
-        Assert.assertEquals("27.01.2018", dateStringTwo);
+        Assert.assertEquals("03/12/2007", dateString);
+        Assert.assertEquals("27/01/2018", dateStringTwo);
+    }
+
+    @Test
+    public void testFormatDateTimeAsNormalTime() throws Exception {
+        LocalDateTime testDateTime = LocalDateTime.parse("2007-12-03T10:15:30");
+        String dateString = DateTimeUtils.FormatDateTimeAsNormalTime(testDateTime);
+        testDateTime = LocalDateTime.parse("2018-01-27T01:02:03");
+        String dateStringTwo = DateTimeUtils.FormatDateTimeAsNormalTime(testDateTime);
+
+        Assert.assertEquals("10:15", dateString);
+        Assert.assertEquals("01:02", dateStringTwo);
     }
 
     @Test
