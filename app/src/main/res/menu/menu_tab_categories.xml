@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.intelligent.morning06.lecturemate.LecturesActivity">
+    tools:context="com.intelligent.morning06.lecturemate.TabCategoriesActivity">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

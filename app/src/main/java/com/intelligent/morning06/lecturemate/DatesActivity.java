@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.intelligent.morning06.lecturemate.DataAccess.Dates;
+import com.intelligent.morning06.lecturemate.DataAccess.MyDate;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,7 +23,7 @@ public class DatesActivity extends AppCompatActivity {
     TextView absoluteDateTextView;
     TextView relativeDateTextView;
     EditText descriptionEditText;
-    private ArrayList<Dates> _dates;
+    private ArrayList<MyDate> _dates;
     private DateTimeFormatter _absoluteDTF;
     private DateTimeFormatter _relativeDTF;
 
@@ -40,7 +40,7 @@ public class DatesActivity extends AppCompatActivity {
         _absoluteDTF = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
         Bundle allDates = getIntent().getBundleExtra("SERIALIZED_DATA");
-        _dates = (ArrayList<Dates>) allDates.getSerializable("ALL_DATES");
+        _dates = (ArrayList<MyDate>) allDates.getSerializable("ALL_DATES");
         _selectedIndex = getIntent().getIntExtra("SELECTED_INDEX", 0);
 
         total_dates = _dates.size();

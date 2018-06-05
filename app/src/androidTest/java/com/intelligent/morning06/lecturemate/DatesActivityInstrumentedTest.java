@@ -1,6 +1,9 @@
 package com.intelligent.morning06.lecturemate;
 
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -10,7 +13,7 @@ import android.widget.TextView;
 
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessDate;
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessLecture;
-import com.intelligent.morning06.lecturemate.DataAccess.Dates;
+import com.intelligent.morning06.lecturemate.DataAccess.MyDate;
 
 import junit.framework.Assert;
 
@@ -20,13 +23,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.TimeZone;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
@@ -53,13 +54,34 @@ public class DatesActivityInstrumentedTest {
             "Assignment 3 deadline",
             "Final exam"};
     private String[] relative_times = {"10 days ago", "Yesterday", "Today", "Tomorrow", "10 days left"};
+    ArrayList<MyDate> _allDates;
 
     @Rule
-    public ActivityTestRule<DatesListActivity> DatesListActivityRule = new
-            ActivityTestRule<>(DatesListActivity.class);
+    public ActivityTestRule<DatesActivity> mActivityRule =
+            new ActivityTestRule<DatesActivity>(DatesActivity.class) {
+                @Override
+                protected Intent getActivityIntent() {
+                    try {
+                        setUp();
+                    }catch(Exception exception) {
+                        Assert.fail(exception.getMessage());
+                    }
+
+                    int selectedIndex = 0;
+
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("ALL_DATES", _allDates);
+
+                    Context targetContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+                    Intent result = new Intent(targetContext, DatesActivity.class);
+                    result.putExtra("SERIALIZED_DATA", bundle);
+                    result.putExtra("SELECTED_INDEX", selectedIndex);
+                    return result;
+                }
+            };
 
     @Before
-    public void resetLectures() throws Exception {
+    public void setUp() throws Exception {
         if(dataBaseLecture == null)
             dataBaseLecture = new DataBaseAccessLecture(InstrumentationRegistry.getTargetContext());
         if(dataBaseDate == null)
@@ -68,17 +90,18 @@ public class DatesActivityInstrumentedTest {
         dataBaseLecture.DeleteAllLectures();
         dataBaseDate.DeleteAllDates();
         dataBaseLecture.AddLecture("TestingDatesList1");
+        _allDates = new ArrayList<MyDate>();
 
         int id = dataBaseLecture.GetAllLectures().get(0).getId();
         MyApplication.setCurrentLecture(id);
 
         LocalDateTime ldt = LocalDateTime.now(TimeZone.getDefault().toZoneId());
 
-        Dates date1 = new Dates(titles[0], desc[0], ldt, id, ldt.minusDays(10));
-        Dates date2 = new Dates(titles[1], desc[1], ldt, id, ldt.minusDays(1));
-        Dates date3 = new Dates(titles[2], desc[2], ldt, id, ldt);
-        Dates date4 = new Dates(titles[3], desc[3], ldt, id, ldt.plusDays(1));
-        Dates date5 = new Dates(titles[4], desc[4], ldt, id, ldt.plusDays(10));
+        MyDate date1 = new MyDate(titles[0], desc[0], ldt, id, ldt.minusDays(10));
+        MyDate date2 = new MyDate(titles[1], desc[1], ldt, id, ldt.minusDays(1));
+        MyDate date3 = new MyDate(titles[2], desc[2], ldt, id, ldt);
+        MyDate date4 = new MyDate(titles[3], desc[3], ldt, id, ldt.plusDays(1));
+        MyDate date5 = new MyDate(titles[4], desc[4], ldt, id, ldt.plusDays(10));
 
         dataBaseDate.AddDate(date1);
         dataBaseDate.AddDate(date2);
@@ -86,75 +109,24 @@ public class DatesActivityInstrumentedTest {
         dataBaseDate.AddDate(date4);
         dataBaseDate.AddDate(date5);
 
-        /*
-        long mpd = 86400000;
-        dataBaseDate.AddDate("A1Dead",
-                "Assignment 1 deadline",
-                Instant.now().toEpochMilli(),
-                Instant.now().toEpochMilli() - 10*mpd,
-                id);
-        dataBaseDate.AddDate("A2Dead",
-                "Assignment 2 deadline",
-                Instant.now().toEpochMilli(),
-                Instant.now().toEpochMilli() - 1*mpd,
-                id);
-        dataBaseDate.AddDate("A2Pre",
-                "Assignment 2 presentation",
-                Instant.now().toEpochMilli(),
-                Instant.now().toEpochMilli(),
-                id);
-        dataBaseDate.AddDate("A3Dead",
-                "Assignment 3 deadline",
-                Instant.now().toEpochMilli(),
-                Instant.now().toEpochMilli() + mpd,
-                id);
-        dataBaseDate.AddDate("Final",
-                "Final exam",
-                Instant.now().toEpochMilli(),
-                Instant.now().toEpochMilli() + 10*mpd,
-                id);
-*/
-
-        DatesListActivityRule.getActivity().runOnUiThread(new Runnable() {
-            public void run() {
-                DatesListActivityRule.getActivity().updateDates();
-            }
-        });
+        _allDates.add(date1);
+        _allDates.add(date2);
+        _allDates.add(date3);
+        _allDates.add(date4);
+        _allDates.add(date5);
 
     }
 
 
     @Test
-    public void AddedDatesExist() throws InterruptedException{
-        for(int i = 0; i < 5; i++){
-            onView(withText(titles[i])).check(matches(isDisplayed()));
-        }
-    }
-
-    @Test
-    public void TitlesDisplayed() throws InterruptedException {
-        onView(withText(titles[0])).perform(click());
-        for(int i = 0; i < 5; i++){
-            onView(withText(titles[i])).check(matches(isDisplayed()));
-            onView(withId(R.id.action_left)).perform(click());
-        }
-        onView(withText(titles[titles.length - 1])).check(matches(isDisplayed()));
-        for(int i = 4; i >= 0; i--){
-            onView(withText(titles[i])).check(matches(isDisplayed()));
-            onView(withId(R.id.action_right)).perform(click());
-        }
+    public void dateIsDisplayed() throws InterruptedException{
+        onView(withText(titles[0])).check(matches(isDisplayed()));
+        onView(withText(desc[0])).check(matches(isDisplayed()));
     }
 
     @Test
     public void RelativeTimeDisplayed() throws InterruptedException {
-        for(int i = 0; i < 5; i++){
-            onView(withText(titles[i])).perform(click());
-            onView(withId(R.id.relativeDateTextView)).check(matches(withText(containsString(relative_times[i]))));
-            pressBack();
-        }
+        onView(withId(R.id.relativeDateTextView)).check(matches(withText(containsString(relative_times[0]))));
     }
-
-
-
 
 }

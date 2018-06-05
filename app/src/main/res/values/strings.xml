@@ -1,7 +1,55 @@
 <resources>
+
+    <!--Application titles-->
     <string name="app_name">LectureMate</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_notes">Notes</string>
-    <string name="title_activity_notes_create">Create Note</string>
-    <string name="title_activity_images_list">Images</string>
+
+
+    <!--View titles-->
+    <string name="title_activity_NotesList">Notes</string>
+    <string name="title_activity_LecturesList">Lectures</string>
+    <string name="title_activity_ImagesList">Images</string>
+    <string name="title_activity_DatesList">Dates</string>
+    <string name="title_activity_VideosList">Videos</string>
+
+    <string name="title_activity_NotesCreate">Create Note</string>
+    <string name="title_activity_ImagesCreate">Save Image</string>
+    <string name="title_activity_VideosCreate">Save Video</string>
+    <string name="title_activity_DatesCreate">Create Date</string>
+
+    <string name="title_activity_NoteView">Note</string>
+    <string name="title_activity_ImageView">Image</string>
+    <string name="title_activity_DateView">Date</string>
+    <string name="title_activity_VideoView">Video</string>
+
+    <string name="title_activity_Lectures_ButtonAddLecture">Add Lecture</string>
+    <string name="title_activity_Lectures_ButtonAdd">ADD</string>
+    <string name="title_activity_Lectures_ButtonCancel">CANCEL</string>
+
+    <!--Error messages-->
+
+    <string name="error_databaseAccessLecture_alreadyExists">Lecture cannot be added to DataBase, it already exists</string>
+
+    <string name="error_activity_lectures_lectureExists">Lecture cannot be added, it already exists</string>
+    <string name="error_activity_lectures_lectureNameEmpty">Lecture name must not be empty</string>
+
+    <string name="error_activity_notes_create_titleEmpty">Title cannot be empty</string>
+    <string name="error_activity_notes_create_textEmpty">Note text cannot be empty</string>
+    <string name="error_activity_notes_create_dataBaseError">Database Error: </string>
+
+    <!--Intent extras-->
+    <string name="intent_extra_lectureName">lectureName</string>
+    <string name="intent_extra_lectureId">lectureId</string>
+
+    <string name="intent_extra_serializedData">SERIALIZED_DATA</string>
+    <string name="intent_extra_allNotes">ALL_NOTES</string>
+    <string name="intent_extra_selectedIndex">SELECTED_INDEX</string>
+    <string name="title_activity_tab_categories">TabCategoriesActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxconsectetur adipiscing elit. Proin vel egestas ipsum, quis ornare nunc. Quisque et suscipit lectus. Vivamus et lobortis lorem. Sed fringilla mattis augue, vitae facilisis odio fermentum faucibus. Donec non diam suscipit, convallis lectus et, iaculis risus. Donec imperdiet tellus sapien, euismod vestibulum mauris faucibus non. Integer sit amet scelerisque ante. Vestibulum at bibendum diam. Mauris diam erat, hendrerit vel nunc vitae, blandit finibus enim. Nunc leo urna, consequat sed arcu quis, placerat maximus tortor. Sed mauris felis, viverra eleifend luctus eu, sagittis id nunc. Praesent luctus, leo id vehicula vestibulum, velit tellus rutrum arcu, sed ullamcorper lacus neque quis lacus. Fusce ac pulvinar lacus, quis elementum nulla. Nulla euismod, mauris in euismod condimentum, felis magna porta diam, vitae maximus tellus ligula vitae sapien. Proin mattis, lacus quis aliquam dapibus, massa diam ultricies enim, sed commodo neque purus et mauris. Aliquam ornare dolor non nibh venenatis tincidunt.
+</string>
 </resources>

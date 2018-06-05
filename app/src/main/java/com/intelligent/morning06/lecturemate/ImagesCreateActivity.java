@@ -1,25 +1,24 @@
 package com.intelligent.morning06.lecturemate;
 
-import android.database.SQLException;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessImage;
-import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessNote;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.intelligent.morning06.lecturemate.DataAccess.DataModel;
+import com.intelligent.morning06.lecturemate.ListFragments.ImagesListFragment;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoField;
 
 public class ImagesCreateActivity extends AppCompatActivity {
+
+    Uri _imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +33,24 @@ public class ImagesCreateActivity extends AppCompatActivity {
                 if(menuItem.getItemId() == R.id.images_create_activity_action_save) {
                    SaveImage();
                 } else if (menuItem.getItemId() == R.id.images_create_activity_action_cancel) {
+                    setResult(ImagesListFragment.EMPTY_REQUEST_CODE);
                     finish();
                 }
                 return true;
             }
         });
+
+        _imageUri = Uri.parse(getIntent().getStringExtra("IMAGE_URI"));
+        ImageView imageView = (ImageView) findViewById(R.id.editImage);
+
+        Glide.with(getApplicationContext())
+                .load(_imageUri)
+                .apply(RequestOptions.centerCropTransform())
+                .into(imageView);
     }
 
     private void SaveImage() {
+
         String text = ((EditText)findViewById(R.id.editTextImage)).getText().toString();
 
         if (text.isEmpty()) {
@@ -50,12 +59,13 @@ public class ImagesCreateActivity extends AppCompatActivity {
         }
 
         try {
-            DataModel.GetInstance().getImageDataBase().AddImage(text, Instant.now().toEpochMilli(), "@android:drawable/btn_dialog", MyApplication.getCurrentLecture());
+            DataModel.GetInstance().getImageDataBase().AddImage(text, Instant.now().toEpochMilli(), _imageUri.toString(), MyApplication.getCurrentLecture());
         } catch(Exception exception) {
             ShowToast("Could not add image to database: " + exception.getMessage());
             return;
         }
 
+        setResult(ImagesListFragment.EMPTY_REQUEST_CODE);
         finish();
     }
 

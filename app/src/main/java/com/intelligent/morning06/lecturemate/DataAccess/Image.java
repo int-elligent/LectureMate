@@ -1,9 +1,11 @@
 package com.intelligent.morning06.lecturemate.DataAccess;
 
+import com.intelligent.morning06.lecturemate.Interfaces.IDateSortable;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Image implements Serializable {
+public class Image implements Serializable, IDateSortable {
     private int _id;
     private String _title;
     private String _filePath;

@@ -2,21 +2,15 @@ package com.intelligent.morning06.lecturemate;
 
 import android.database.SQLException;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessNote;
 import com.intelligent.morning06.lecturemate.DataAccess.DataModel;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoField;
 
 public class NotesCreateActivity extends AppCompatActivity {
 
@@ -49,19 +43,19 @@ public class NotesCreateActivity extends AppCompatActivity {
         String text = ((EditText)findViewById(R.id.editTextNote)).getText().toString();
 
         if(title.isEmpty()) {
-            ShowToast("Title cannot be empty");
+            ShowToast(getResources().getString(R.string.error_activity_notes_create_titleEmpty));
             return;
         }
 
         if (text.isEmpty()) {
-            ShowToast("Note text cannot be empty");
+            ShowToast(getResources().getString(R.string.error_activity_notes_create_textEmpty));
             return;
         }
 
         try {
             DataModel.GetInstance().getNoteDataBase().AddNote(title, text, Instant.now().toEpochMilli(), MyApplication.getCurrentLecture());
         } catch(SQLException exception) {
-            ShowToast("Could not add note to database: " + exception.getMessage());
+            ShowToast(getResources().getString(R.string.error_activity_notes_create_dataBaseError) + exception.getMessage());
             return;
         }
 

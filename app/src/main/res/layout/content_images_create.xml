@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.intelligent.morning06.lecturemate.NotesCreateActivity"
-    tools:showIn="@layout/activity_notes_create">
+    tools:context="com.intelligent.morning06.lecturemate.ImagesCreateActivity"
+    tools:showIn="@layout/activity_images_create">
 
 
 <LinearLayout
@@ -33,8 +33,9 @@
         <ImageView
             android:id="@+id/editImage"
             android:layout_width="match_parent"
-            android:layout_height="424dp"
-            android:scaleType="fitXY"
-            app:srcCompat="@android:drawable/btn_dialog" />
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:srcCompat="@android:drawable/btn_dialog"
+            android:layout_marginBottom="10dp"/>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

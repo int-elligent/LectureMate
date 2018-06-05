@@ -1,5 +1,7 @@
 package com.intelligent.morning06.lecturemate.DataAccess;
 
+import com.intelligent.morning06.lecturemate.Interfaces.IDateSortable;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -7,7 +9,7 @@ import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class Dates implements Serializable {
+public class MyDate implements Serializable, IDateSortable {
     private int _id;
     private String _title;
     private String _text;
@@ -15,7 +17,7 @@ public class Dates implements Serializable {
     private LocalDateTime _creationDate;
     private int _lectureId;
 
-    public Dates(int id, String title, String text, LocalDateTime creationDate, int lectureId, LocalDateTime date) {
+    public MyDate(int id, String title, String text, LocalDateTime creationDate, int lectureId, LocalDateTime date) {
         _id = id;
         _title = title;
         _text = text;
@@ -24,7 +26,7 @@ public class Dates implements Serializable {
         _lectureId = lectureId;
     }
 
-    public Dates(String title, String text, LocalDateTime creationDate, int lectureId, LocalDateTime date) {
+    public MyDate(String title, String text, LocalDateTime creationDate, int lectureId, LocalDateTime date) {
         _title = title;
         _date = date;
         _text = text;

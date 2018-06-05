@@ -73,7 +73,7 @@ public class DataBaseAccessDate extends SQLiteOpenHelper  {
         dataBase.close();
     }
 
-    public void AddDate(Dates dateObj) throws SQLException{
+    public void AddDate(MyDate dateObj) throws SQLException{
         SQLiteDatabase dataBase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();

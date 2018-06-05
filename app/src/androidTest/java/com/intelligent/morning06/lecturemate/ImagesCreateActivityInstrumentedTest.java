@@ -1,6 +1,9 @@
 package com.intelligent.morning06.lecturemate;
 
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -36,10 +39,20 @@ public class ImagesCreateActivityInstrumentedTest {
     private DataBaseAccessImage imageDataBase = null;
     private DataBaseAccessLecture lectureDataBase = null;
     private int lectureId = 0;
+    private Uri imageUri = Uri.parse("android.resource://com.intelligent.morning06.lecturemate/drawable/icon_save");
 
     @Rule
     public ActivityTestRule<ImagesCreateActivity> mActivityRule =
-            new ActivityTestRule<ImagesCreateActivity>(ImagesCreateActivity.class);
+            new ActivityTestRule<ImagesCreateActivity>(ImagesCreateActivity.class) {
+                @Override
+                protected Intent getActivityIntent() {
+
+                    Context targetContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+                    Intent result = new Intent(targetContext, ImagesCreateActivity.class);
+                    result.putExtra("IMAGE_URI", imageUri.toString());
+                    return result;
+                }
+            };
 
     @Before
     public void setUp() throws Exception {
@@ -76,6 +89,7 @@ public class ImagesCreateActivityInstrumentedTest {
     public void createImage_AddImage_TextEmpty() throws Exception {
 
         onView(withId(R.id.images_create_activity_action_save)).perform(click());
+        Thread.sleep(2000);
         onView(withText(containsString("Image text cannot be empty"))).
                 inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView())))).
                 check(matches(isDisplayed()));
@@ -93,7 +107,7 @@ public class ImagesCreateActivityInstrumentedTest {
     }
 
     @Test
-    public void addNote_CorrectlyAdded() throws Exception {
+    public void addImage_CorrectlyAdded() throws Exception {
         onView(withId(R.id.editTextImage)).perform(typeText("TestImage TestText"));
 
         onView(withId(R.id.images_create_activity_action_save)).perform(click());
@@ -102,7 +116,9 @@ public class ImagesCreateActivityInstrumentedTest {
 
         Assert.assertEquals(true, cursor.moveToFirst());
         String imageTitle = cursor.getString(cursor.getColumnIndex(DataBaseAccessImage.ImageTable.COLUMN_NAME_TITLE));
+        String filePath = cursor.getString(cursor.getColumnIndex(DataBaseAccessImage.ImageTable.COLUMN_NAME_FILEPATH));
         Assert.assertEquals("TestImage TestText", imageTitle);
+        Assert.assertEquals(imageUri.toString(), filePath);
         Assert.assertEquals(true, mActivityRule.getActivity().isFinishing());
     }
 }
