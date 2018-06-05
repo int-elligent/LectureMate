@@ -100,8 +100,7 @@ public class DataBaseAccessLecture extends SQLiteOpenHelper  {
         List<String> storedLectureNames = new ArrayList<String>();
         while(cursor.moveToNext()) {
             String title = cursor.getString(cursor.getColumnIndexOrThrow(LectureTable.COLUMN_NAME_TITLE));
-            if(title != null)
-                storedLectureNames.add(title);
+            storedLectureNames.add(title);
         }
 
         if(storedLectureNames.size() >= 1) {

@@ -3,7 +3,6 @@ package com.intelligent.morning06.lecturemate.ListFragments;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -13,11 +12,9 @@ import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.view.LayoutInflater;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.intelligent.morning06.lecturemate.Adapters.ImagesAdapter;
@@ -112,7 +109,7 @@ public class ImagesListFragment extends Fragment implements ICategoryListFragmen
         ((ListView)this.getView().findViewById(R.id.images_list_listview)).setAdapter(imagesListAdapter);
     }
 
-    private Intent createCameraIntent()
+    public Intent createCameraIntent()
     {
         if(!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             return null;

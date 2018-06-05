@@ -66,8 +66,6 @@ public class MyDate implements Serializable, IDateSortable {
 
     public String getText() { return _text; }
 
-    public void setText(String text){ _text = text; }
-
     @Override
     public String toString() {
         return _title;

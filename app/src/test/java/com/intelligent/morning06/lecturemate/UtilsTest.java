@@ -1,27 +1,18 @@
 package com.intelligent.morning06.lecturemate;
 
+
 import com.intelligent.morning06.lecturemate.Utils.DateTimeUtils;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 public class UtilsTest {
-
-    /*
-     public static String FormatDateTimeToMonthAndYear(LocalDateTime dateTime) {
-        Date date = Date.from(dateTime.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        SimpleDateFormat dateFormat = new SimpleDateFormat( "LLLL yyyy", Locale.getDefault() );
-        return dateFormat.format(date);
-    }
-
-    public static String FormatDateTimeAsNormalDate(LocalDateTime dateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        return formatter.format(dateTime);
-    }
-     */
 
     @Test
     public void testFormatDateTimeToMonthAndYear() throws Exception {
@@ -42,5 +33,22 @@ public class UtilsTest {
 
         Assert.assertEquals("03.12.2007", dateString);
         Assert.assertEquals("27.01.2018", dateStringTwo);
+    }
+
+    @Test
+    public void testGetRelativeDate() throws Exception {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime tomorrow = now.plusDays(1);
+        LocalDateTime yesterday = now.minusDays(1);
+        LocalDateTime past = now.minusDays(5);
+        LocalDateTime future = now.plusDays(5);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        Assert.assertEquals("Today", DateTimeUtils.getRelativeDate(now.format(formatter)));
+        Assert.assertEquals("Yesterday", DateTimeUtils.getRelativeDate(yesterday.format(formatter)));
+        Assert.assertEquals("Tomorrow", DateTimeUtils.getRelativeDate(tomorrow.format(formatter)));
+        Assert.assertEquals("5 days ago", DateTimeUtils.getRelativeDate(past.format(formatter)));
+        Assert.assertEquals("5 days left", DateTimeUtils.getRelativeDate(future.format(formatter)));
+        Assert.assertEquals("ERROR", DateTimeUtils.getRelativeDate("blabla"));
     }
 }

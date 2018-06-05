@@ -80,13 +80,7 @@ public class DatesCreateActivity extends AppCompatActivity {
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hour, int minute) {
-                                String hour0 = "";
-                                String minute0 = "";
-                                if(hour < 10)
-                                    hour0 = "0";
-                                if(minute < 10)
-                                    minute0 = "0";
-                                timeselect.setText(hour0 + hour + ":" + minute0 + minute);
+                                timeselect.setText(hour + ":" + minute);
                             }
                         }, mHour, mMinute,true);
                 timePickerDialog.show();
@@ -103,7 +97,7 @@ public class DatesCreateActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 if(menuItem.getItemId() == R.id.dates_create_activity_action_save) {
                     SaveDate();
-                } else if (menuItem.getItemId() == R.id.dates_create_activity_action_cancel) {
+                } else {
                     finish();
                 }
                 return true;

@@ -24,10 +24,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.TimeZone;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
@@ -100,20 +102,14 @@ public class DatesActivityInstrumentedTest {
         MyDate date1 = new MyDate(titles[0], desc[0], ldt, id, ldt.minusDays(10));
         MyDate date2 = new MyDate(titles[1], desc[1], ldt, id, ldt.minusDays(1));
         MyDate date3 = new MyDate(titles[2], desc[2], ldt, id, ldt);
-        MyDate date4 = new MyDate(titles[3], desc[3], ldt, id, ldt.plusDays(1));
-        MyDate date5 = new MyDate(titles[4], desc[4], ldt, id, ldt.plusDays(10));
 
         dataBaseDate.AddDate(date1);
         dataBaseDate.AddDate(date2);
         dataBaseDate.AddDate(date3);
-        dataBaseDate.AddDate(date4);
-        dataBaseDate.AddDate(date5);
 
         _allDates.add(date1);
         _allDates.add(date2);
         _allDates.add(date3);
-        _allDates.add(date4);
-        _allDates.add(date5);
 
     }
 
@@ -127,6 +123,36 @@ public class DatesActivityInstrumentedTest {
     @Test
     public void RelativeTimeDisplayed() throws InterruptedException {
         onView(withId(R.id.relativeDateTextView)).check(matches(withText(containsString(relative_times[0]))));
+    }
+
+    @Test
+    public void testLeftButton() throws Exception {
+        onView(withId(R.id.action_left)).perform(click());
+        onView(withText(titles[2])).check(matches(isDisplayed()));
+        onView(withText(desc[2])).check(matches(isDisplayed()));
+
+        onView(withId(R.id.action_left)).perform(click());
+        onView(withText(titles[1])).check(matches(isDisplayed()));
+        onView(withText(desc[1])).check(matches(isDisplayed()));
+
+        onView(withId(R.id.action_left)).perform(click());
+        onView(withText(titles[0])).check(matches(isDisplayed()));
+        onView(withText(desc[0])).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testRightButton() throws Exception {
+        onView(withId(R.id.action_right)).perform(click());
+        onView(withText(titles[1])).check(matches(isDisplayed()));
+        onView(withText(desc[1])).check(matches(isDisplayed()));
+
+        onView(withId(R.id.action_right)).perform(click());
+        onView(withText(titles[2])).check(matches(isDisplayed()));
+        onView(withText(desc[2])).check(matches(isDisplayed()));
+
+        onView(withId(R.id.action_right)).perform(click());
+        onView(withText(titles[0])).check(matches(isDisplayed()));
+        onView(withText(desc[0])).check(matches(isDisplayed()));
     }
 
 }

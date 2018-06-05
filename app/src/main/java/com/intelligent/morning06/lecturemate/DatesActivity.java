@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.intelligent.morning06.lecturemate.DataAccess.MyDate;
+import com.intelligent.morning06.lecturemate.Utils.DateTimeUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,7 +23,7 @@ public class DatesActivity extends AppCompatActivity {
     private int _selectedIndex;
     TextView absoluteDateTextView;
     TextView relativeDateTextView;
-    EditText descriptionEditText;
+    TextView descriptionEditText;
     private ArrayList<MyDate> _dates;
     private DateTimeFormatter _absoluteDTF;
     private DateTimeFormatter _relativeDTF;
@@ -35,7 +36,7 @@ public class DatesActivity extends AppCompatActivity {
 
         absoluteDateTextView = (TextView)findViewById(R.id.absoluteDateTextView);
         relativeDateTextView = (TextView)findViewById(R.id.relativeDateTextView);
-        descriptionEditText = (EditText) findViewById(R.id.descriptionEditText);
+        descriptionEditText = (TextView) findViewById(R.id.descriptionEditText);
 
         _absoluteDTF = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
@@ -71,67 +72,37 @@ public class DatesActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int res_id = item.getItemId();
-        if(res_id == R.id.action_left && _selectedIndex < total_dates - 1){
-            _dates.get(_selectedIndex).setText(descriptionEditText.getText().toString());
-            _selectedIndex += 1;
-            updateContent(_selectedIndex);
-            invalidateOptionsMenu();
-        }else if(res_id == R.id.action_right && _selectedIndex > 0){
-            _dates.get(_selectedIndex).setText(descriptionEditText.getText().toString());
-            _selectedIndex -= 1;
-            updateContent(_selectedIndex);
-            invalidateOptionsMenu();
-        }
+        if(item.getItemId() == R.id.action_left)
+            switchDate(true);
+        else
+            switchDate(false);
+
+        invalidateOptionsMenu();
         return true;
     }
 
     public void updateContent(int date_index){
         getSupportActionBar().setTitle(_dates.get(date_index).getTitle());
         absoluteDateTextView.setText(_dates.get(date_index).getDate().format(_absoluteDTF));
-        relativeDateTextView.setText(getRelativeDate(_dates.get(date_index).getDate()
+        relativeDateTextView.setText(DateTimeUtils.getRelativeDate(_dates.get(date_index).getDate()
                             .format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
         descriptionEditText.setText(_dates.get(date_index).getText());
     }
 
-
-
-    public String getRelativeDate(String reference_date) {
-        SimpleDateFormat relativeDF = new SimpleDateFormat("dd/MM/yyyy");
-        long mpd = 86400000;
-
-        try {
-            Date reference = relativeDF.parse(reference_date);
-            Date today_raw = new Date(System.currentTimeMillis());
-            Date today_processed = relativeDF.parse(relativeDF.format(today_raw));
-            long diff = (reference.getTime() - today_processed.getTime())/mpd;
-
-            if (diff == 0){
-                return  "Today";
-            }else if (diff == -1){
-                return "Yesterday";
-            }else if (diff < -1){
-                return (diff * (-1)) + " days ago";
-            }else if (diff == 1){
-                return "Tomorrow";
-            }else if (diff > 1){
-                return diff + " days left";
-            }
-        }catch (ParseException e) {
-            e.printStackTrace();
+    private void switchDate(boolean left) {
+        if(left) {
+            if(_selectedIndex == 0)
+                _selectedIndex = _dates.size() - 1;
+            else
+                _selectedIndex--;
         }
-        return  "ERROR";
-    }
+        else {
+            if(_selectedIndex == _dates.size() - 1)
+                _selectedIndex = 0;
+            else
+                _selectedIndex++;
+        }
 
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        //TODO update the description in database
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //TODO update the description in database
+        updateContent(_selectedIndex);
     }
 }

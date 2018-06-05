@@ -41,7 +41,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/absoluteDateTextView" />
 
-    <EditText
+    <TextView
         android:id="@+id/descriptionEditText"
         android:layout_width="367dp"
         android:layout_height="317dp"

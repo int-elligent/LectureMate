@@ -24,7 +24,7 @@ import java.util.Comparator;
 
 public abstract class DateHeaderListAdapter<T extends IDateSortable> extends BaseAdapter {
 
-    protected class ViewType {
+    protected static class ViewType {
         public final static int ITEM = 0;
         public final static int SEPARATOR = 1;
     }
@@ -110,19 +110,17 @@ public abstract class DateHeaderListAdapter<T extends IDateSortable> extends Bas
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        switch(getItemViewType(position)) {
-            case ViewType.ITEM:
-                return getItemView(position, convertView, parent);
-            case ViewType.SEPARATOR:
-                if(convertView == null) {
-                    convertView = LayoutInflater.from(_context).
-                            inflate(R.layout.category_list_date_separator, parent, false);
-                }
-                TextView groupHeading = (TextView) convertView.findViewById(R.id.images_list_item_separator_text);
-                groupHeading.setText(_views.get(position)._separatorText);
-                return convertView;
-            default:
-                return convertView;
+        if(getItemViewType(position) == ViewType.ITEM) {
+            return getItemView(position, convertView, parent);
+        }
+        else {
+            if(convertView == null) {
+                convertView = LayoutInflater.from(_context).
+                        inflate(R.layout.category_list_date_separator, parent, false);
+            }
+            TextView groupHeading = (TextView) convertView.findViewById(R.id.images_list_item_separator_text);
+            groupHeading.setText(_views.get(position)._separatorText);
+            return convertView;
         }
     }
 

@@ -56,6 +56,9 @@ public class DataBaseAccessNote extends SQLiteOpenHelper  {
         if (!db.isReadOnly()) {
             db.execSQL("PRAGMA foreign_keys=ON;");
         }
+        else {
+
+        }
     }
 
     public void AddNote(String noteTitle, String noteText, long timeStamp, int lectureId) throws SQLException {
@@ -93,9 +96,16 @@ public class DataBaseAccessNote extends SQLiteOpenHelper  {
     }
 
     public void DeleteAllNotes() {
-        SQLiteDatabase dataBase = this.getWritableDatabase();
-        dataBase.delete(NoteTable.TABLE_NAME, null, null);
-        dataBase.close();
+        try {
+
+            SQLiteDatabase dataBase = this.getWritableDatabase();
+            dataBase.delete(NoteTable.TABLE_NAME, null, null);
+            dataBase.close();
+
+        }catch(SQLException exception) {
+            //We don't care about "no such table" exception here
+            ;
+        }
     }
 
     public void DeleteNotesForLectureId(int lectureId) {
