@@ -1,16 +1,15 @@
 package com.intelligent.morning06.lecturemate;
 
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessLecture;
-import com.intelligent.morning06.lecturemate.DataAccess.DataBaseConstants;
+import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.ItemDoesNotExistException;
 import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureAlreadyExistsException;
-import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureDoesNotExistException;
+import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.ItemDoesNotExistException;
 import com.intelligent.morning06.lecturemate.DataAccess.Lecture;
 
 import android.support.test.InstrumentationRegistry;
 
 import junit.framework.Assert;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -58,9 +57,18 @@ public class DataBaseAccessLectureInstrumentedTest {
         }
     }
 
+    @Test
     public void addLecture_LectureNameEmpty_throwsIllegalArgumentException() throws Exception {
         try {
             dataBase.AddLecture("");
+            Assert.fail("Should have thrown IllegalArgumentException.");
+        }
+        catch(IllegalArgumentException exception) {
+            assertEquals("lectureName", exception.getMessage());
+        }
+
+        try {
+            dataBase.AddLecture(null);
             Assert.fail("Should have thrown IllegalArgumentException.");
         }
         catch(IllegalArgumentException exception) {
@@ -82,7 +90,7 @@ public class DataBaseAccessLectureInstrumentedTest {
         try {
             dataBase.DeleteLecture("TestLecture");
             Assert.fail("Should have thrown LectureDoesNotExistException");
-        } catch(LectureDoesNotExistException exception) {
+        } catch(ItemDoesNotExistException exception) {
             assertEquals("TestLecture", exception.getLectureName());
         }
     }
@@ -91,6 +99,13 @@ public class DataBaseAccessLectureInstrumentedTest {
     public void deleteLecture_LectureNameEmpty_throwsIllegalArgumentException() throws Exception {
         try {
             dataBase.DeleteLecture("");
+            Assert.fail("Should have thrown IllegalArgumentException");
+        } catch(IllegalArgumentException exception) {
+            assertEquals("lectureName", exception.getMessage());
+        }
+
+        try {
+            dataBase.DeleteLecture(null);
             Assert.fail("Should have thrown IllegalArgumentException");
         } catch(IllegalArgumentException exception) {
             assertEquals("lectureName", exception.getMessage());

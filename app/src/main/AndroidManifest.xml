@@ -2,12 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.intelligent.morning06.lecturemate">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/app_icon"
+        android:icon="@mipmap/app_icon_new"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/app_icon_new_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -20,19 +23,43 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".NotesActivity"
-            android:label="@string/title_activity_notes"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:label="@string/title_activity_NoteView"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".NotesCreateActivity"
-            android:label="@string/title_activity_notes_create"
+            android:label="@string/title_activity_NotesCreate"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".DatesActivity" />
+        <activity
+            android:name=".ImagesCreateActivity"
+            android:label="Save Image"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ImageViewActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".CategoriesActivity"></activity>
-        <activity android:name=".NotesListActivity"></activity>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity
+            android:name=".TabCategoriesActivity"
+            android:label="@string/title_activity_tab_categories"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DatesCreateActivity"
+            android:label="Save Date"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

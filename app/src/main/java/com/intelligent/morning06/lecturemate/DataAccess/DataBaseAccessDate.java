@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.ItemDoesNotExistException;
+
 public class DataBaseAccessDate extends SQLiteOpenHelper  {
 
     public static class DateTable implements BaseColumns {
@@ -58,6 +60,9 @@ public class DataBaseAccessDate extends SQLiteOpenHelper  {
         if (!db.isReadOnly()) {
             db.execSQL("PRAGMA foreign_keys=ON;");
         }
+        else {
+
+        }
     }
 
     public void AddDate(String dateTitle, String dateText, long timeStampCreated, long timeStampDate, int lectureId) throws SQLException {
@@ -73,6 +78,19 @@ public class DataBaseAccessDate extends SQLiteOpenHelper  {
         dataBase.close();
     }
 
+    public void AddDate(MyDate dateObj) throws SQLException{
+        SQLiteDatabase dataBase = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(DateTable.COLUMN_NAME_TITLE, dateObj.getTitle());
+        values.put(DateTable.COLUMN_NAME_TEXT, dateObj.getText());
+        values.put(DateTable.COLUMN_NAME_CREATIONDATE, dateObj.getCreationDateLong());
+        values.put(DateTable.COLUMN_NAME_LECTUREID, dateObj.getLectureId());
+        values.put(DateTable.COLUMN_NAME_DATE, dateObj.getDateLong());
+        dataBase.insertOrThrow(DateTable.TABLE_NAME, null, values);
+        dataBase.close();
+    }
+
     public Cursor GetDateCursorForLecture(int lectureId) {
         SQLiteDatabase dataBase = this.getReadableDatabase();
 
@@ -81,8 +99,8 @@ public class DataBaseAccessDate extends SQLiteOpenHelper  {
                 DateTable.COLUMN_NAME_TITLE,
                 DateTable.COLUMN_NAME_TEXT,
                 DateTable.COLUMN_NAME_CREATIONDATE,
-                DateTable.COLUMN_NAME_LECTUREID,
-                DateTable.COLUMN_NAME_DATE
+                DateTable.COLUMN_NAME_DATE,
+                DateTable.COLUMN_NAME_LECTUREID
         };
 
         Cursor cursor = dataBase.query(DateTable.TABLE_NAME,
@@ -96,10 +114,22 @@ public class DataBaseAccessDate extends SQLiteOpenHelper  {
         return cursor;
     }
 
-    public void DeleteAllDates() {
+    public void DeleteDate(int dateId) throws ItemDoesNotExistException, IllegalArgumentException {
         SQLiteDatabase dataBase = this.getWritableDatabase();
-        dataBase.delete(DateTable.TABLE_NAME, null, null);
-        dataBase.close();
+        dataBase.delete(DataBaseAccessDate.DateTable.TABLE_NAME, DateTable.COLUMN_NAME_ID + "='" + dateId + "'" ,null);
+    }
+
+    public void DeleteAllDates() {
+        try {
+
+            SQLiteDatabase dataBase = this.getWritableDatabase();
+            dataBase.delete(DateTable.TABLE_NAME, null, null);
+            dataBase.close();
+
+        }catch(SQLException exception) {
+            //We don't care about "no such table" exception here
+            ;
+        }
     }
 
     public void DeleteDatesForLectureId(int lectureId) {

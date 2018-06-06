@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.ItemDoesNotExistException;
+
 public class DataBaseAccessNote extends SQLiteOpenHelper  {
 
     public static class NoteTable implements BaseColumns {
@@ -56,6 +58,9 @@ public class DataBaseAccessNote extends SQLiteOpenHelper  {
         if (!db.isReadOnly()) {
             db.execSQL("PRAGMA foreign_keys=ON;");
         }
+        else {
+
+        }
     }
 
     public void AddNote(String noteTitle, String noteText, long timeStamp, int lectureId) throws SQLException {
@@ -92,10 +97,23 @@ public class DataBaseAccessNote extends SQLiteOpenHelper  {
         return cursor;
     }
 
-    public void DeleteAllNotes() {
+    public void DeleteNote(int noteId) throws ItemDoesNotExistException, IllegalArgumentException {
         SQLiteDatabase dataBase = this.getWritableDatabase();
-        dataBase.delete(NoteTable.TABLE_NAME, null, null);
-        dataBase.close();
+        int numberDeletedRows = dataBase.delete(DataBaseAccessNote.NoteTable.TABLE_NAME, NoteTable.COLUMN_NAME_ID + "='" + noteId + "'" ,null);
+    }
+
+
+    public void DeleteAllNotes() {
+        try {
+
+            SQLiteDatabase dataBase = this.getWritableDatabase();
+            dataBase.delete(NoteTable.TABLE_NAME, null, null);
+            dataBase.close();
+
+        }catch(SQLException exception) {
+            //We don't care about "no such table" exception here
+            ;
+        }
     }
 
     public void DeleteNotesForLectureId(int lectureId) {

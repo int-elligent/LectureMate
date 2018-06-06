@@ -1,7 +1,9 @@
 package com.intelligent.morning06.lecturemate.DataAccess;
 
 
-public class Lecture {
+import java.io.Serializable;
+
+public class Lecture implements Serializable {
 
     private String _lectureName;
     private int _id;

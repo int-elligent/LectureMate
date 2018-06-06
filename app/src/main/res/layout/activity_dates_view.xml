@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DatesActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/icon_time"
+                android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:id="@+id/absoluteDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_gravity="center_vertical"
+                android:text="DD/MM/YYYY"
+                android:textSize="12pt"
+                android:textColor="@color/primary_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="0.4dp"
+                android:layout_height="match_parent"
+                android:background="@color/divider" />
+
+            <TextView
+                android:id="@+id/relativeDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_gravity="center_vertical"
+                android:text="X days left"
+                android:textSize="9pt"
+                android:textColor="@color/primary_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </LinearLayout>
+        
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.4dp"
+            android:background="@color/divider" />
+
+
+            <TextView
+                android:id="@+id/descriptionEditText"
+                android:layout_width="367dp"
+                android:layout_height="317dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:textColor="@color/primary_text"
+                android:inputType="textMultiLine"
+                android:selectAllOnFocus="false"
+                android:singleLine="false"
+                android:gravity="top|left"
+                android:text="This is a very important exam..."
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/descTextView" />
+
+    </LinearLayout>
+
+
+
+
+
+</android.support.constraint.ConstraintLayout>

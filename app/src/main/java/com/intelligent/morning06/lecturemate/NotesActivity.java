@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.intelligent.morning06.lecturemate.DataAccess.Note;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -30,24 +29,22 @@ public class NotesActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 if(menuItem.getItemId() == R.id.notes_view_action_left) {
                     switchNote(true);
-                } else if (menuItem.getItemId() == R.id.notes_view_action_right) {
+                } else {
                     switchNote(false);
                 }
                 return true;
             }
         });
 
-        Bundle allNotes = getIntent().getBundleExtra("SERIALIZED_DATA");
-        _notes = (ArrayList<Note>) allNotes.getSerializable("ALL_NOTES");
-        _selectedIndex = getIntent().getIntExtra("SELECTED_INDEX", 0);
+        Bundle allNotes = getIntent().getBundleExtra(getResources().getString(R.string.intent_extra_serializedData));
+        _notes = (ArrayList<Note>) allNotes.getSerializable(getResources().getString(R.string.intent_extra_allNotes));
+        _selectedIndex = getIntent().getIntExtra(getResources().getString(R.string.intent_extra_selectedIndex), 0);
 
         UpdateContent();
     }
 
     private void UpdateContent()
     {
-        if(_selectedIndex < 0 || _selectedIndex > (_notes.size() - 1))
-            return;
 
         TextView textContent = (TextView) findViewById(R.id.notes_view_content);
         textContent.setText(_notes.get(_selectedIndex).getText());

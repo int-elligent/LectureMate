@@ -8,20 +8,14 @@ import android.util.Log;
 
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessDate;
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessLecture;
-import com.intelligent.morning06.lecturemate.DataAccess.DataBaseConstants;
 import com.intelligent.morning06.lecturemate.DataAccess.Lecture;
 
 import junit.framework.Assert;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
-
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
 
 public class DataBaseAccessDateInstrumentedTest {
     DataBaseAccessDate dataAccessDate = null;
@@ -33,6 +27,11 @@ public class DataBaseAccessDateInstrumentedTest {
             dataAccessLecture = new DataBaseAccessLecture(InstrumentationRegistry.getTargetContext());
         if(dataAccessDate == null)
             dataAccessDate = new DataBaseAccessDate(InstrumentationRegistry.getTargetContext());
+
+        dataAccessLecture.getWritableDatabase();
+        dataAccessDate.getWritableDatabase();
+        dataAccessLecture.close();
+        dataAccessDate.close();
 
         dataAccessDate.DeleteAllDates();
         dataAccessLecture.DeleteAllLectures();
@@ -109,8 +108,32 @@ public class DataBaseAccessDateInstrumentedTest {
             Assert.fail("Exception shouldn't have been thrown: " + exception.getMessage());
         }
 
-        Cursor dateCursor = dataAccessDate.GetDateCursorForLecture(2);
-        Assert.assertEquals(false, dateCursor.moveToFirst());
+        Cursor dateCursor = dataAccessDate.GetDateCursorForLecture(secondLecture.getId());
+        Assert.assertEquals(0, dateCursor.getCount());
+    }
+
+    @Test
+    public void testDeleteDatesForLectureid() throws Exception {
+        Lecture firstLecture = dataAccessLecture.AddLecture("TestLecture1");
+        Lecture secondLecture = dataAccessLecture.AddLecture("TestLecture2");
+
+        dataAccessDate.AddDate("TestDateForTestLecture1_1", "TestText", System.currentTimeMillis(),System.currentTimeMillis(), firstLecture.getId());
+        dataAccessDate.AddDate("TestDateForTestLecture1_1", "TestText", System.currentTimeMillis(),System.currentTimeMillis(), firstLecture.getId());
+        dataAccessDate.AddDate("TestDateForTestLecture2_1", "TestText", System.currentTimeMillis(),System.currentTimeMillis(), secondLecture.getId());
+        dataAccessDate.AddDate("TestDateForTestLecture2_2", "TestText", System.currentTimeMillis(),System.currentTimeMillis(), secondLecture.getId());
+        dataAccessDate.AddDate("TestDateForTestLecture2_3", "TestText", System.currentTimeMillis(),System.currentTimeMillis(), secondLecture.getId());
+
+        dataAccessDate.DeleteDatesForLectureId(-20);
+        Assert.assertEquals(2, dataAccessDate.GetDateCursorForLecture(firstLecture.getId()).getCount());
+        Assert.assertEquals(3, dataAccessDate.GetDateCursorForLecture(secondLecture.getId()).getCount());
+
+        dataAccessDate.DeleteDatesForLectureId(firstLecture.getId());
+        Assert.assertEquals(0, dataAccessDate.GetDateCursorForLecture(firstLecture.getId()).getCount());
+        Assert.assertEquals(3, dataAccessDate.GetDateCursorForLecture(secondLecture.getId()).getCount());
+
+        dataAccessDate.DeleteDatesForLectureId(secondLecture.getId());
+        Assert.assertEquals(0, dataAccessDate.GetDateCursorForLecture(secondLecture.getId()).getCount());
+
     }
 
 }

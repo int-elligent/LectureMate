@@ -8,20 +8,14 @@ import android.util.Log;
 
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessImage;
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessLecture;
-import com.intelligent.morning06.lecturemate.DataAccess.DataBaseConstants;
 import com.intelligent.morning06.lecturemate.DataAccess.Lecture;
 
 import junit.framework.Assert;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
-
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
 
 public class DataBaseAccessImageInstrumentedTest {
     DataBaseAccessImage dataAccessImage = null;
@@ -33,6 +27,11 @@ public class DataBaseAccessImageInstrumentedTest {
             dataAccessImage = new DataBaseAccessImage(InstrumentationRegistry.getTargetContext());
         if(dataAccessLecture == null)
             dataAccessLecture = new DataBaseAccessLecture(InstrumentationRegistry.getTargetContext());
+
+        dataAccessLecture.getWritableDatabase();
+        dataAccessImage.getWritableDatabase();
+        dataAccessLecture.close();
+        dataAccessImage.close();
 
         dataAccessImage.DeleteAllImages();
         dataAccessLecture.DeleteAllLectures();
@@ -111,6 +110,30 @@ public class DataBaseAccessImageInstrumentedTest {
 
         Cursor imageCursor = dataAccessImage.GetImageCursorForLecture(2);
         Assert.assertEquals(false, imageCursor.moveToFirst());
+    }
+
+    @Test
+    public void testDeleteDatesForLectureid() throws Exception {
+        Lecture firstLecture = dataAccessLecture.AddLecture("TestLecture1");
+        Lecture secondLecture = dataAccessLecture.AddLecture("TestLecture2");
+
+        dataAccessImage.AddImage("TestImageForTestLecture1_1", System.currentTimeMillis(),"TestPath", firstLecture.getId());
+        dataAccessImage.AddImage("TestImageForTestLecture1_1", System.currentTimeMillis(),"TestPath", firstLecture.getId());
+        dataAccessImage.AddImage("TestImageForTestLecture2_1", System.currentTimeMillis(),"TestPath", secondLecture.getId());
+        dataAccessImage.AddImage("TestImageForTestLecture2_2", System.currentTimeMillis(),"TestPath", secondLecture.getId());
+        dataAccessImage.AddImage("TestImageForTestLecture2_3", System.currentTimeMillis(),"TestPath", secondLecture.getId());
+
+        dataAccessImage.DeleteImagesForLectureId(-20);
+        Assert.assertEquals(2, dataAccessImage.GetImageCursorForLecture(firstLecture.getId()).getCount());
+        Assert.assertEquals(3, dataAccessImage.GetImageCursorForLecture(secondLecture.getId()).getCount());
+
+        dataAccessImage.DeleteImagesForLectureId(firstLecture.getId());
+        Assert.assertEquals(0, dataAccessImage.GetImageCursorForLecture(firstLecture.getId()).getCount());
+        Assert.assertEquals(3, dataAccessImage.GetImageCursorForLecture(secondLecture.getId()).getCount());
+
+        dataAccessImage.DeleteImagesForLectureId(secondLecture.getId());
+        Assert.assertEquals(0, dataAccessImage.GetImageCursorForLecture(secondLecture.getId()).getCount());
+
     }
 
 }

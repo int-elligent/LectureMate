@@ -1,33 +1,22 @@
 package com.intelligent.morning06.lecturemate;
 
-import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
-import android.os.Bundle;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.text.InputType;
 
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessLecture;
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessNote;
-import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessVideo;
-import com.intelligent.morning06.lecturemate.DataAccess.DataBaseConstants;
 import com.intelligent.morning06.lecturemate.DataAccess.DataModel;
 import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureAlreadyExistsException;
 import com.intelligent.morning06.lecturemate.DataAccess.Lecture;
-import com.intelligent.morning06.lecturemate.DataAccess.Note;
 
 import junit.framework.Assert;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -36,7 +25,6 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withInputType;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
@@ -96,6 +84,7 @@ public class NotesCreateActivityInstrumentedTest {
         onView(withId(R.id.editTextTitle)).perform(typeText("TestNote"));
 
         onView(withId(R.id.notes_create_activity_action_save)).perform(click());
+        Thread.sleep(1000);
         onView(withText(containsString("Note text cannot be empty"))).
                 inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView())))).
                 check(matches(isDisplayed()));
@@ -108,7 +97,7 @@ public class NotesCreateActivityInstrumentedTest {
         MyApplication.setCurrentLecture(-20);
 
         onView(withId(R.id.notes_create_activity_action_save)).perform(click());
-        onView(withText(containsString("Could not add note to database"))).
+        onView(withText(containsString("Database Error:"))).
                 inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView())))).
                 check(matches(isDisplayed()));
     }

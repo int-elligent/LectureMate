@@ -8,21 +8,16 @@ import android.util.Log;
 
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessLecture;
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessNote;
-import com.intelligent.morning06.lecturemate.DataAccess.DataBaseConstants;
-import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureAlreadyExistsException;
 import com.intelligent.morning06.lecturemate.DataAccess.Lecture;
 
 import junit.framework.Assert;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
 
 public class DataBaseAccessNoteInstrumentedTest {
     DataBaseAccessNote dataAccessNote = null;
@@ -35,6 +30,11 @@ public class DataBaseAccessNoteInstrumentedTest {
             dataAccessNote = new DataBaseAccessNote(InstrumentationRegistry.getTargetContext());
         if(dataAccessLecture == null)
             dataAccessLecture = new DataBaseAccessLecture(InstrumentationRegistry.getTargetContext());
+
+        dataAccessLecture.getWritableDatabase();
+        dataAccessNote.getWritableDatabase();
+        dataAccessLecture.close();
+        dataAccessNote.close();
 
         dataAccessNote.DeleteAllNotes();
         dataAccessLecture.DeleteAllLectures();
@@ -113,6 +113,30 @@ public class DataBaseAccessNoteInstrumentedTest {
 
         Cursor noteCursor = dataAccessNote.GetNoteCursorForLecture(2);
         Assert.assertEquals(false, noteCursor.moveToFirst());
+    }
+
+    @Test
+    public void testDeleteDatesForLectureid() throws Exception {
+        Lecture firstLecture = dataAccessLecture.AddLecture("TestLecture1");
+        Lecture secondLecture = dataAccessLecture.AddLecture("TestLecture2");
+
+        dataAccessNote.AddNote("TestNoteForTestLecture1_1", "TestText", System.currentTimeMillis(), firstLecture.getId());
+        dataAccessNote.AddNote("TestNoteForTestLecture1_1", "TestText", System.currentTimeMillis(), firstLecture.getId());
+        dataAccessNote.AddNote("TestNoteForTestLecture2_1", "TestText", System.currentTimeMillis(), secondLecture.getId());
+        dataAccessNote.AddNote("TestNoteForTestLecture2_2", "TestText", System.currentTimeMillis(), secondLecture.getId());
+        dataAccessNote.AddNote("TestNoteForTestLecture2_3", "TestText", System.currentTimeMillis(), secondLecture.getId());
+
+        dataAccessNote.DeleteNotesForLectureId(-20);
+        Assert.assertEquals(2, dataAccessNote.GetNoteCursorForLecture(firstLecture.getId()).getCount());
+        Assert.assertEquals(3, dataAccessNote.GetNoteCursorForLecture(secondLecture.getId()).getCount());
+
+        dataAccessNote.DeleteNotesForLectureId(firstLecture.getId());
+        Assert.assertEquals(0, dataAccessNote.GetNoteCursorForLecture(firstLecture.getId()).getCount());
+        Assert.assertEquals(3, dataAccessNote.GetNoteCursorForLecture(secondLecture.getId()).getCount());
+
+        dataAccessNote.DeleteNotesForLectureId(secondLecture.getId());
+        Assert.assertEquals(0, dataAccessNote.GetNoteCursorForLecture(secondLecture.getId()).getCount());
+
     }
 
 }

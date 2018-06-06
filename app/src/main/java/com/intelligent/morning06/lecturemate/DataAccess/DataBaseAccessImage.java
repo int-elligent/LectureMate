@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.ItemDoesNotExistException;
+
 public class DataBaseAccessImage extends SQLiteOpenHelper  {
 
     public static class ImageTable implements BaseColumns {
@@ -56,6 +58,9 @@ public class DataBaseAccessImage extends SQLiteOpenHelper  {
         if (!db.isReadOnly()) {
             db.execSQL("PRAGMA foreign_keys=ON;");
         }
+        else {
+
+        }
     }
 
     public void AddImage(String imageTitle, long timeStampCreated, String filePath, int lectureId) throws SQLException {
@@ -92,10 +97,23 @@ public class DataBaseAccessImage extends SQLiteOpenHelper  {
         return cursor;
     }
 
-    public void DeleteAllImages() {
+    public void DeleteImage(int imageId) throws ItemDoesNotExistException, IllegalArgumentException {
         SQLiteDatabase dataBase = this.getWritableDatabase();
-        dataBase.delete(ImageTable.TABLE_NAME, null, null);
-        dataBase.close();
+
+        int numberDeletedRows = dataBase.delete(DataBaseAccessImage.ImageTable.TABLE_NAME, DataBaseAccessLecture.LectureTable.COLUMN_NAME_ID + "='" + imageId + "'" ,null);
+    }
+
+    public void DeleteAllImages() {
+        try {
+
+            SQLiteDatabase dataBase = this.getWritableDatabase();
+            dataBase.delete(ImageTable.TABLE_NAME, null, null);
+            dataBase.close();
+
+        }catch(SQLException exception) {
+            //We don't care about "no such table" exception here
+            ;
+        }
     }
 
     public void DeleteImagesForLectureId(int lectureId) {

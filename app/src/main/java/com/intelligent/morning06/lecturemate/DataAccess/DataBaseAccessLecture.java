@@ -8,7 +8,9 @@ import android.provider.BaseColumns;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureAlreadyExistsException;
-import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureDoesNotExistException;
+import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.ItemDoesNotExistException;
+import com.intelligent.morning06.lecturemate.MyApplication;
+import com.intelligent.morning06.lecturemate.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,17 +58,25 @@ public class DataBaseAccessLecture extends SQLiteOpenHelper  {
         dataBase.delete(LectureTable.TABLE_NAME, null, null);
     }
 
-    public void DeleteLecture(String lectureName) throws LectureDoesNotExistException, IllegalArgumentException {
+    public void DeleteLecture(int lectureId) {
+        DataModel.GetInstance().getNoteDataBase().DeleteNotesForLectureId(lectureId);
+        DataModel.GetInstance().getImageDataBase().DeleteImagesForLectureId(lectureId);
+        DataModel.GetInstance().getDateDataBase().DeleteDatesForLectureId(lectureId);
 
-        if(lectureName == null || lectureName.isEmpty()) {
+        SQLiteDatabase dataBase = this.getWritableDatabase();
+
+        int numberDeletedRows = dataBase.delete(LectureTable.TABLE_NAME, LectureTable.COLUMN_NAME_ID + "='" + lectureId + "'" ,null);
+    }
+
+    public void DeleteLecture(String lectureName) throws ItemDoesNotExistException, IllegalArgumentException {
+        if(lectureName == null || lectureName == "")
             throw new IllegalArgumentException("lectureName");
-        }
 
         SQLiteDatabase dataBase = this.getWritableDatabase();
 
         int numberDeletedRows = dataBase.delete(LectureTable.TABLE_NAME, LectureTable.COLUMN_NAME_TITLE + "='" + lectureName + "'" ,null);
-        if(numberDeletedRows == 0) {
-            throw new LectureDoesNotExistException(lectureName, "Lecture with name '" + lectureName + "' cannot be deleted because it does not exist.");
+        if(numberDeletedRows != 1) {
+            throw new ItemDoesNotExistException(lectureName, "Lecture with name " + lectureName + " does not exit!");
         }
     }
 
@@ -98,13 +108,12 @@ public class DataBaseAccessLecture extends SQLiteOpenHelper  {
         List<String> storedLectureNames = new ArrayList<String>();
         while(cursor.moveToNext()) {
             String title = cursor.getString(cursor.getColumnIndexOrThrow(LectureTable.COLUMN_NAME_TITLE));
-            if(title != null)
-                storedLectureNames.add(title);
+            storedLectureNames.add(title);
         }
 
         if(storedLectureNames.size() >= 1) {
             dataBase.close();
-            throw new LectureAlreadyExistsException(lectureName, "Lecture with name " + lectureName + " can't be added to database because it already exists.");
+            throw new LectureAlreadyExistsException(lectureName, MyApplication.getContext().getResources().getString(R.string.error_databaseAccessLecture_alreadyExists));
         }
 
         dataBase.close();
