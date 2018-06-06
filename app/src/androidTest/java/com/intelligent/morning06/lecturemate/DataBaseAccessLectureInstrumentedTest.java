@@ -3,7 +3,7 @@ package com.intelligent.morning06.lecturemate;
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessLecture;
 import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.ItemDoesNotExistException;
 import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureAlreadyExistsException;
-import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureDoesNotExistException;
+import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.ItemDoesNotExistException;
 import com.intelligent.morning06.lecturemate.DataAccess.Lecture;
 
 import android.support.test.InstrumentationRegistry;

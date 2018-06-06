@@ -1,10 +1,10 @@
 package com.intelligent.morning06.lecturemate.DataAccess.Exceptions;
 
-public class LectureDoesNotExistException extends Exception {
+public class ItemDoesNotExistException extends Exception {
 
     private String _lectureName;
 
-    public LectureDoesNotExistException(String lectureName, String message) {
+    public ItemDoesNotExistException(String lectureName, String message) {
         super(message);
         _lectureName = lectureName;
     }
