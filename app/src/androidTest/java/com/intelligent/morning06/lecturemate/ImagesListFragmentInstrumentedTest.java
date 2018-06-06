@@ -1,19 +1,14 @@
 package com.intelligent.morning06.lecturemate;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.Instrumentation;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
-import android.support.test.rule.ActivityTestRule;
 import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessImage;
 import com.intelligent.morning06.lecturemate.DataAccess.DataBaseAccessLecture;
@@ -25,7 +20,6 @@ import com.intelligent.morning06.lecturemate.Utils.DateTimeUtils;
 
 import junit.framework.Assert;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -37,21 +31,16 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.intent.Intents.intending;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.hasData;
-import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
+import static android.support.test.espresso.intent.Intents.intended;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
@@ -69,8 +58,8 @@ public class ImagesListFragmentInstrumentedTest {
     private Uri _imageUri;
 
     @Rule
-    public ActivityTestRule<TabCategoriesActivity> mActivityRule = new
-            ActivityTestRule<TabCategoriesActivity>(TabCategoriesActivity.class, true, false);
+    public IntentsTestRule<TabCategoriesActivity> mActivityRule = new
+            IntentsTestRule<TabCategoriesActivity>(TabCategoriesActivity.class, true, false);
 
     @Rule
     public GrantPermissionRule mRuntimePermissionRuleReadStorage = GrantPermissionRule.grant(Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -167,5 +156,16 @@ public class ImagesListFragmentInstrumentedTest {
         onView(withText("TestImage1")).perform(longClick());
         onView(withText("delete")).perform(longClick());
         onView(withText("TestImage1")).check(doesNotExist());
+    }
+
+    @Test
+    public void openImage() throws Exception {
+        onView(withText("TestImage1")).perform(click());
+        intended(hasComponent(ImageViewActivity.class.getName()));
+    }
+
+    @Test
+    public void testCameraIntentCreation() throws Exception {
+        Assert.assertNotNull(((ImagesListFragment)mActivityRule.getActivity().getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container + ":" + 1)).createCameraIntent());
     }
 }

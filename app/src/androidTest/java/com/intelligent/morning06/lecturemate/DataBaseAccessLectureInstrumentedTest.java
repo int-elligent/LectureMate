@@ -57,9 +57,18 @@ public class DataBaseAccessLectureInstrumentedTest {
         }
     }
 
+    @Test
     public void addLecture_LectureNameEmpty_throwsIllegalArgumentException() throws Exception {
         try {
             dataBase.AddLecture("");
+            Assert.fail("Should have thrown IllegalArgumentException.");
+        }
+        catch(IllegalArgumentException exception) {
+            assertEquals("lectureName", exception.getMessage());
+        }
+
+        try {
+            dataBase.AddLecture(null);
             Assert.fail("Should have thrown IllegalArgumentException.");
         }
         catch(IllegalArgumentException exception) {
@@ -90,6 +99,13 @@ public class DataBaseAccessLectureInstrumentedTest {
     public void deleteLecture_LectureNameEmpty_throwsIllegalArgumentException() throws Exception {
         try {
             dataBase.DeleteLecture("");
+            Assert.fail("Should have thrown IllegalArgumentException");
+        } catch(IllegalArgumentException exception) {
+            assertEquals("lectureName", exception.getMessage());
+        }
+
+        try {
+            dataBase.DeleteLecture(null);
             Assert.fail("Should have thrown IllegalArgumentException");
         } catch(IllegalArgumentException exception) {
             assertEquals("lectureName", exception.getMessage());

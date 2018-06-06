@@ -3,6 +3,7 @@ package com.intelligent.morning06.lecturemate;
 
 import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -22,6 +23,8 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.intent.Intents.intended;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -43,8 +46,8 @@ public class DatesListFragmentInstrumentedTest {
     private String[] relative_times = {"10 days ago", "Yesterday", "Today", "Tomorrow", "10 days left"};
 
     @Rule
-    public ActivityTestRule<TabCategoriesActivity> mActivityRule = new
-            ActivityTestRule<TabCategoriesActivity>(TabCategoriesActivity.class, true, false);
+    public IntentsTestRule<TabCategoriesActivity> mActivityRule = new
+            IntentsTestRule<TabCategoriesActivity>(TabCategoriesActivity.class, true, false);
 
     @Before
     public void navigateToDateListFragment() throws Exception {
@@ -90,5 +93,19 @@ public class DatesListFragmentInstrumentedTest {
             onView(withText(titles[i])).check(matches(isDisplayed()));
         }
     }
+
+    @Test
+    public void createDateClicked() throws Exception {
+        onView(withId(R.id.fab_categories_activity)).perform(click());
+        intended(hasComponent(DatesCreateActivity.class.getName()));
+        onView(withId(R.id.dates_create_activity_action_cancel)).perform(click());
+    }
+
+    @Test
+    public void testDateOpen() throws Exception {
+        onView(withText(titles[0])).perform(click());
+        intended(hasComponent(DatesActivity.class.getName()));
+    }
+
 
 }

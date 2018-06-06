@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.intelligent.morning06.lecturemate.Interfaces.ICategoryListFragment;
 import com.intelligent.morning06.lecturemate.ListFragments.DatesListFragment;
@@ -62,9 +61,7 @@ public class TabCategoriesActivity extends AppCompatActivity {
                 Fragment page = getSupportFragmentManager().
                         findFragmentByTag("android:switcher:" + R.id.container + ":" + mViewPager.getCurrentItem());
 
-                if (page != null) {
-                    ((ICategoryListFragment)page).onFloatingActionButtonClicked();
-                }
+                ((ICategoryListFragment)page).onFloatingActionButtonClicked();
             }
         });
         getSupportActionBar().setTitle(MyApplication.getCurrentLectureName());
@@ -84,12 +81,8 @@ public class TabCategoriesActivity extends AppCompatActivity {
                 return new NotesListFragment();
             } else if (position == 1 && permissions) {
                 return new ImagesListFragment();
-            } else if (position == 1 && !permissions) {
-                return new DatesListFragment();
-            } else if (position == 2 && permissions) {
-                return new DatesListFragment();
             } else {
-                return null;
+                return new DatesListFragment();
             }
         }
 

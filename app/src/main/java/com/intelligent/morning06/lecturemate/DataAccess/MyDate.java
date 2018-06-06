@@ -53,7 +53,7 @@ public class MyDate implements Serializable, IDateSortable {
     }
 
     public LocalDateTime getCreationDate() {
-        return _creationDate;
+        return _date;
     }
 
     public long getCreationDateLong() {
@@ -65,8 +65,6 @@ public class MyDate implements Serializable, IDateSortable {
     }
 
     public String getText() { return _text; }
-
-    public void setText(String text){ _text = text; }
 
     @Override
     public String toString() {

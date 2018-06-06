@@ -28,7 +28,7 @@ public class NotesCreateActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 if(menuItem.getItemId() == R.id.notes_create_activity_action_save) {
                     SaveNote();
-                } else if (menuItem.getItemId() == R.id.notes_create_activity_action_cancel) {
+                } else {
                     finish();
                 }
                 return true;

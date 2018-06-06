@@ -12,8 +12,6 @@ public class DataModel {
     private DataBaseAccessImage _imageDataBase = null;
     private DataBaseAccessNote _noteDataBase = null;
 
-    private List<Lecture> _allLectures;
-
     private DataModel() {
         _lectureDataBase = new DataBaseAccessLecture(MyApplication.getContext());
         _dateDataBase = new DataBaseAccessDate(MyApplication.getContext());

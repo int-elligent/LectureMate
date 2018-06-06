@@ -78,6 +78,14 @@ public class NotesActivityInstrumentedTest {
         onView(withId(R.id.notes_view_action_left)).perform(click());
         onView(withText(notes.get(2).getText())).check(matches(isDisplayed()));
         onView(withText(notes.get(2).getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy H:m")))).check(matches(isDisplayed()));
+
+        onView(withId(R.id.notes_view_action_left)).perform(click());
+        onView(withText(notes.get(1).getText())).check(matches(isDisplayed()));
+        onView(withText(notes.get(1).getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy H:m")))).check(matches(isDisplayed()));
+
+        onView(withId(R.id.notes_view_action_left)).perform(click());
+        onView(withText(notes.get(0).getText())).check(matches(isDisplayed()));
+        onView(withText(notes.get(0).getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy H:m")))).check(matches(isDisplayed()));
     }
 
     @Test
@@ -85,6 +93,14 @@ public class NotesActivityInstrumentedTest {
         onView(withId(R.id.notes_view_action_right)).perform(click());
         onView(withText(notes.get(1).getText())).check(matches(isDisplayed()));
         onView(withText(notes.get(1).getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy H:m")))).check(matches(isDisplayed()));
+
+        onView(withId(R.id.notes_view_action_right)).perform(click());
+        onView(withText(notes.get(2).getText())).check(matches(isDisplayed()));
+        onView(withText(notes.get(2).getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy H:m")))).check(matches(isDisplayed()));
+
+        onView(withId(R.id.notes_view_action_right)).perform(click());
+        onView(withText(notes.get(0).getText())).check(matches(isDisplayed()));
+        onView(withText(notes.get(0).getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy H:m")))).check(matches(isDisplayed()));
     }
 
 }

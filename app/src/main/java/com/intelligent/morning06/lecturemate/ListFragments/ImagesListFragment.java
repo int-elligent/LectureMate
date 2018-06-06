@@ -147,7 +147,7 @@ public class ImagesListFragment extends Fragment implements ICategoryListFragmen
         ((ListView)this.getView().findViewById(R.id.images_list_listview)).setAdapter(imagesListAdapter);
     }
 
-    private Intent createCameraIntent()
+    public Intent createCameraIntent()
     {
         if(!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             return null;

@@ -29,7 +29,7 @@ public class NotesActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 if(menuItem.getItemId() == R.id.notes_view_action_left) {
                     switchNote(true);
-                } else if (menuItem.getItemId() == R.id.notes_view_action_right) {
+                } else {
                     switchNote(false);
                 }
                 return true;
@@ -45,8 +45,6 @@ public class NotesActivity extends AppCompatActivity {
 
     private void UpdateContent()
     {
-        if(_selectedIndex < 0 || _selectedIndex > (_notes.size() - 1))
-            return;
 
         TextView textContent = (TextView) findViewById(R.id.notes_view_content);
         textContent.setText(_notes.get(_selectedIndex).getText());

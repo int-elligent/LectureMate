@@ -31,6 +31,11 @@ public class DataBaseAccessNoteInstrumentedTest {
         if(dataAccessLecture == null)
             dataAccessLecture = new DataBaseAccessLecture(InstrumentationRegistry.getTargetContext());
 
+        dataAccessLecture.getWritableDatabase();
+        dataAccessNote.getWritableDatabase();
+        dataAccessLecture.close();
+        dataAccessNote.close();
+
         dataAccessNote.DeleteAllNotes();
         dataAccessLecture.DeleteAllLectures();
     }
@@ -108,6 +113,30 @@ public class DataBaseAccessNoteInstrumentedTest {
 
         Cursor noteCursor = dataAccessNote.GetNoteCursorForLecture(2);
         Assert.assertEquals(false, noteCursor.moveToFirst());
+    }
+
+    @Test
+    public void testDeleteDatesForLectureid() throws Exception {
+        Lecture firstLecture = dataAccessLecture.AddLecture("TestLecture1");
+        Lecture secondLecture = dataAccessLecture.AddLecture("TestLecture2");
+
+        dataAccessNote.AddNote("TestNoteForTestLecture1_1", "TestText", System.currentTimeMillis(), firstLecture.getId());
+        dataAccessNote.AddNote("TestNoteForTestLecture1_1", "TestText", System.currentTimeMillis(), firstLecture.getId());
+        dataAccessNote.AddNote("TestNoteForTestLecture2_1", "TestText", System.currentTimeMillis(), secondLecture.getId());
+        dataAccessNote.AddNote("TestNoteForTestLecture2_2", "TestText", System.currentTimeMillis(), secondLecture.getId());
+        dataAccessNote.AddNote("TestNoteForTestLecture2_3", "TestText", System.currentTimeMillis(), secondLecture.getId());
+
+        dataAccessNote.DeleteNotesForLectureId(-20);
+        Assert.assertEquals(2, dataAccessNote.GetNoteCursorForLecture(firstLecture.getId()).getCount());
+        Assert.assertEquals(3, dataAccessNote.GetNoteCursorForLecture(secondLecture.getId()).getCount());
+
+        dataAccessNote.DeleteNotesForLectureId(firstLecture.getId());
+        Assert.assertEquals(0, dataAccessNote.GetNoteCursorForLecture(firstLecture.getId()).getCount());
+        Assert.assertEquals(3, dataAccessNote.GetNoteCursorForLecture(secondLecture.getId()).getCount());
+
+        dataAccessNote.DeleteNotesForLectureId(secondLecture.getId());
+        Assert.assertEquals(0, dataAccessNote.GetNoteCursorForLecture(secondLecture.getId()).getCount());
+
     }
 
 }

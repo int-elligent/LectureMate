@@ -58,6 +58,9 @@ public class DataBaseAccessImage extends SQLiteOpenHelper  {
         if (!db.isReadOnly()) {
             db.execSQL("PRAGMA foreign_keys=ON;");
         }
+        else {
+
+        }
     }
 
     public void AddImage(String imageTitle, long timeStampCreated, String filePath, int lectureId) throws SQLException {

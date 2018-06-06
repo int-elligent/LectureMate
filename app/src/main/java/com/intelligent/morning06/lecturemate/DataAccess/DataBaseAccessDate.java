@@ -60,6 +60,9 @@ public class DataBaseAccessDate extends SQLiteOpenHelper  {
         if (!db.isReadOnly()) {
             db.execSQL("PRAGMA foreign_keys=ON;");
         }
+        else {
+
+        }
     }
 
     public void AddDate(String dateTitle, String dateText, long timeStampCreated, long timeStampDate, int lectureId) throws SQLException {
@@ -126,9 +129,16 @@ public class DataBaseAccessDate extends SQLiteOpenHelper  {
     }
 
     public void DeleteAllDates() {
-        SQLiteDatabase dataBase = this.getWritableDatabase();
-        dataBase.delete(DateTable.TABLE_NAME, null, null);
-        dataBase.close();
+        try {
+
+            SQLiteDatabase dataBase = this.getWritableDatabase();
+            dataBase.delete(DateTable.TABLE_NAME, null, null);
+            dataBase.close();
+
+        }catch(SQLException exception) {
+            //We don't care about "no such table" exception here
+            ;
+        }
     }
 
     public void DeleteDatesForLectureId(int lectureId) {

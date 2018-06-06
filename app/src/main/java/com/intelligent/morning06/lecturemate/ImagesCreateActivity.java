@@ -32,7 +32,7 @@ public class ImagesCreateActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 if(menuItem.getItemId() == R.id.images_create_activity_action_save) {
                    SaveImage();
-                } else if (menuItem.getItemId() == R.id.images_create_activity_action_cancel) {
+                } else {
                     setResult(ImagesListFragment.EMPTY_REQUEST_CODE);
                     finish();
                 }
