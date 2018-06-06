@@ -19,7 +19,9 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -126,6 +128,27 @@ public class LecturesActivityInstrumentedTest {
     public void testDialogButtonCancel() throws Exception {
         onView(withId(R.id.fab)).perform(click());
         onView(withText("CANCEL")).perform(click());
+    }
+
+    @Test
+    public void deleteLecture() throws Exception {
+        onView(withId(R.id.fab)).perform(click());
+        LecturesActivity lecturesActivity = mActivityRule.getActivity();
+
+        AlertDialog addLectureDialog = lecturesActivity.getLastDialog();
+        if(addLectureDialog.isShowing()) {
+            onView(withInputType(InputType.TYPE_CLASS_TEXT)).perform(typeText("TestLecture"));
+            onView(withText("ADD")).perform(click());
+            try {
+                MyApplication.setStoragePermissionGranted(true);
+                onView(withText("TestLecture")).check(matches(isDisplayed()));
+                onView(withText("TestLecture")).perform(longClick());
+                onView(withText("delete")).perform(click());
+                onView(withText("TestLecture")).check(doesNotExist());
+            }catch(NoMatchingViewException exception) {
+                Assert.fail("Lecture was not correctly added");
+            }
+        }
     }
 
 }

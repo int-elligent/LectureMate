@@ -11,6 +11,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,6 +21,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.intelligent.morning06.lecturemate.DataAccess.DataModel;
+import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.ItemDoesNotExistException;
 import com.intelligent.morning06.lecturemate.DataAccess.Exceptions.LectureAlreadyExistsException;
 import com.intelligent.morning06.lecturemate.DataAccess.Lecture;
 
@@ -52,6 +55,8 @@ public class LecturesActivity extends AppCompatActivity {
 
         lectureListView = (ListView) findViewById(R.id.lectureList);
 
+        registerForContextMenu((ListView)findViewById(R.id.lectureList));
+
         RefreshLectures();
 
         lectureListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -62,6 +67,25 @@ public class LecturesActivity extends AppCompatActivity {
                 checkPermissions();
             }
         });
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo contextMenuInfo) {
+
+        super.onCreateContextMenu(menu, v, contextMenuInfo);
+        this.getMenuInflater().inflate(R.menu.delete_lecture, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem menuItem) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo();
+
+            if (menuItem.getItemId() == R.id.delete_lecture) {
+                DataModel.GetInstance().getLectureDataBase().DeleteLecture(lectures.get(info.position).getId());
+                RefreshLectures();
+            }
+
+        return super.onContextItemSelected(menuItem);
     }
 
     void addLectureAction(){

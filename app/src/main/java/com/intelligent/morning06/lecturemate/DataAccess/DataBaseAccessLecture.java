@@ -58,17 +58,25 @@ public class DataBaseAccessLecture extends SQLiteOpenHelper  {
         dataBase.delete(LectureTable.TABLE_NAME, null, null);
     }
 
-    public void DeleteLecture(String lectureName) throws ItemDoesNotExistException, IllegalArgumentException {
+    public void DeleteLecture(int lectureId) {
+        DataModel.GetInstance().getNoteDataBase().DeleteNotesForLectureId(lectureId);
+        DataModel.GetInstance().getImageDataBase().DeleteImagesForLectureId(lectureId);
+        DataModel.GetInstance().getDateDataBase().DeleteDatesForLectureId(lectureId);
 
-        if(lectureName == null || lectureName.isEmpty()) {
+        SQLiteDatabase dataBase = this.getWritableDatabase();
+
+        int numberDeletedRows = dataBase.delete(LectureTable.TABLE_NAME, LectureTable.COLUMN_NAME_ID + "='" + lectureId + "'" ,null);
+    }
+
+    public void DeleteLecture(String lectureName) throws ItemDoesNotExistException, IllegalArgumentException {
+        if(lectureName == null || lectureName == "")
             throw new IllegalArgumentException("lectureName");
-        }
 
         SQLiteDatabase dataBase = this.getWritableDatabase();
 
         int numberDeletedRows = dataBase.delete(LectureTable.TABLE_NAME, LectureTable.COLUMN_NAME_TITLE + "='" + lectureName + "'" ,null);
-        if(numberDeletedRows == 0) {
-            throw new ItemDoesNotExistException(lectureName, "Lecture with name '" + lectureName + "' cannot be deleted because it does not exist.");
+        if(numberDeletedRows != 1) {
+            throw new ItemDoesNotExistException(lectureName, "Lecture with name " + lectureName + " does not exit!");
         }
     }
 
