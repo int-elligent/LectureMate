@@ -97,18 +97,9 @@ public class DataBaseAccessNote extends SQLiteOpenHelper  {
         return cursor;
     }
 
-    public void DeleteNote(String noteName) throws ItemDoesNotExistException, IllegalArgumentException {
-
-        if(noteName == null || noteName.isEmpty()) {
-            throw new IllegalArgumentException("lectureName");
-        }
-
+    public void DeleteNote(int noteId) throws ItemDoesNotExistException, IllegalArgumentException {
         SQLiteDatabase dataBase = this.getWritableDatabase();
-
-        int numberDeletedRows = dataBase.delete(DataBaseAccessNote.NoteTable.TABLE_NAME, DataBaseAccessNote.NoteTable.COLUMN_NAME_TITLE + "='" + noteName + "'" ,null);
-        if(numberDeletedRows == 0) {
-            throw new ItemDoesNotExistException(noteName, "Lecture with name '" + noteName + "' cannot be deleted because it does not exist.");
-        }
+        int numberDeletedRows = dataBase.delete(DataBaseAccessNote.NoteTable.TABLE_NAME, NoteTable.COLUMN_NAME_ID + "='" + noteId + "'" ,null);
     }
 
 

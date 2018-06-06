@@ -22,6 +22,8 @@ import java.util.TimeZone;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.longClick;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -105,6 +107,19 @@ public class DatesListFragmentInstrumentedTest {
     public void testDateOpen() throws Exception {
         onView(withText(titles[0])).perform(click());
         intended(hasComponent(DatesActivity.class.getName()));
+    }
+
+    @Test
+    public void dateDeleted() throws Exception {
+        onView(withText("A1Dead")).check(matches(isDisplayed()));
+        onView(withText("A1Dead")).perform(longClick());
+        onView(withText("delete")).perform(longClick());
+        onView(withText("A1Dead")).check(doesNotExist());
+
+        onView(withText("A2Dead")).check(matches(isDisplayed()));
+        onView(withText("A2Dead")).perform(longClick());
+        onView(withText("delete")).perform(longClick());
+        onView(withText("A2Dead")).check(doesNotExist());
     }
 
 

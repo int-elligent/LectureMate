@@ -82,12 +82,12 @@ public class ImagesListFragment extends Fragment implements ICategoryListFragmen
                 if(((ListView)getActivity().findViewById(R.id.images_list_listview)).getAdapter().getItemViewType(j) == 1) info.position--;
             Log.w("ID", "" + info.position);
             Log.w("allImages Size", "" + allImages.size());
-            DataModel.GetInstance().getImageDataBase().DeleteImage(allImages.get(info.position).getTitle());
+            DataModel.GetInstance().getImageDataBase().DeleteImage(allImages.get(info.position).getId());
             updateImageList();
         }
         catch(ItemDoesNotExistException e)
         {
-            Toast.makeText(this.getContext(), "inernal Error", Toast.LENGTH_LONG);
+            Toast.makeText(this.getContext(), "inernal Error", Toast.LENGTH_LONG).show();
         }}
         return super.onContextItemSelected(menuItem);
     }
@@ -99,7 +99,6 @@ public class ImagesListFragment extends Fragment implements ICategoryListFragmen
         ((ListView)getActivity().findViewById(R.id.images_list_listview)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //String lectureNameToShowCategories = lectures.get(i).getLectureName();
                 openImages(i);
             }
         });

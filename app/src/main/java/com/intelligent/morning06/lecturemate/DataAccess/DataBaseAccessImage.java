@@ -97,18 +97,10 @@ public class DataBaseAccessImage extends SQLiteOpenHelper  {
         return cursor;
     }
 
-    public void DeleteImage(String ImageName) throws ItemDoesNotExistException, IllegalArgumentException {
-
-        if(ImageName == null || ImageName.isEmpty()) {
-            throw new IllegalArgumentException("lectureName");
-        }
-
+    public void DeleteImage(int imageId) throws ItemDoesNotExistException, IllegalArgumentException {
         SQLiteDatabase dataBase = this.getWritableDatabase();
 
-        int numberDeletedRows = dataBase.delete(DataBaseAccessImage.ImageTable.TABLE_NAME, DataBaseAccessLecture.LectureTable.COLUMN_NAME_TITLE + "='" + ImageName + "'" ,null);
-        if(numberDeletedRows == 0) {
-            throw new ItemDoesNotExistException(ImageName, "Lecture with name '" + ImageName + "' cannot be deleted because it does not exist.");
-        }
+        int numberDeletedRows = dataBase.delete(DataBaseAccessImage.ImageTable.TABLE_NAME, DataBaseAccessLecture.LectureTable.COLUMN_NAME_ID + "='" + imageId + "'" ,null);
     }
 
     public void DeleteAllImages() {

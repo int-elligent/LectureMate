@@ -53,18 +53,19 @@ public class DatesListFragment extends Fragment implements ICategoryListFragment
     public boolean onContextItemSelected(MenuItem menuItem)
     {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo();
-        if(menuItem.getItemId() == R.id.delete_note)
+        if(menuItem.getItemId() == R.id.delete_date)
         {
         try
         {
-            Log.w("ID", "" + info.position);
-            Log.w("allDates Size", "" + _allDates.size());
-            DataModel.GetInstance().getDateDataBase().DeleteDate(_allDates.get(info.position - 1).getTitle());
+            int size = info.position;
+            for( int j = 0; j < size; j++)
+                if(((ListView)getActivity().findViewById(R.id.dates_list_listview)).getAdapter().getItemViewType(j) == 1) info.position--;
+            DataModel.GetInstance().getDateDataBase().DeleteDate(_allDates.get(info.position).getId());
             updateDates();
         }
         catch(ItemDoesNotExistException e)
         {
-            Toast.makeText(this.getContext(), "inernal Error", Toast.LENGTH_LONG);
+            Toast.makeText(this.getContext(), "inernal Error", Toast.LENGTH_LONG).show();
         }}
         return super.onContextItemSelected(menuItem);
     }

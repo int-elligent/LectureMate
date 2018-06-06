@@ -21,6 +21,8 @@ import java.util.TimeZone;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.longClick;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -94,6 +96,19 @@ public class NotesListFragmentInstrumentedTest {
         onView(withId(R.id.fab_categories_activity)).perform(click());
         intended(hasComponent(NotesCreateActivity.class.getName()));
         onView(withId(R.id.notes_create_activity_action_cancel)).perform(click());
+    }
+
+    @Test
+    public void noteDeleted() throws Exception {
+        onView(withText("TestNoteForTestLecture1_1")).check(matches(isDisplayed()));
+        onView(withText("TestNoteForTestLecture1_1")).perform(longClick());
+        onView(withText("delete")).perform(longClick());
+        onView(withText("TestNoteForTestLecture1_1")).check(doesNotExist());
+
+        onView(withText("TestNoteForTestLecture1_2")).check(matches(isDisplayed()));
+        onView(withText("TestNoteForTestLecture1_2")).perform(longClick());
+        onView(withText("delete")).perform(longClick());
+        onView(withText("TestNoteForTestLecture1_2")).check(doesNotExist());
     }
 
 }

@@ -114,18 +114,9 @@ public class DataBaseAccessDate extends SQLiteOpenHelper  {
         return cursor;
     }
 
-    public void DeleteDate(String dateName) throws ItemDoesNotExistException, IllegalArgumentException {
-
-        if(dateName == null || dateName.isEmpty()) {
-            throw new IllegalArgumentException("lectureName");
-        }
-
+    public void DeleteDate(int dateId) throws ItemDoesNotExistException, IllegalArgumentException {
         SQLiteDatabase dataBase = this.getWritableDatabase();
-
-        int numberDeletedRows = dataBase.delete(DataBaseAccessDate.DateTable.TABLE_NAME, DataBaseAccessDate.DateTable.COLUMN_NAME_TITLE + "='" + dateName + "'" ,null);
-        if(numberDeletedRows == 0) {
-            throw new ItemDoesNotExistException(dateName, "Lecture with name '" + dateName + "' cannot be deleted because it does not exist.");
-        }
+        dataBase.delete(DataBaseAccessDate.DateTable.TABLE_NAME, DateTable.COLUMN_NAME_ID + "='" + dateId + "'" ,null);
     }
 
     public void DeleteAllDates() {

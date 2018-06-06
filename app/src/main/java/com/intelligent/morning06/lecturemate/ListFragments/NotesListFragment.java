@@ -56,17 +56,18 @@ public class NotesListFragment extends Fragment implements ICategoryListFragment
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo();
 
         if(menuItem.getItemId() == R.id.delete_note)
-        {try
         {
-            Log.w("ID", "" + info.position);
-            Log.w("allNotes Size", "" + _allNotes.size());
-            DataModel.GetInstance().getNoteDataBase().DeleteNote(_allNotes.get(info.position - 1).getTitle());
-            updateNotes();
+            try
+            {
+                int toDelete = _allNotes.indexOf((_notesListView.getAdapter().getItem(info.position)));
+                DataModel.GetInstance().getNoteDataBase().DeleteNote(_allNotes.get(toDelete).getId());
+                updateNotes();
+            }
+            catch(ItemDoesNotExistException e)
+            {
+                Toast.makeText(this.getContext(), "inernal Error", Toast.LENGTH_LONG).show();
+            }
         }
-        catch(ItemDoesNotExistException e)
-        {
-            Toast.makeText(this.getContext(), "inernal Error", Toast.LENGTH_LONG);
-        }}
         return super.onContextItemSelected(menuItem);
     }
     @Override
@@ -97,7 +98,6 @@ public class NotesListFragment extends Fragment implements ICategoryListFragment
     }
 
     public void openNote(int selectedIndex) {
-
         Intent intent = new Intent(getActivity(), NotesActivity.class);
         Bundle notesBundle = new Bundle();
         notesBundle.putSerializable(getResources().getString(R.string.intent_extra_allNotes), _allNotes);
